@@ -81,7 +81,7 @@ class _NutrientCell extends StatefulWidget {
 
 class _NutrientCellState extends State<_NutrientCell> {
   late TextEditingController _controller;
-  bool _internal = false;
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -89,12 +89,12 @@ class _NutrientCellState extends State<_NutrientCell> {
     _controller = TextEditingController(text: _fmt(widget.value));
   }
 
-  String _fmt(double v) => v == 0 ? '' : v.toStringAsFixed(1);
+  String _fmt(double v) => v == 0 ? '' : v.toString();
 
   @override
   void didUpdateWidget(_NutrientCell old) {
     super.didUpdateWidget(old);
-    if (!_internal && old.value != widget.value) {
+    if (!_focusNode.hasFocus && old.value != widget.value) {
       _controller.text = _fmt(widget.value);
     }
   }
@@ -102,6 +102,7 @@ class _NutrientCellState extends State<_NutrientCell> {
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -126,6 +127,7 @@ class _NutrientCellState extends State<_NutrientCell> {
           height: 32,
           child: TextField(
             controller: _controller,
+            focusNode: _focusNode,
             style: const TextStyle(fontSize: 12),
             decoration: InputDecoration(
               isDense: true,
@@ -142,9 +144,7 @@ class _NutrientCellState extends State<_NutrientCell> {
             keyboardType:
                 const TextInputType.numberWithOptions(decimal: true),
             onChanged: (text) {
-              _internal = true;
               widget.onChanged(double.tryParse(text) ?? 0.0);
-              _internal = false;
             },
           ),
         ),

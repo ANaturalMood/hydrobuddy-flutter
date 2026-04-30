@@ -5,6 +5,7 @@ import 'package:hydrobuddy/domain/models/element.dart';
 import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/domain/models/substance.dart';
 import 'package:hydrobuddy/ui/providers/substances_provider.dart';
+import 'package:hydrobuddy/domain/engine/units.dart';
 
 const _concTypes = ['w/w', 'w/v', 'v/v', 'Outro'];
 
@@ -35,6 +36,7 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
   bool _isLiquid = false;
   String _concType = 'w/w';
 
+  bool _showOxide = false;
   bool _loaded = false;
   bool _loading = false;
 
@@ -105,6 +107,13 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
 
+    double pVal = _parseDouble(_elementCtrls[Element.p]!);
+    double kVal = _parseDouble(_elementCtrls[Element.k]!);
+    if (_showOxide) {
+      pVal = UnitConverter.p2o5ToP(pVal);
+      kVal = UnitConverter.k2oToK(kVal);
+    }
+
     final substance = Substance(
       id: widget.substanceId ?? -1,
       name: _nameCtrl.text.trim(),
@@ -121,8 +130,8 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
       concType: _concType == 'Outro' ? null : _concType,
       nNo3: _parseDouble(_elementCtrls[Element.nNo3]!),
       nNh4: _parseDouble(_elementCtrls[Element.nNh4]!),
-      p: _parseDouble(_elementCtrls[Element.p]!),
-      k: _parseDouble(_elementCtrls[Element.k]!),
+      p: pVal,
+      k: kVal,
       ca: _parseDouble(_elementCtrls[Element.ca]!),
       mg: _parseDouble(_elementCtrls[Element.mg]!),
       s: _parseDouble(_elementCtrls[Element.s]!),
@@ -256,6 +265,35 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
             Text(AppLocalizations.of(context)!.elementalComposition,
                 style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 8),
+            ToggleButtons(
+              isSelected: [!_showOxide, _showOxide],
+              onPressed: (index) {
+                setState(() {
+                  if (index == 0 && _showOxide) {
+                    _showOxide = false;
+                    _elementCtrls[Element.k]!.text = UnitConverter.k2oToK(
+                      _parseDouble(_elementCtrls[Element.k]!),
+                    ).toStringAsFixed(2);
+                    _elementCtrls[Element.p]!.text = UnitConverter.p2o5ToP(
+                      _parseDouble(_elementCtrls[Element.p]!),
+                    ).toStringAsFixed(2);
+                  } else if (index == 1 && !_showOxide) {
+                    _showOxide = true;
+                    _elementCtrls[Element.k]!.text = UnitConverter.kToK2o(
+                      _parseDouble(_elementCtrls[Element.k]!),
+                    ).toStringAsFixed(2);
+                    _elementCtrls[Element.p]!.text = UnitConverter.pToP2o5(
+                      _parseDouble(_elementCtrls[Element.p]!),
+                    ).toStringAsFixed(2);
+                  }
+                });
+              },
+              children: const [
+                Text('Elemental'),
+                Text('Oxide'),
+              ],
+            ),
+            const SizedBox(height: 8),
             _buildElementGrid(),
             const SizedBox(height: 24),
             FilledButton.icon(
@@ -283,19 +321,32 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
         mainAxisSpacing: 8,
       ),
       itemCount: elements.length,
-      itemBuilder: (context, index) {
-        final e = elements[index];
-        return TextFormField(
-          controller: _elementCtrls[e]!,
-          decoration: InputDecoration(
-            labelText: e.symbol,
-            border: const OutlineInputBorder(),
-            isDense: true,
-          ),
-          keyboardType:
-              const TextInputType.numberWithOptions(decimal: true),
-        );
-      },
+    itemBuilder: (context, index) {
+      final e = elements[index];
+      final label = _showOxide
+          ? (e == Element.k
+              ? 'K\u2082O'
+              : e == Element.p
+                  ? 'P\u2082O\u2085'
+                  : e.symbol)
+          : e.symbol;
+      return TextFormField(
+        controller: _elementCtrls[e]!,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+          isDense: true,
+        ),
+        keyboardType:
+            const TextInputType.numberWithOptions(decimal: true),
+        validator: (v) {
+          final n = double.tryParse(v ?? '');
+          if (n == null) return 'Invalid number';
+          if (n < 0 || n > 100) return 'Value must be 0-100';
+          return null;
+        },
+      );
+    },
     );
   }
 }
