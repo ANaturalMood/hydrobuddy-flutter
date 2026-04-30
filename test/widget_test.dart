@@ -6,6 +6,6 @@ void main() {
   testWidgets('App renders with router', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(child: HydroBuddyApp()));
     await tester.pumpAndSettle();
-    expect(find.text('Calculator'), findsAtLeast(1));
+    expect(find.text('HydroBuddy'), findsOneWidget);
   });
 }
