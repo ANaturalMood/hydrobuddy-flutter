@@ -1,0 +1,7 @@
+{
+  "@@locale": "pt",
+  "appTitle": "HydroBuddy",
+  "@appTitle": {
+    "description": "Título do aplicativo"
+  }
+}
