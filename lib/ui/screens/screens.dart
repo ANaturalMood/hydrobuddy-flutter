@@ -16,6 +16,7 @@ export 'stock_analysis_screen.dart';
 export 'per_substance_screen.dart';
 export 'ratio_screen.dart';
 export 'mix_analysis_screen.dart';
+export 'recipes_screen.dart';
 export 'settings_screen.dart';
 export 'instrument_precision_screen.dart';
 export 'degree_of_freedom_screen.dart';

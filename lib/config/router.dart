@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrobuddy/ui/screens/calculator_screen.dart';
 import 'package:hydrobuddy/ui/screens/results_screen.dart';
-import 'package:hydrobuddy/ui/screens/substances_screen.dart';
+import 'package:hydrobuddy/ui/screens/salts_screen.dart';
 import 'package:hydrobuddy/ui/screens/substance_editor_screen.dart';
 import 'package:hydrobuddy/ui/screens/formulation_history_screen.dart';
 import 'package:hydrobuddy/ui/widgets/snapshot_timeline.dart';
@@ -20,6 +20,7 @@ import 'package:hydrobuddy/ui/screens/stock_analysis_screen.dart';
 import 'package:hydrobuddy/ui/screens/per_substance_screen.dart';
 import 'package:hydrobuddy/ui/screens/ratio_screen.dart';
 import 'package:hydrobuddy/ui/screens/mix_analysis_screen.dart';
+import 'package:hydrobuddy/ui/screens/recipes_screen.dart';
 import 'package:hydrobuddy/ui/screens/settings_screen.dart';
 import 'package:hydrobuddy/ui/screens/instrument_precision_screen.dart';
 import 'package:hydrobuddy/ui/screens/degree_of_freedom_screen.dart';
@@ -52,8 +53,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/substances',
-                builder: (context, state) => const SubstancesScreen(),
+                path: '/salts',
+                builder: (context, state) => const SaltsScreen(),
                 routes: [
                   GoRoute(
                     path: 'edit/:id',
@@ -72,14 +73,16 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/formulations',
-                builder: (context, state) => const FormulationHistoryScreen(),
+                path: '/recipes',
+                builder: (context, state) => const RecipesScreen(),
                 routes: [
                   GoRoute(
-                    path: ':id/snapshots',
-                    builder: (context, state) => SnapshotTimeline(
-                      formulationId: int.parse(state.pathParameters['id']!),
-                    ),
+                    path: 'new',
+                    builder: (context, state) => const FormulationHistoryScreen(),
+                  ),
+                  GoRoute(
+                    path: 'edit/:id',
+                    builder: (context, state) => const FormulationHistoryScreen(),
                   ),
                 ],
               ),
@@ -180,6 +183,18 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/mix-analysis',
         builder: (context, state) => const MixAnalysisScreen(),
+      ),
+      GoRoute(
+        path: '/formulations',
+        builder: (context, state) => const FormulationHistoryScreen(),
+        routes: [
+          GoRoute(
+            path: ':id/snapshots',
+            builder: (context, state) => SnapshotTimeline(
+              formulationId: int.parse(state.pathParameters['id']!),
+            ),
+          ),
+        ],
       ),
     ],
   );

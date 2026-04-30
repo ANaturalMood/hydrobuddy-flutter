@@ -1,16 +1,24 @@
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart' hide Element;
 import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:hydrobuddy/data/database.dart' as db;
+import 'package:hydrobuddy/ui/providers/database_provider.dart';
 import 'package:hydrobuddy/ui/screens/settings_screen.dart';
 import 'package:hydrobuddy/ui/screens/instrument_precision_screen.dart';
 import 'package:hydrobuddy/ui/screens/degree_of_freedom_screen.dart';
 import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/screens/about_screen.dart';
 
-Widget _wrap(Widget child) {
+db.AppDatabase _testDb() =>
+    db.AppDatabase.forTesting(NativeDatabase.memory());
+
+Widget _wrap(Widget child, {db.AppDatabase? database}) {
+  final effectiveDb = database ?? _testDb();
   return ProviderScope(
+    overrides: [databaseProvider.overrideWithValue(effectiveDb)],
     child: MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -22,38 +30,37 @@ Widget _wrap(Widget child) {
 
 void main() {
   group('SettingsScreen', () {
-    testWidgets('renders settings list items', (tester) async {
-      await tester.pumpWidget(_wrap(const SettingsScreen()));
+    testWidgets('renders hero and water analysis section', (tester) async {
+      final database = _testDb();
+      addTearDown(() async => database.close());
+      await tester.pumpWidget(_wrap(const SettingsScreen(), database: database));
       await tester.pumpAndSettle();
 
-      expect(find.text('Configurações'), findsOneWidget);
-      expect(find.text('Precisão dos Instrumentos'), findsOneWidget);
-      expect(find.text('Grau de Liberdade (DOF)'), findsOneWidget);
-      expect(find.text('Qualidade da Água'), findsOneWidget);
-      expect(find.text('Análise de Tecido'), findsOneWidget);
-      expect(find.text('Sobre o HydroBuddy'), findsOneWidget);
-      expect(find.text('Idioma'), findsOneWidget);
-      expect(find.text('Tema'), findsOneWidget);
+      expect(find.text('Configuration & Lab Setup'), findsOneWidget);
+      expect(find.text('Baseline Water Analysis'), findsOneWidget);
+      expect(find.text('Instrument Precision'), findsOneWidget);
+      expect(find.text('Preferences'), findsOneWidget);
     });
 
-    testWidgets('shows snackbar for Idioma placeholder', (tester) async {
-      await tester.pumpWidget(_wrap(const SettingsScreen()));
+    testWidgets('renders save and reset buttons', (tester) async {
+      final database = _testDb();
+      addTearDown(() async => database.close());
+      await tester.pumpWidget(_wrap(const SettingsScreen(), database: database));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Idioma'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Em breve'), findsOneWidget);
+      expect(find.text('Save All Settings'), findsOneWidget);
+      expect(find.text('Reset to Defaults'), findsOneWidget);
     });
 
-    testWidgets('shows snackbar for Tema placeholder', (tester) async {
-      await tester.pumpWidget(_wrap(const SettingsScreen()));
+    testWidgets('shows about section', (tester) async {
+      final database = _testDb();
+      addTearDown(() async => database.close());
+      await tester.pumpWidget(_wrap(const SettingsScreen(), database: database));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Tema'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Em breve'), findsOneWidget);
+      expect(find.text('ABOUT HYDROBUDDY'), findsOneWidget);
+      expect(find.text('Version 2.4.12-stable'), findsOneWidget);
+      expect(find.text('Built for Precision Growth'), findsOneWidget);
     });
   });
 
