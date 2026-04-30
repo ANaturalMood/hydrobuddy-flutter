@@ -8,6 +8,7 @@ import 'package:hydrobuddy/ui/providers/substances_provider.dart';
 import 'package:hydrobuddy/ui/providers/water_quality_provider.dart';
 import 'package:hydrobuddy/ui/widgets/nutrient_input_grid.dart';
 import 'package:hydrobuddy/ui/widgets/results_grid.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/widgets/substance_selection_sheet.dart';
 
 class CalculatorScreen extends ConsumerWidget {
@@ -65,7 +66,7 @@ class CalculatorScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('HydroBuddy')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle)),
       body: body,
       bottomNavigationBar:
           _BottomActionBar(resultAsync: resultAsync),
@@ -199,7 +200,7 @@ class _RightPanel extends ConsumerWidget {
               onPressed: () =>
                   ref.invalidate(calculationResultProvider),
               icon: const Icon(Icons.play_arrow),
-              label: const Text('Carry Out Calculation'),
+              label: Text(AppLocalizations.of(context)!.carryOutCalculation),
             ),
           ),
           const SizedBox(height: 16),
@@ -216,7 +217,7 @@ class _RightPanel extends ConsumerWidget {
                 targetConcentrations: {},
                 totalCost: 0,
                 predictedEc: 0,
-                error: 'Erro: $err',
+                error: 'Error: $err',
               ),
               substanceNames: substanceNames,
             ),
@@ -252,72 +253,72 @@ class _BottomActionBar extends ConsumerWidget {
         child: Row(
           children: [
             IconButton(
-              tooltip: '+5% Weights',
+              tooltip: AppLocalizations.of(context)!.plus5Weights,
               icon: const Icon(Icons.add_circle_outline),
               onPressed: hasResult ? () {} : null,
             ),
             IconButton(
-              tooltip: '-5% Weights',
+              tooltip: AppLocalizations.of(context)!.minus5Weights,
               icon: const Icon(Icons.remove_circle_outline),
               onPressed: hasResult ? () {} : null,
             ),
             const VerticalDivider(),
             TextButton.icon(
               icon: const Icon(Icons.save_outlined, size: 18),
-              label: const Text('Save'),
+              label: Text(AppLocalizations.of(context)!.save),
               onPressed: null,
             ),
             TextButton.icon(
               icon: const Icon(Icons.folder_open_outlined, size: 18),
-              label: const Text('Load'),
+              label: Text(AppLocalizations.of(context)!.load),
               onPressed: null,
             ),
             TextButton.icon(
               icon: const Icon(Icons.delete_outline, size: 18),
-              label: const Text('Delete'),
+              label: Text(AppLocalizations.of(context)!.delete),
               onPressed: null,
             ),
             const VerticalDivider(),
             TextButton.icon(
               icon: const Icon(Icons.table_chart_outlined, size: 18),
-              label: const Text('CSV'),
+              label: Text(AppLocalizations.of(context)!.csv),
               onPressed: null,
             ),
             TextButton.icon(
               icon: const Icon(Icons.analytics_outlined, size: 18),
-              label: const Text('Stock'),
+              label: Text(AppLocalizations.of(context)!.stock),
               onPressed: null,
             ),
             TextButton.icon(
               icon: const Icon(Icons.science_outlined, size: 18),
-              label: const Text('Per Sub'),
+              label: Text(AppLocalizations.of(context)!.perSub),
               onPressed: null,
             ),
             TextButton.icon(
               icon: const Icon(Icons.blender_outlined, size: 18),
-              label: const Text('Mix'),
+              label: Text(AppLocalizations.of(context)!.mix),
               onPressed: null,
             ),
             TextButton.icon(
               icon: const Icon(Icons.pie_chart_outline, size: 18),
-              label: const Text('Ratios'),
+              label: Text(AppLocalizations.of(context)!.ratios),
               onPressed: null,
             ),
             const VerticalDivider(),
             TextButton.icon(
               icon: const Icon(Icons.restart_alt, size: 18),
-              label: const Text('Reset'),
+              label: Text(AppLocalizations.of(context)!.reset),
               onPressed: () =>
                   ref.read(targetNutrientsProvider.notifier).set({}),
             ),
             TextButton.icon(
               icon: const Icon(Icons.copy, size: 18),
-              label: const Text('Copy->Targets'),
+              label: Text(AppLocalizations.of(context)!.copyTargets),
               onPressed: null,
             ),
             TextButton.icon(
               icon: const Icon(Icons.content_copy, size: 18),
-              label: const Text('Copy->DB'),
+              label: Text(AppLocalizations.of(context)!.copyDb),
               onPressed: null,
             ),
           ],
@@ -409,15 +410,15 @@ class _VolumeSectionState extends ConsumerState<_VolumeSection> {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      label: 'Volume',
+      label: AppLocalizations.of(context)!.volume,
       child: Row(
         children: [
           Expanded(
             flex: 2,
             child: TextField(
               controller: _ctrl,
-              decoration: const InputDecoration(
-                labelText: 'Volume',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.volume,
                 isDense: true,
               ),
               keyboardType:
@@ -468,13 +469,13 @@ class _UnitsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      label: 'Unidades',
+      label: AppLocalizations.of(context)!.units,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const SizedBox(width: 54, child: Text('Mass:')),
+              SizedBox(width: 54, child: Text(AppLocalizations.of(context)!.mass)),
               Expanded(
                 child: SegmentedButton<calc.WeightUnit>(
                   segments: const [
@@ -496,7 +497,7 @@ class _UnitsSection extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              const SizedBox(width: 54, child: Text('Conc:')),
+              SizedBox(width: 54, child: Text(AppLocalizations.of(context)!.conc)),
               Expanded(
                 child: SegmentedButton<calc.ConcUnit>(
                   segments: const [
@@ -529,13 +530,13 @@ class _CalcModeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      label: 'Calc Mode',
+      label: AppLocalizations.of(context)!.calcMode,
       child: Column(
         children: [
           RadioListTile<calc.CalcMode>(
             value: calc.CalcMode.directAddition,
             groupValue: mode,
-            title: const Text('Input Desired Concentrations'),
+            title: Text(AppLocalizations.of(context)!.inputDesiredConcentrations),
             contentPadding: EdgeInsets.zero,
             dense: true,
             onChanged: (v) {
@@ -545,7 +546,7 @@ class _CalcModeSection extends StatelessWidget {
           RadioListTile<calc.CalcMode>(
             value: calc.CalcMode.prepareStock,
             groupValue: mode,
-            title: const Text('Concentrations from Weights'),
+            title: Text(AppLocalizations.of(context)!.concentrationsFromWeights),
             contentPadding: EdgeInsets.zero,
             dense: true,
             onChanged: (v) {
@@ -574,13 +575,13 @@ class _SolutionModeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      label: 'Solution Mode',
+      label: AppLocalizations.of(context)!.solutionMode,
       child: Column(
         children: [
           RadioListTile<calc.SolutionMode>(
             value: calc.SolutionMode.directAddition,
             groupValue: mode,
-            title: const Text('Direct addition'),
+            title: Text(AppLocalizations.of(context)!.directAddition),
             contentPadding: EdgeInsets.zero,
             dense: true,
             onChanged: (v) {
@@ -592,7 +593,7 @@ class _SolutionModeSection extends StatelessWidget {
             groupValue: mode,
             title: Row(
               children: [
-                const Text('Concentrated A+B'),
+                Text(AppLocalizations.of(context)!.concentratedAB),
                 if (mode == calc.SolutionMode.prepareStock) ...[
                   const SizedBox(width: 8),
                   SizedBox(
@@ -634,14 +635,14 @@ class _EcModelSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      label: 'EC Model',
+      label: AppLocalizations.of(context)!.ecModel,
       child: Row(
         children: [
           Expanded(
             child: RadioListTile<calc.EcModel>(
               value: calc.EcModel.lmcv2,
               groupValue: model,
-              title: const Text('LMCv2'),
+              title: Text(AppLocalizations.of(context)!.lmcV2),
               contentPadding: EdgeInsets.zero,
               dense: true,
               onChanged: (v) {
@@ -653,7 +654,7 @@ class _EcModelSection extends StatelessWidget {
             child: RadioListTile<calc.EcModel>(
               value: calc.EcModel.empirical,
               groupValue: model,
-              title: const Text('Empirical'),
+              title: Text(AppLocalizations.of(context)!.empirical),
               contentPadding: EdgeInsets.zero,
               dense: true,
               onChanged: (v) {
@@ -677,7 +678,7 @@ class _WaterQualitySection extends ConsumerWidget {
     final waterQualitiesAsync = ref.watch(watchWaterQualitiesProvider);
 
     return _SectionCard(
-      label: 'Water Quality',
+      label: AppLocalizations.of(context)!.waterQuality,
       child: waterQualitiesAsync.when(
         data: (profiles) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -685,14 +686,14 @@ class _WaterQualitySection extends ConsumerWidget {
             DropdownButtonFormField<int>(
               value: selectedId,
               isExpanded: true,
-              decoration: const InputDecoration(
-                labelText: 'Load water profile',
-                isDense: true,
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.loadWaterProfile,
+                  isDense: true,
               ),
               items: [
-                const DropdownMenuItem<int>(
+                DropdownMenuItem<int>(
                   value: null,
-                  child: Text('None'),
+                  child: Text(AppLocalizations.of(context)!.none),
                 ),
                 ...profiles.map((p) => DropdownMenuItem<int>(
                       value: p.id,
@@ -705,7 +706,7 @@ class _WaterQualitySection extends ConsumerWidget {
             if (selectedId != null)
               CheckboxListTile(
                 value: true,
-                title: const Text('Apply to calculation'),
+                title: Text(AppLocalizations.of(context)!.applyToCalculation),
                 contentPadding: EdgeInsets.zero,
                 dense: true,
                 onChanged: (v) {
@@ -737,13 +738,13 @@ class _SubstancesSection extends ConsumerWidget {
     }
 
     return _SectionCard(
-      label: 'Substances',
+      label: AppLocalizations.of(context)!.substances,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (substanceIds.isEmpty)
             Text(
-              'No substances selected',
+              AppLocalizations.of(context)!.noSubstancesSelected,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
@@ -770,7 +771,7 @@ class _SubstancesSection extends ConsumerWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              '${substanceIds.length} selected',
+              AppLocalizations.of(context)!.nSelected(substanceIds.length),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
@@ -780,7 +781,7 @@ class _SubstancesSection extends ConsumerWidget {
           OutlinedButton.icon(
             onPressed: () => _openSheet(context, ref),
             icon: const Icon(Icons.science, size: 18),
-            label: const Text('Select Substances'),
+            label: Text(AppLocalizations.of(context)!.selectSubstances),
           ),
         ],
       ),
@@ -811,18 +812,18 @@ class _DofSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return _SectionCard(
-      label: 'Free element (DOF)',
+      label: AppLocalizations.of(context)!.freeElementDof,
       child: DropdownButtonFormField<Element>(
         value: dof,
         isExpanded: true,
-        decoration: const InputDecoration(
-          labelText: 'Degree of freedom',
-          isDense: true,
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.degreeOfFreedom,
+            isDense: true,
         ),
         items: [
-          const DropdownMenuItem<Element>(
+          DropdownMenuItem<Element>(
             value: null,
-            child: Text('None'),
+            child: Text(AppLocalizations.of(context)!.none),
           ),
           ...Element.all.map((e) => DropdownMenuItem<Element>(
                 value: e,
@@ -885,14 +886,14 @@ class _InstrumentSectionState extends ConsumerState<_InstrumentSection> {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      label: 'Instrument Precision',
+      label: AppLocalizations.of(context)!.instrumentPrecision,
       child: Row(
         children: [
           Expanded(
             child: TextField(
               controller: _volCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Vol err (\u00B1L)',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.volErr,
                 isDense: true,
               ),
               keyboardType:
@@ -907,8 +908,8 @@ class _InstrumentSectionState extends ConsumerState<_InstrumentSection> {
           Expanded(
             child: TextField(
               controller: _wtCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Wt err (\u00B1g)',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.wtErr,
                 isDense: true,
               ),
               keyboardType:
@@ -934,7 +935,7 @@ class _SiSourceSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      label: 'Si source',
+      label: AppLocalizations.of(context)!.siSource,
       child: SegmentedButton<calc.SiSource>(
         segments: const [
           ButtonSegment(value: calc.SiSource.si, label: Text('Si')),

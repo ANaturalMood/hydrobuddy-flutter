@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Element;
 import 'package:hydrobuddy/domain/models/element.dart';
 import 'package:hydrobuddy/domain/models/calculation_result.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 
 class ResultsGrid extends StatelessWidget {
   final CalculationResult? result;
@@ -25,19 +26,19 @@ class ResultsGrid extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _sectionLabel(context, 'Elements — StringGrid1'),
+        _sectionLabel(context, AppLocalizations.of(context)!.elementsStringGrid1),
         _stringGrid1(context),
         const SizedBox(height: 16),
         if (result!.substances.isNotEmpty) ...[
-          _sectionLabel(context, 'Substances — StringGrid2'),
+          _sectionLabel(context, AppLocalizations.of(context)!.substancesStringGrid2),
           _stringGrid2(context),
           const SizedBox(height: 16),
         ],
-        _sectionLabel(context, 'EC / Custo'),
+        _sectionLabel(context, AppLocalizations.of(context)!.ecCost),
         _ecMetricsPanel(context),
         if (result!.warnings.isNotEmpty) ...[
           const SizedBox(height: 16),
-          _sectionLabel(context, 'Warnings'),
+          _sectionLabel(context, AppLocalizations.of(context)!.warnings),
           _warningsPanel(context),
         ],
       ],
@@ -48,8 +49,8 @@ class ResultsGrid extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
-        child: Text(
-          'Preencha os nutrientes alvo e selecione substâncias',
+        child:         Text(
+          AppLocalizations.of(context)!.fillTargetAndSelectSubstances,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -109,12 +110,12 @@ class ResultsGrid extends StatelessWidget {
             .textTheme
             .labelSmall
             ?.copyWith(fontWeight: FontWeight.bold),
-        columns: const [
-          DataColumn(label: Text('Element')),
-          DataColumn(label: Text('Target'), numeric: true),
-          DataColumn(label: Text('Result'), numeric: true),
-          DataColumn(label: Text('GE%'), numeric: true),
-          DataColumn(label: Text('IE%'), numeric: true),
+        columns: [
+          DataColumn(label: Text(AppLocalizations.of(context)!.element)),
+          DataColumn(label: Text(AppLocalizations.of(context)!.target), numeric: true),
+          DataColumn(label: Text(AppLocalizations.of(context)!.result), numeric: true),
+          DataColumn(label: Text(AppLocalizations.of(context)!.gePercent), numeric: true),
+          DataColumn(label: Text(AppLocalizations.of(context)!.iePercent), numeric: true),
         ],
         rows: allElements.map((e) {
           final target = targets[e] ?? 0.0;
@@ -160,11 +161,11 @@ class ResultsGrid extends StatelessWidget {
             .textTheme
             .labelSmall
             ?.copyWith(fontWeight: FontWeight.bold),
-        columns: const [
-          DataColumn(label: Text('Name')),
-          DataColumn(label: Text('Formula')),
-          DataColumn(label: Text('Amount (g)'), numeric: true),
-          DataColumn(label: Text('Cost'), numeric: true),
+        columns: [
+          DataColumn(label: Text(AppLocalizations.of(context)!.name)),
+          DataColumn(label: Text(AppLocalizations.of(context)!.formula)),
+          DataColumn(label: Text(AppLocalizations.of(context)!.amountG), numeric: true),
+          DataColumn(label: Text(AppLocalizations.of(context)!.cost), numeric: true),
         ],
         rows: substances.map((s) {
           final name = substanceNames[s.substanceId] ?? '#${s.substanceId}';
@@ -191,10 +192,10 @@ class ResultsGrid extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _metricRow(context, 'EC',
+            _metricRow(context, AppLocalizations.of(context)!.ec,
                 '${result!.predictedEc.toStringAsFixed(2)} mS/cm'),
             const SizedBox(height: 4),
-            _metricRow(context, 'Custo total',
+            _metricRow(context, AppLocalizations.of(context)!.totalCost,
                 'R\$ ${result!.totalCost.toStringAsFixed(4)}'),
           ],
         ),

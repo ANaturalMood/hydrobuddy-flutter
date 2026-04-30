@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart' hide Element;
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:hydrobuddy/ui/screens/settings_screen.dart';
 import 'package:hydrobuddy/ui/screens/instrument_precision_screen.dart';
 import 'package:hydrobuddy/ui/screens/degree_of_freedom_screen.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/screens/about_screen.dart';
 
 Widget _wrap(Widget child) {
   return ProviderScope(
     child: MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('pt'),
       home: child,
     ),
   );
@@ -68,7 +73,7 @@ void main() {
       await tester.pumpWidget(_wrap(const DegreeOfFreedomScreen()));
       await tester.pumpAndSettle();
 
-      expect(find.text('Grau de Liberdade'), findsOneWidget);
+      expect(find.text('Grau de Liberdade (DOF)'), findsOneWidget);
       expect(
         find.byWidgetPredicate((w) => w is RadioListTile),
         findsWidgets,

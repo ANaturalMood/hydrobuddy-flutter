@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hydrobuddy/domain/models/calculation_result.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/calculator_provider.dart';
 
 class StockAnalysisScreen extends ConsumerWidget {
@@ -11,7 +12,7 @@ class StockAnalysisScreen extends ConsumerWidget {
     final resultAsync = ref.watch(calculationResultProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Análise de Estoque (A+B)')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.stockAnalysis)),
       body: resultAsync.when(
         data: (result) => _buildContent(context, ref, result),
         loading: () =>
@@ -24,8 +25,8 @@ class StockAnalysisScreen extends ConsumerWidget {
 
   Widget _buildContent(BuildContext context, WidgetRef ref, CalculationResult result) {
     if (result.substances.isEmpty) {
-      return const Center(
-        child: Text('Execute o cálculo primeiro'),
+      return Center(
+        child: Text(AppLocalizations.of(context)!.executeCalculationFirst),
       );
     }
 
@@ -49,10 +50,10 @@ class StockAnalysisScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Fatores', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(AppLocalizations.of(context)!.factors, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  Text('Fator de diluição: ${dilutionFactor.toStringAsFixed(1)}x'),
-                  Text('Volume de estoque: ${ref.watch(volumeLitersProvider).toStringAsFixed(2)} L'),
+                  Text(AppLocalizations.of(context)!.dilutionFactorLabel(dilutionFactor.toStringAsFixed(1))),
+                  Text(AppLocalizations.of(context)!.stockVolumeLabel(ref.watch(volumeLitersProvider).toStringAsFixed(2))),
                 ],
               ),
             ),
@@ -63,11 +64,11 @@ class StockAnalysisScreen extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               child: SingleChildScrollView(
                 child: DataTable(
-                  columns: const [
-                    DataColumn(label: Text('Substância')),
-                    DataColumn(label: Text('Estoque A (g)')),
-                    DataColumn(label: Text('Estoque B (g)')),
-                    DataColumn(label: Text('Peso Total (g)')),
+                  columns: [
+                    DataColumn(label: Text(AppLocalizations.of(context)!.substance)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.stockA)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.stockB)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.totalWeight)),
                   ],
                   rows: substances.map((s) {
                     final stockWeight = s.weight * dilutionFactor;

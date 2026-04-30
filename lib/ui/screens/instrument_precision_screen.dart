@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 
 class InstrumentPrecisionScreen extends ConsumerStatefulWidget {
   const InstrumentPrecisionScreen({super.key});
@@ -24,22 +25,21 @@ class _InstrumentPrecisionScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Precisão dos Instrumentos')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.instrumentPrecision)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text(
-            'Esses valores são usados para propagação de erro nos cálculos '
-            'de incerteza das soluções preparadas.',
+          Text(
+            AppLocalizations.of(context)!.instrumentPrecisionDescription,
             style: TextStyle(fontSize: 14, color: Colors.grey),
           ),
           const SizedBox(height: 24),
           TextField(
             controller: _volumeController,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Erro do Volume (mL)',
-              helperText: 'Incerteza da vidraria volumétrica',
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.volumeError,
+              helperText: AppLocalizations.of(context)!.volumetricGlasswareUncertainty,
               suffixText: 'mL',
             ),
           ),
@@ -47,9 +47,9 @@ class _InstrumentPrecisionScreenState
           TextField(
             controller: _weightController,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Erro da Balança (g)',
-              helperText: 'Incerteza da balança analítica',
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.weightError,
+              helperText: AppLocalizations.of(context)!.analyticalBalanceUncertainty,
               suffixText: 'g',
             ),
           ),

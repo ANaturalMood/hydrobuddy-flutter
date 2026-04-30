@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/screens/ph_screen.dart';
 
 Widget _wrap() {
-  return const MaterialApp(
-    home: PhScreen(),
+  return MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    locale: const Locale('pt'),
+    home: const PhScreen(),
   );
 }
 

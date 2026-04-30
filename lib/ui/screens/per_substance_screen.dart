@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hydrobuddy/domain/models/calculation_result.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/calculator_provider.dart';
 
 class PerSubstanceScreen extends ConsumerWidget {
@@ -11,9 +12,9 @@ class PerSubstanceScreen extends ConsumerWidget {
     final resultAsync = ref.watch(calculationResultProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Análise por Substância')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.perSubstanceAnalysis)),
       body: resultAsync.when(
-        data: (result) => _buildContent(result),
+        data: (result) => _buildContent(context, result),
         loading: () =>
             const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Erro: $e')),
@@ -21,10 +22,10 @@ class PerSubstanceScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(CalculationResult result) {
+  Widget _buildContent(BuildContext context, CalculationResult result) {
     if (result.substances.isEmpty) {
-      return const Center(
-        child: Text('Execute o cálculo primeiro'),
+      return Center(
+        child: Text(AppLocalizations.of(context)!.executeCalculationFirst),
       );
     }
 
@@ -39,7 +40,7 @@ class PerSubstanceScreen extends ConsumerWidget {
           return Card(
             child: Padding(
               padding: const EdgeInsets.all(12),
-              child: Text('Substância ID ${sub.substanceId} — sem contribuição'),
+              child: Text(AppLocalizations.of(context)!.substanceIdNoContribution(sub.substanceId)),
             ),
           );
         }
@@ -57,22 +58,22 @@ class PerSubstanceScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Peso: ${sub.weight.toStringAsFixed(3)} g | Custo: R\$ ${sub.cost.toStringAsFixed(4)}',
+                  AppLocalizations.of(context)!.weightCostFormat(sub.weight.toStringAsFixed(3), sub.cost.toStringAsFixed(4)),
                   style: TextStyle(color: Colors.grey[600], fontSize: 13),
                 ),
                 const SizedBox(height: 8),
                 DataTable(
                   columnSpacing: 24,
-                  columns: const [
-                    DataColumn(label: Text('Elemento')),
-                    DataColumn(label: Text('ppm contribuído')),
-                    DataColumn(label: Text('% do alvo')),
+                  columns: [
+                    DataColumn(label: Text(AppLocalizations.of(context)!.element)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.ppmContributed)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.percentOfTarget)),
                   ],
                   rows: entries.map((e) {
                     final target = result.targetConcentrations[e.key] ?? 0;
                     final pct = target > 0
                         ? (e.value / target * 100).toStringAsFixed(1)
-                        : 'N/A';
+                        : AppLocalizations.of(context)!.notAvailable;
                     return DataRow(cells: [
                       DataCell(Text(e.key.symbol)),
                       DataCell(Text(e.value.toStringAsFixed(4))),

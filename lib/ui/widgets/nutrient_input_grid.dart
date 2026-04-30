@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Element;
 import 'package:hydrobuddy/domain/models/element.dart';
 import 'package:hydrobuddy/domain/models/calculation_result.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 
 class NutrientInputGrid extends StatelessWidget {
   final Map<Element, double> targets;
@@ -24,7 +25,7 @@ class NutrientInputGrid extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'Nutrientes Alvo',
+          AppLocalizations.of(context)!.targetNutrients,
           style: Theme.of(context)
               .textTheme
               .titleMedium
@@ -40,14 +41,14 @@ class NutrientInputGrid extends StatelessWidget {
                 .labelSmall
                 ?.copyWith(fontWeight: FontWeight.bold),
             columns: [
-              const DataColumn(label: Text('Element')),
-              const DataColumn(label: Text('Target'), numeric: true),
+              DataColumn(label: Text(AppLocalizations.of(context)!.element)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.target), numeric: true),
               if (achieved.isNotEmpty || grossErrors.isNotEmpty)
-                const DataColumn(label: Text('Result'), numeric: true),
+                DataColumn(label: Text(AppLocalizations.of(context)!.result), numeric: true),
               if (grossErrors.isNotEmpty)
-                const DataColumn(label: Text('GE%'), numeric: true),
+                DataColumn(label: Text(AppLocalizations.of(context)!.gePercent), numeric: true),
               if (instrumentalErrors.isNotEmpty)
-                const DataColumn(label: Text('IE%'), numeric: true),
+                DataColumn(label: Text(AppLocalizations.of(context)!.iePercent), numeric: true),
             ],
             rows: Element.all.map((e) {
               final target = targets[e] ?? 0.0;

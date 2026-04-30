@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hydrobuddy/domain/models/calculation_result.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/domain/models/element.dart' as domain;
 import 'package:hydrobuddy/ui/providers/calculator_provider.dart';
 
@@ -12,9 +13,9 @@ class MixAnalysisScreen extends ConsumerWidget {
     final resultAsync = ref.watch(calculationResultProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Composição do Mix')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.mixComposition)),
       body: resultAsync.when(
-        data: (result) => _buildContent(result),
+        data: (result) => _buildContent(context, result),
         loading: () =>
             const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Erro: $e')),
@@ -22,10 +23,10 @@ class MixAnalysisScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(CalculationResult result) {
+  Widget _buildContent(BuildContext context, CalculationResult result) {
     if (result.substances.isEmpty) {
-      return const Center(
-        child: Text('Execute o cálculo primeiro'),
+      return Center(
+        child: Text(AppLocalizations.of(context)!.executeCalculationFirst),
       );
     }
 
@@ -69,10 +70,10 @@ class MixAnalysisScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Resumo', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(AppLocalizations.of(context)!.summary, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
-                Text('Peso seco total: ${totalWeight.toStringAsFixed(3)} g'),
-                Text('Sólidos totais (ppm): ${totalPpm.toStringAsFixed(2)}'),
+                Text(AppLocalizations.of(context)!.totalDryWeight(totalWeight.toStringAsFixed(3))),
+                Text(AppLocalizations.of(context)!.totalSolids(totalPpm.toStringAsFixed(2))),
               ],
             ),
           ),
@@ -84,7 +85,7 @@ class MixAnalysisScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Rótulo NPK', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(AppLocalizations.of(context)!.npkLabel, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 Text(
                   '${nTotal > 0 ? (nTotal / totalPpm * 100).toStringAsFixed(1) : "0"}'
@@ -108,9 +109,9 @@ class MixAnalysisScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('NPK Detalhado', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(AppLocalizations.of(context)!.npkDetailed, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
-                _buildTable(npkRows),
+                _buildTable(context, npkRows),
               ],
             ),
           ),
@@ -123,9 +124,9 @@ class MixAnalysisScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Outros Elementos', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(AppLocalizations.of(context)!.otherElements, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  _buildTable(otherMacro),
+                  _buildTable(context, otherMacro),
                 ],
               ),
             ),
@@ -134,13 +135,13 @@ class MixAnalysisScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTable(List<_ElementRow> rows) {
+  Widget _buildTable(BuildContext context, List<_ElementRow> rows) {
     return DataTable(
       columnSpacing: 24,
-      columns: const [
-        DataColumn(label: Text('Elemento')),
-        DataColumn(label: Text('ppm')),
-        DataColumn(label: Text('% peso')),
+      columns: [
+        DataColumn(label: Text(AppLocalizations.of(context)!.element)),
+        const DataColumn(label: Text('ppm')),
+        DataColumn(label: Text(AppLocalizations.of(context)!.weightPercent)),
       ],
       rows: rows.map((r) => DataRow(cells: [
         DataCell(Text(r.name)),

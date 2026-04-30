@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 
 class CommercialComparisonScreen extends StatefulWidget {
   const CommercialComparisonScreen({super.key});
@@ -67,7 +68,7 @@ class _CommercialComparisonScreenState
 
     if (w1 == null || v1 == null || w2 == null || v2 == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Preencha todos os campos com valores válidos')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.fillAllFieldsValid)),
       );
       return;
     }
@@ -77,15 +78,15 @@ class _CommercialComparisonScreenState
 
     if (r1 == null || r2 == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Verifique os valores NPK de ambos os fertilizantes')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.checkNpkValues)),
       );
       return;
     }
 
     setState(() {
       _results = {
-        _name1Ctrl.text.trim().isEmpty ? 'Fertilizante 1' : _name1Ctrl.text.trim(): r1,
-        _name2Ctrl.text.trim().isEmpty ? 'Fertilizante 2' : _name2Ctrl.text.trim(): r2,
+        _name1Ctrl.text.trim().isEmpty ? AppLocalizations.of(context)!.fertilizer1 : _name1Ctrl.text.trim(): r1,
+        _name2Ctrl.text.trim().isEmpty ? AppLocalizations.of(context)!.fertilizer2 : _name2Ctrl.text.trim(): r2,
       };
     });
   }
@@ -104,7 +105,7 @@ class _CommercialComparisonScreenState
         const SizedBox(height: 8),
         TextField(
           controller: nameCtrl,
-          decoration: const InputDecoration(labelText: 'Nome', isDense: true),
+          decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name, isDense: true),
         ),
         const SizedBox(height: 8),
         TextField(
@@ -118,8 +119,8 @@ class _CommercialComparisonScreenState
         const SizedBox(height: 8),
         TextField(
           controller: weightCtrl,
-          decoration: const InputDecoration(
-            labelText: 'Massa (g)',
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.massG,
             isDense: true,
           ),
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -127,8 +128,8 @@ class _CommercialComparisonScreenState
         const SizedBox(height: 8),
         TextField(
           controller: volumeCtrl,
-          decoration: const InputDecoration(
-            labelText: 'Volume (L)',
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.volumeL,
             isDense: true,
           ),
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -140,7 +141,7 @@ class _CommercialComparisonScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Comparar Fertilizantes')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.compareFertilizers)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -151,7 +152,7 @@ class _CommercialComparisonScreenState
               children: [
                 Expanded(
                   child: _buildColumn(
-                    'Fertilizante 1',
+                    AppLocalizations.of(context)!.fertilizer1,
                     _name1Ctrl,
                     _npk1Ctrl,
                     _weight1Ctrl,
@@ -161,7 +162,7 @@ class _CommercialComparisonScreenState
                 const SizedBox(width: 16),
                 Expanded(
                   child: _buildColumn(
-                    'Fertilizante 2',
+                    AppLocalizations.of(context)!.fertilizer2,
                     _name2Ctrl,
                     _npk2Ctrl,
                     _weight2Ctrl,
@@ -173,7 +174,7 @@ class _CommercialComparisonScreenState
             const SizedBox(height: 20),
             FilledButton(
               onPressed: _compare,
-              child: const Text('Comparar'),
+              child: Text(AppLocalizations.of(context)!.compare),
             ),
             if (_results != null) ...[
               const SizedBox(height: 16),
@@ -184,17 +185,17 @@ class _CommercialComparisonScreenState
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        'Resultado (ppm)',
+                        AppLocalizations.of(context)!.resultPpm,
                         style: Theme.of(context).textTheme.titleMedium,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
                       DataTable(
                         columns: [
-                          const DataColumn(label: Text('Elemento')),
+                          DataColumn(label: Text(AppLocalizations.of(context)!.element)),
                           ..._results!.keys.map(
                               (k) => DataColumn(label: Text(k))),
-                          const DataColumn(label: Text('Diferença')),
+                          DataColumn(label: Text(AppLocalizations.of(context)!.difference)),
                         ],
                         rows: [
                           'N',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Element;
 import 'package:hydrobuddy/domain/models/substance.dart';
 import 'package:hydrobuddy/domain/models/element.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 
 /// Elementos com % > 0 formatados como string para subtitulo.
 String _nonZeroElements(Substance s) {
@@ -32,7 +33,7 @@ class SubstanceListView extends StatelessWidget {
     if (substances.isEmpty) {
       return Center(
         child: Text(
-          'Nenhuma substancia cadastrada',
+          AppLocalizations.of(context)!.noSubstancesRegistered,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       );
@@ -49,16 +50,16 @@ class SubstanceListView extends StatelessWidget {
             return await showDialog<bool>(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: const Text('Confirmar exclusao'),
-                content: Text('Remover "${substance.name}"?'),
+                title: Text(AppLocalizations.of(context)!.confirmExclusion),
+                content: Text(AppLocalizations.of(context)!.confirmRemoveSubstance(substance.name)),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(ctx, false),
-                    child: const Text('Cancelar'),
+                    child: Text(AppLocalizations.of(context)!.cancel),
                   ),
                   TextButton(
                     onPressed: () => Navigator.pop(ctx, true),
-                    child: const Text('Excluir'),
+                    child: Text(AppLocalizations.of(context)!.delete),
                   ),
                 ],
               ),

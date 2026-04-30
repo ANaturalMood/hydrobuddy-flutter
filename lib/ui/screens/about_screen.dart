@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -6,7 +7,7 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sobre')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.about)),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [
@@ -33,9 +34,9 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const Center(
+          Center(
             child: Text(
-              'Calculadora de soluções nutritivas hidropônicas',
+              AppLocalizations.of(context)!.aboutDescription,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),
@@ -43,27 +44,23 @@ class AboutScreen extends StatelessWidget {
           const SizedBox(height: 32),
           const Divider(),
           const SizedBox(height: 16),
-          const Text(
-            'Créditos',
+          Text(
+            AppLocalizations.of(context)!.credits,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          const Text(
-            'HydroBuddy é uma reimplementação em Dart/Flutter do HydroBuddy '
-            'original, desenvolvido por Daniel Fernandez em Pascal/Lazarus.\n\n'
-            'O HydroBuddy original é uma ferramenta de código aberto para '
-            'cálculo de soluções nutritivas hidropônicas, amplamente utilizada '
-            'por pesquisadores e produtores ao redor do mundo.',
+          Text(
+            AppLocalizations.of(context)!.aboutHistory,
             style: TextStyle(fontSize: 14),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Licença',
+          Text(
+            AppLocalizations.of(context)!.license,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          const Text(
-            'Este projeto é distribuído sob a licença GPL v3.',
+          Text(
+            AppLocalizations.of(context)!.gplLicense,
             style: TextStyle(fontSize: 14),
           ),
         ],

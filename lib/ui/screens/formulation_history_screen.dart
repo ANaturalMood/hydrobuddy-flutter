@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:hydrobuddy/ui/providers/formulations_provider.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/domain/models/formulation.dart';
 
 final _nameControllerProvider = Provider.autoDispose<TextEditingController>((ref) => TextEditingController());
@@ -16,13 +17,13 @@ class FormulationHistoryScreen extends ConsumerWidget {
     final formulationsAsync = ref.watch(watchFormulationsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Formulações')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.formulations)),
       body: formulationsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Erro: $error')),
         data: (formulations) {
           if (formulations.isEmpty) {
-            return const Center(child: Text('Nenhuma formulação cadastrada'));
+            return Center(child: Text(AppLocalizations.of(context)!.noFormulations));
           }
           return ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -53,25 +54,25 @@ class FormulationHistoryScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Nova Formulação'),
+        title: Text(AppLocalizations.of(context)!.newFormulation),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: nameCtrl,
-              decoration: const InputDecoration(labelText: 'Nome'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
               autofocus: true,
             ),
             TextField(
               controller: unitCtrl,
-              decoration: const InputDecoration(labelText: 'Unidade'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.unit),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -86,7 +87,7 @@ class FormulationHistoryScreen extends ConsumerWidget {
                 context.go('/formulations/${saved.id}/snapshots');
               }
             },
-            child: const Text('Criar'),
+            child: Text(AppLocalizations.of(context)!.create),
           ),
         ],
       ),
@@ -97,19 +98,19 @@ class FormulationHistoryScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Excluir Formulação'),
-        content: Text('Deseja excluir "${f.name}"?'),
+        title: Text(AppLocalizations.of(context)!.deleteFormulation),
+        content: Text(AppLocalizations.of(context)!.confirmDeleteFormulation(f.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           FilledButton(
             onPressed: () async {
               await ref.read(deleteFormulationProvider(f.id).future);
               if (ctx.mounted) Navigator.pop(ctx);
             },
-            child: const Text('Excluir'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),

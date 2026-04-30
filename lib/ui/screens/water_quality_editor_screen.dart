@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrobuddy/data/database.dart' as db;
 import 'package:hydrobuddy/domain/models/element.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/water_quality_provider.dart';
 
 class WaterQualityEditorScreen extends ConsumerStatefulWidget {
@@ -153,7 +154,7 @@ class _WaterQualityEditorScreenState
 
     if (_loading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Carregando...')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.loading)),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
@@ -161,7 +162,7 @@ class _WaterQualityEditorScreenState
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.isEditing ? 'Editar Perfil' : 'Novo Perfil',
+          widget.isEditing ? AppLocalizations.of(context)!.editProfile : AppLocalizations.of(context)!.newProfile,
         ),
       ),
       body: Form(
@@ -172,16 +173,16 @@ class _WaterQualityEditorScreenState
             children: [
               TextFormField(
                 controller: _nameCtrl,
-                decoration: const InputDecoration(
-                  labelText: 'Nome',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.name,
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Nome obrigatório' : null,
+                    (v == null || v.trim().isEmpty) ? AppLocalizations.of(context)!.nameRequired : null,
               ),
               const SizedBox(height: 12),
               CheckboxListTile(
-                title: const Text('Padrão (default)'),
+                title: Text(AppLocalizations.of(context)!.defaultLabel),
                 value: _isDefault,
                 onChanged: (v) => setState(() => _isDefault = v ?? false),
                 contentPadding: EdgeInsets.zero,
@@ -217,7 +218,7 @@ class _WaterQualityEditorScreenState
                     const TextInputType.numberWithOptions(decimal: true),
               ),
               const SizedBox(height: 20),
-              Text('Composição (ppm)',
+              Text(AppLocalizations.of(context)!.compositionPpm,
                   style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 8),
               _buildElementGrid(),
@@ -225,7 +226,7 @@ class _WaterQualityEditorScreenState
               FilledButton.icon(
                 onPressed: _save,
                 icon: const Icon(Icons.save),
-                label: const Text('Salvar'),
+                label: Text(AppLocalizations.of(context)!.save),
               ),
               const SizedBox(height: 16),
             ],

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hydrobuddy/domain/models/calculation_result.dart';
 import 'package:hydrobuddy/domain/models/element.dart' as domain;
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/calculator_provider.dart';
 import 'package:hydrobuddy/ui/screens/mix_analysis_screen.dart';
 import 'package:hydrobuddy/ui/screens/per_substance_screen.dart';
@@ -19,7 +21,12 @@ final _emptyResult = CalculationResult(
 
 Widget _wrap(Widget child) {
   return ProviderScope(
-    child: MaterialApp(home: child),
+    child: MaterialApp(
+      locale: const Locale('pt'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: child,
+    ),
   );
 }
 
@@ -31,7 +38,11 @@ void main() {
           overrides: [
             calculationResultProvider.overrideWith((ref) => Future.value(_emptyResult)),
           ],
-          child: const MaterialApp(home: StockAnalysisScreen()),
+          child: MaterialApp(
+                  locale: const Locale('pt'),
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  home: const StockAnalysisScreen()),
         ),
       );
       await tester.pumpAndSettle();
@@ -47,7 +58,11 @@ void main() {
           overrides: [
             calculationResultProvider.overrideWith((ref) => Future.value(_emptyResult)),
           ],
-          child: const MaterialApp(home: PerSubstanceScreen()),
+          child: MaterialApp(
+                  locale: const Locale('pt'),
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  home: PerSubstanceScreen()),
         ),
       );
       await tester.pumpAndSettle();
@@ -84,7 +99,11 @@ void main() {
           overrides: [
             calculationResultProvider.overrideWith((ref) => Future.value(result)),
           ],
-          child: const MaterialApp(home: RatioScreen()),
+          child: MaterialApp(
+                  locale: const Locale('pt'),
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  home: const RatioScreen()),
         ),
       );
       await tester.pumpAndSettle();
@@ -125,7 +144,11 @@ void main() {
           overrides: [
             calculationResultProvider.overrideWith((ref) => Future.value(result)),
           ],
-          child: const MaterialApp(home: MixAnalysisScreen()),
+          child: MaterialApp(
+                  locale: const Locale('pt'),
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  home: const MixAnalysisScreen()),
         ),
       );
       await tester.pumpAndSettle();
@@ -144,7 +167,11 @@ void main() {
           overrides: [
             calculationResultProvider.overrideWith((ref) => Future.value(_emptyResult)),
           ],
-          child: const MaterialApp(home: StockAnalysisScreen()),
+          child: MaterialApp(
+                  locale: const Locale('pt'),
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  home: const StockAnalysisScreen()),
         ),
       );
       await tester.pumpAndSettle();
@@ -158,7 +185,11 @@ void main() {
           overrides: [
             calculationResultProvider.overrideWith((ref) => Future.value(_emptyResult)),
           ],
-          child: const MaterialApp(home: PerSubstanceScreen()),
+          child: MaterialApp(
+                  locale: const Locale('pt'),
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  home: const PerSubstanceScreen()),
         ),
       );
       await tester.pumpAndSettle();
@@ -186,7 +217,11 @@ void main() {
           overrides: [
             calculationResultProvider.overrideWith((ref) => Future.value(result)),
           ],
-          child: const MaterialApp(home: RatioScreen()),
+          child: MaterialApp(
+                  locale: const Locale('pt'),
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  home: const RatioScreen()),
         ),
       );
       await tester.pumpAndSettle();
@@ -214,7 +249,11 @@ void main() {
           overrides: [
             calculationResultProvider.overrideWith((ref) => Future.value(result)),
           ],
-          child: const MaterialApp(home: MixAnalysisScreen()),
+          child: MaterialApp(
+                  locale: const Locale('pt'),
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  home: const MixAnalysisScreen()),
         ),
       );
       await tester.pumpAndSettle();

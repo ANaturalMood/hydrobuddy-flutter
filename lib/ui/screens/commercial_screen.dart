@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 
 class CommercialScreen extends StatefulWidget {
   const CommercialScreen({super.key});
@@ -28,7 +29,7 @@ class _CommercialScreenState extends State<CommercialScreen> {
 
     if (npkText.isEmpty || weight == null || volume == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Preencha todos os campos com valores válidos')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.fillAllFieldsValid)),
       );
       return;
     }
@@ -36,7 +37,7 @@ class _CommercialScreenState extends State<CommercialScreen> {
     final parts = npkText.split('-');
     if (parts.length != 3) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Formato NPK inválido. Use ex: 10-10-10')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.invalidNpkFormat)),
       );
       return;
     }
@@ -47,14 +48,14 @@ class _CommercialScreenState extends State<CommercialScreen> {
 
     if (nPercent == null || pPercent == null || kPercent == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Valores NPK inválidos. Use números.')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.invalidNpkValues)),
       );
       return;
     }
 
     if (volume <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Volume deve ser maior que zero')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.volumeMustBePositive)),
       );
       return;
     }
@@ -79,7 +80,7 @@ class _CommercialScreenState extends State<CommercialScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Fertilizante Comercial')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.commercialFertilizer)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -95,8 +96,8 @@ class _CommercialScreenState extends State<CommercialScreen> {
             const SizedBox(height: 12),
             TextField(
               controller: _weightCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Massa',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.massG,
                 suffixText: 'g',
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -104,8 +105,8 @@ class _CommercialScreenState extends State<CommercialScreen> {
             const SizedBox(height: 12),
             TextField(
               controller: _volumeCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Volume',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.volume,
                 suffixText: 'L',
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -113,7 +114,7 @@ class _CommercialScreenState extends State<CommercialScreen> {
             const SizedBox(height: 20),
             FilledButton(
               onPressed: _calculate,
-              child: const Text('Calcular'),
+              child: Text(AppLocalizations.of(context)!.calculate),
             ),
             if (_ppm != null) ...[
               const SizedBox(height: 16),
@@ -121,9 +122,9 @@ class _CommercialScreenState extends State<CommercialScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: DataTable(
-                    columns: const [
-                      DataColumn(label: Text('Elemento')),
-                      DataColumn(label: Text('ppm')),
+                    columns: [
+                      DataColumn(label: Text(AppLocalizations.of(context)!.element)),
+                      const DataColumn(label: Text('ppm')),
                     ],
                     rows: _ppm!.entries
                         .map((e) => DataRow(cells: [

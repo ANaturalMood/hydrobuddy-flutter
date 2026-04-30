@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 
 class PhScreen extends StatefulWidget {
   const PhScreen({super.key});
@@ -42,7 +43,7 @@ class _PhScreenState extends State<PhScreen> {
     if (currentPh == null || targetPh == null || volume == null) {
       setState(() => _result = null);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Preencha todos os campos com valores válidos')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.fillAllFieldsValid)),
       );
       return;
     }
@@ -50,7 +51,7 @@ class _PhScreenState extends State<PhScreen> {
     if (targetPh == 0 || volume <= 0) {
       setState(() => _result = null);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Volume e pH alvo devem ser maiores que zero')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.volumeAndTargetPhMustBePositive)),
       );
       return;
     }
@@ -58,7 +59,7 @@ class _PhScreenState extends State<PhScreen> {
     if (currentPh <= targetPh) {
       setState(() => _result = null);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('pH atual deve ser maior que o pH alvo')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.currentPhMustBeGreaterThanTarget)),
       );
       return;
     }
@@ -75,7 +76,7 @@ class _PhScreenState extends State<PhScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ajuste de pH')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.phAdjustment)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -83,20 +84,20 @@ class _PhScreenState extends State<PhScreen> {
           children: [
             TextField(
               controller: _currentPhCtrl,
-              decoration: const InputDecoration(labelText: 'pH atual'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.currentPh),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: _targetPhCtrl,
-              decoration: const InputDecoration(labelText: 'pH alvo'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.targetPh),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: _volumeCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Volume',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.volume,
                 suffixText: 'L',
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -104,7 +105,7 @@ class _PhScreenState extends State<PhScreen> {
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               value: _selectedAcid,
-              decoration: const InputDecoration(labelText: 'Ácido'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.acid),
               items: _acids.entries
                   .map((e) => DropdownMenuItem(
                         value: e.key,
@@ -120,7 +121,7 @@ class _PhScreenState extends State<PhScreen> {
             const SizedBox(height: 20),
             FilledButton(
               onPressed: _calculate,
-              child: const Text('Calcular'),
+              child: Text(AppLocalizations.of(context)!.calculate),
             ),
             if (_result != null) ...[
               const SizedBox(height: 16),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hydrobuddy/domain/models/substance.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/calculator_provider.dart';
 import 'package:hydrobuddy/ui/providers/substances_provider.dart';
 
@@ -36,7 +37,7 @@ class _SubstanceSelectionSheetState
           child: Row(
             children: [
               Text(
-                'Substance Selection',
+                AppLocalizations.of(context)!.substanceSelection,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const Spacer(),
@@ -53,7 +54,7 @@ class _SubstanceSelectionSheetState
             data: (allSubstances) => _buildContent(allSubstances),
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (e, _) =>
-                Center(child: Text('Error loading substances: $e')),
+                Center(child: Text(AppLocalizations.of(context)!.errorLoadingSubstances('$e'))),
           ),
         ),
         const Divider(height: 1),
@@ -64,11 +65,11 @@ class _SubstanceSelectionSheetState
             children: [
               OutlinedButton(
                 onPressed: () => Navigator.of(context).pop(_usedIds),
-                child: const Text('Cancel'),
+                child: Text(AppLocalizations.of(context)!.cancel),
               ),
               FilledButton(
                 onPressed: () => Navigator.of(context).pop(_usedIds),
-                child: const Text('Apply'),
+                child: Text(AppLocalizations.of(context)!.apply),
               ),
             ],
           ),
@@ -127,13 +128,13 @@ class _SubstanceSelectionSheetState
                   OutlinedButton(
                     onPressed:
                         _selectedAvailable != null ? _addToUsed : null,
-                    child: const Text('Add >>'),
+                    child: Text(AppLocalizations.of(context)!.addArrow),
                   ),
                   const SizedBox(width: 8),
                   OutlinedButton(
                     onPressed:
                         _selectedUsed != null ? _removeFromUsed : null,
-                    child: const Text('<< Remove'),
+                    child: Text(AppLocalizations.of(context)!.removeArrow),
                   ),
                 ],
               ),
@@ -145,43 +146,43 @@ class _SubstanceSelectionSheetState
                 children: [
                   TextButton.icon(
                     icon: const Icon(Icons.scale, size: 16),
-                    label: const Text('Set Amount'),
+                    label: Text(AppLocalizations.of(context)!.setAmount),
                     onPressed: _selectedUsed != null ? _setAmount : null,
                   ),
                   TextButton.icon(
                     icon: const Icon(Icons.refresh, size: 16),
-                    label: const Text('Reset Amounts'),
+                    label: Text(AppLocalizations.of(context)!.resetAmounts),
                     onPressed: null,
                   ),
                   TextButton.icon(
                     icon: const Icon(Icons.add_circle_outline, size: 16),
-                    label: const Text('Add New'),
+                    label: Text(AppLocalizations.of(context)!.addNew),
                     onPressed: null,
                   ),
                   TextButton.icon(
                     icon: const Icon(Icons.edit_outlined, size: 16),
-                    label: const Text('Edit'),
+                    label: Text(AppLocalizations.of(context)!.edit),
                     onPressed: null,
                   ),
                   TextButton.icon(
                     icon: const Icon(Icons.delete_forever_outlined,
                         size: 16),
-                    label: const Text('Delete f/DB'),
+                    label: Text(AppLocalizations.of(context)!.deleteFromDb),
                     onPressed: null,
                   ),
                   TextButton.icon(
                     icon: const Icon(Icons.save_outlined, size: 16),
-                    label: const Text('Save List'),
+                    label: Text(AppLocalizations.of(context)!.saveList),
                     onPressed: null,
                   ),
                   TextButton.icon(
                     icon: const Icon(Icons.folder_open_outlined, size: 16),
-                    label: const Text('Load List'),
+                    label: Text(AppLocalizations.of(context)!.loadList),
                     onPressed: null,
                   ),
                   TextButton.icon(
                     icon: const Icon(Icons.delete_sweep_outlined, size: 16),
-                    label: const Text('Remove All'),
+                    label: Text(AppLocalizations.of(context)!.removeAll),
                     onPressed: _usedIds.isNotEmpty
                         ? () => setState(() {
                               _usedIds.clear();
@@ -228,9 +229,9 @@ class _SubstanceSelectionSheetState
           ),
           Expanded(
             child: substances.isEmpty
-                ? const Center(
-                    child: Text('Empty',
-                        style: TextStyle(color: Colors.grey)),
+                ? Center(
+                    child: Text(AppLocalizations.of(context)!.empty,
+                        style: const TextStyle(color: Colors.grey)),
                   )
                 : ListView.builder(
                     itemCount: substances.length,
@@ -287,22 +288,22 @@ class _SubstanceSelectionSheetState
       builder: (ctx) {
         final controller = TextEditingController();
         return AlertDialog(
-          title: const Text('Set Amount'),
+          title: Text(AppLocalizations.of(context)!.setAmount),
           content: TextField(
             controller: controller,
             decoration:
-                const InputDecoration(labelText: 'Weight (g)'),
+                InputDecoration(labelText: AppLocalizations.of(context)!.weightG),
             keyboardType: const TextInputType.numberWithOptions(
                 decimal: true),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             FilledButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('OK'),
+              child: Text(AppLocalizations.of(context)!.ok),
             ),
           ],
         );

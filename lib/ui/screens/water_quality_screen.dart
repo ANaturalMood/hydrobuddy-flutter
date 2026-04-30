@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrobuddy/data/database.dart' as db;
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/water_quality_provider.dart';
 
 class WaterQualityScreen extends ConsumerStatefulWidget {
@@ -34,16 +35,16 @@ class _WaterQualityScreenState extends ConsumerState<WaterQualityScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Excluir perfil'),
-        content: Text('Deseja excluir "${quality.name}"?'),
+        title: Text(AppLocalizations.of(context)!.deleteProfile),
+        content: Text(AppLocalizations.of(context)!.confirmDeleteProfile(quality.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Excluir'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -67,7 +68,7 @@ class _WaterQualityScreenState extends ConsumerState<WaterQualityScreen> {
           );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Qualidade da Água')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.waterQuality)),
       body: Column(
         children: [
           Padding(
@@ -76,7 +77,7 @@ class _WaterQualityScreenState extends ConsumerState<WaterQualityScreen> {
               controller: _searchController,
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Buscar perfil...',
+                hintText: AppLocalizations.of(context)!.searchProfile,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _query.isNotEmpty
                     ? IconButton(
@@ -95,8 +96,8 @@ class _WaterQualityScreenState extends ConsumerState<WaterQualityScreen> {
               error: (err, stack) => Center(child: Text('Erro: $err')),
               data: (qualities) {
                 if (qualities.isEmpty) {
-                  return const Center(
-                    child: Text('Nenhum perfil de água cadastrado'),
+                  return Center(
+                    child: Text(AppLocalizations.of(context)!.noWaterProfile),
                   );
                 }
                 return ListView.separated(
@@ -126,9 +127,9 @@ class _WaterQualityScreenState extends ConsumerState<WaterQualityScreen> {
                                 ),
                               ),
                               if (q.is_default)
-                                const Chip(
+                                Chip(
                                   label: Text(
-                                    'Padrão',
+                                    AppLocalizations.of(context)!.defaultLabel,
                                     style: TextStyle(fontSize: 11),
                                   ),
                                   visualDensity: VisualDensity.compact,
@@ -141,7 +142,7 @@ class _WaterQualityScreenState extends ConsumerState<WaterQualityScreen> {
                               if (q.gh != null) 'GH ${q.gh!.toStringAsFixed(1)}',
                               if (q.kh != null) 'KH ${q.kh!.toStringAsFixed(1)}',
                             ].join(' | ').isEmpty
-                                ? 'Sem parâmetros adicionais'
+                                ? AppLocalizations.of(context)!.noAdditionalParameters
                                 : [
                                     if (q.ph != null)
                                       'pH ${q.ph!.toStringAsFixed(1)}',
@@ -165,7 +166,7 @@ class _WaterQualityScreenState extends ConsumerState<WaterQualityScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/water-quality/new'),
-        label: const Text('Novo perfil'),
+        label: Text(AppLocalizations.of(context)!.newProfile),
         icon: const Icon(Icons.add),
       ),
     );

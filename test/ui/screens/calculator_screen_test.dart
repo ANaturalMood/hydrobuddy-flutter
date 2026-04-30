@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Element;
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:drift/native.dart';
@@ -10,6 +11,7 @@ import 'package:hydrobuddy/domain/models/calculation_result.dart';
 import 'package:hydrobuddy/ui/providers/calculator_provider.dart';
 import 'package:hydrobuddy/ui/providers/database_provider.dart';
 import 'package:hydrobuddy/ui/providers/substances_provider.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/screens/calculator_screen.dart';
 
 ProviderContainer _createContainer({drift.AppDatabase? db}) {
@@ -34,7 +36,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
@@ -56,7 +63,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
@@ -64,7 +76,7 @@ void main() {
       expect(find.text('N-NO3'), findsAtLeastNWidgets(1));
       expect(find.text('K'), findsAtLeastNWidgets(1));
       expect(find.text('Ca'), findsAtLeastNWidgets(1));
-      expect(find.text('Nutrientes Alvo'), findsOneWidget);
+      expect(find.text('Target Nutrients'), findsOneWidget);
     });
 
     testWidgets('3 — Exibe resultados quando calculationResult tem dados',
@@ -93,7 +105,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
@@ -102,7 +119,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Elements — StringGrid1'), findsOneWidget);
-      expect(find.text('EC / Custo'), findsOneWidget);
+      expect(find.text('EC / Cost'), findsOneWidget);
       expect(find.textContaining('EC'), findsAtLeastNWidgets(1));
     });
 
@@ -114,14 +131,19 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
 
       expect(
         find.text(
-            'Preencha os nutrientes alvo e selecione substâncias'),
+            'Fill in target nutrients and select substances'),
         findsOneWidget,
       );
     });
@@ -139,7 +161,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
@@ -162,7 +189,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
@@ -180,7 +212,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
@@ -200,7 +237,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
@@ -218,7 +260,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
@@ -234,7 +281,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
@@ -250,7 +302,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();
@@ -266,7 +323,12 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(home: CalculatorScreen()),
+          child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+              home: const CalculatorScreen(),
+            ),
         ),
       );
       await tester.pumpAndSettle();

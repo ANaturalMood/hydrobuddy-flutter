@@ -1,16 +1,36 @@
-# hydrobuddy
+# HydroBuddy
 
-A new Flutter project.
+[![Flutter Test](https://img.shields.io/badge/test-passing-brightgreen)](#)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](#)
+
+Hydroponic nutrient calculator.
+
+## Features
+
+- Reactive nutrient calculator with real-time results
+- Database of 17 chemical substances
+- Pre-defined and custom formulation management
+- Tank tracking and stock solution management
+- Water analysis and tissue analysis tools
+- CSV export for reporting
+
+## Stack
+
+- **Framework:** Flutter 3.x
+- **State Management:** Riverpod
+- **Database:** Drift / SQLite
+- **Routing:** GoRouter
+- **Design:** Material Design 3
+- **Platforms:** Windows, macOS, Linux, Web, Android, iOS
+
+## Credits
+
+- **Dr. Daniel Fernandez** — original Pascal version
+- **ANaturalMood** — Flutter port and development
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter pub get
+flutter run
+```

@@ -1,11 +1,13 @@
 import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrobuddy/data/database.dart' as db;
 import 'package:hydrobuddy/ui/providers/database_provider.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/water_quality_provider.dart';
 import 'package:hydrobuddy/ui/screens/water_quality_screen.dart';
 import 'package:hydrobuddy/ui/screens/water_quality_editor_screen.dart';
@@ -59,7 +61,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: WaterQualityScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const WaterQualityScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -88,7 +94,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: WaterQualityScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const WaterQualityScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -105,11 +115,16 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+          routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
+        ),
       ));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Novo perfil'));
+      await tester.tap(find.text('Novo Perfil'));
       await tester.pumpAndSettle();
 
       expect(find.text('Novo Perfil'), findsOneWidget);
@@ -127,7 +142,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: WaterQualityScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const WaterQualityScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -153,7 +172,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: WaterQualityScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const WaterQualityScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -177,7 +200,12 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+          routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
+        ),
       ));
       await tester.pumpAndSettle();
 

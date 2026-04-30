@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide Element;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrobuddy/domain/models/element.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/domain/models/substance.dart';
 import 'package:hydrobuddy/ui/providers/substances_provider.dart';
 
@@ -154,7 +155,7 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
 
     if (_loading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Carregando...')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.loading)),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
@@ -162,7 +163,7 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.isEditing ? 'Editar Substancia' : 'Nova Substancia',
+          widget.isEditing ? AppLocalizations.of(context)!.editSubstance : AppLocalizations.of(context)!.newSubstance,
         ),
       ),
       body: Form(
@@ -173,56 +174,56 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
             children: [
             TextFormField(
               controller: _nameCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Nome',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.name,
                 border: OutlineInputBorder(),
               ),
               validator: (v) =>
-                  (v == null || v.trim().isEmpty) ? 'Nome obrigatorio' : null,
+                    (v == null || v.trim().isEmpty) ? AppLocalizations.of(context)!.nameRequired : null,
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _formulaCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Formula',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.formula,
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _sourceCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Origem',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.source,
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _purityCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Pureza (0.0 a 1.0)',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.purity,
                 border: OutlineInputBorder(),
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               validator: (v) {
                 final n = double.tryParse(v ?? '');
-                if (n == null) return 'Numero invalido';
-                if (n < 0.0 || n > 1.0) return 'Valor entre 0.0 e 1.0';
+                if (n == null) return AppLocalizations.of(context)!.invalidNumber;
+                if (n < 0.0 || n > 1.0) return AppLocalizations.of(context)!.valueBetween;
                 return null;
               },
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _costCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Custo (R\$/kg)',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.costPerKg,
                 border: OutlineInputBorder(),
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
             ),
             const SizedBox(height: 12),
             SwitchListTile(
-              title: const Text('Liquido'),
+              title: Text(AppLocalizations.of(context)!.liquid),
               value: _isLiquid,
               onChanged: (v) => setState(() => _isLiquid = v),
               contentPadding: EdgeInsets.zero,
@@ -231,10 +232,10 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
             TextFormField(
               controller: _densityCtrl,
               decoration: InputDecoration(
-                labelText: 'Densidade (g/mL)',
+                labelText: AppLocalizations.of(context)!.density,
                 border: const OutlineInputBorder(),
                 enabled: _isLiquid,
-                hintText: _isLiquid ? null : 'Apenas para liquidos',
+                hintText: _isLiquid ? null : AppLocalizations.of(context)!.onlyForLiquids,
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               enabled: _isLiquid,
@@ -242,8 +243,8 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               value: _concType,
-              decoration: const InputDecoration(
-                labelText: 'Tipo de Concentracao',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.concentrationType,
                 border: OutlineInputBorder(),
               ),
               items: _concTypes
@@ -252,7 +253,7 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
               onChanged: (v) => setState(() => _concType = v ?? 'w/w'),
             ),
             const SizedBox(height: 20),
-            Text('Composicao Elementar (%)',
+            Text(AppLocalizations.of(context)!.elementalComposition,
                 style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 8),
             _buildElementGrid(),
@@ -260,7 +261,7 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
             FilledButton.icon(
               onPressed: _save,
               icon: const Icon(Icons.save),
-              label: const Text('Salvar'),
+                label: Text(AppLocalizations.of(context)!.save),
             ),
             const SizedBox(height: 16),
             ],

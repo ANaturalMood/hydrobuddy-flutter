@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrobuddy/data/database.dart' as db;
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/water_quality_provider.dart';
 
 class TissueEditorScreen extends ConsumerStatefulWidget {
@@ -140,7 +141,7 @@ class _TissueEditorScreenState extends ConsumerState<TissueEditorScreen> {
 
     if (_loading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Carregando...')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.loading)),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
@@ -148,7 +149,7 @@ class _TissueEditorScreenState extends ConsumerState<TissueEditorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.isEditing ? 'Editar Análise' : 'Nova Análise',
+          widget.isEditing ? AppLocalizations.of(context)!.editAnalysis : AppLocalizations.of(context)!.newAnalysis,
         ),
       ),
       body: Form(
@@ -159,15 +160,15 @@ class _TissueEditorScreenState extends ConsumerState<TissueEditorScreen> {
             children: [
               TextFormField(
                 controller: _nameCtrl,
-                decoration: const InputDecoration(
-                  labelText: 'Nome',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.name,
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Nome obrigatório' : null,
+                    (v == null || v.trim().isEmpty) ? AppLocalizations.of(context)!.nameRequired : null,
               ),
               const SizedBox(height: 20),
-              Text('Composição (%)',
+              Text(AppLocalizations.of(context)!.compositionPercent,
                   style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 8),
               _buildElementGrid(),
@@ -175,7 +176,7 @@ class _TissueEditorScreenState extends ConsumerState<TissueEditorScreen> {
               FilledButton.icon(
                 onPressed: _save,
                 icon: const Icon(Icons.save),
-                label: const Text('Salvar'),
+                label: Text(AppLocalizations.of(context)!.save),
               ),
               const SizedBox(height: 16),
             ],

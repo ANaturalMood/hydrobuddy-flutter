@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hydrobuddy/domain/engine/ratio_calculator.dart';
 import 'package:hydrobuddy/domain/models/calculation_result.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/domain/models/element.dart' as domain;
 import 'package:hydrobuddy/ui/providers/calculator_provider.dart';
 
@@ -13,9 +14,9 @@ class RatioScreen extends ConsumerWidget {
     final resultAsync = ref.watch(calculationResultProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ratios Nutricionais')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.nutritionalRatios)),
       body: resultAsync.when(
-        data: (result) => _buildContent(result),
+        data: (result) => _buildContent(context, result),
         loading: () =>
             const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Erro: $e')),
@@ -23,12 +24,12 @@ class RatioScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(CalculationResult result) {
+  Widget _buildContent(BuildContext context, CalculationResult result) {
     final ppm = result.achievedConcentrations;
 
     if (ppm.isEmpty) {
-      return const Center(
-        child: Text('Execute o cálculo primeiro'),
+      return Center(
+        child: Text(AppLocalizations.of(context)!.executeCalculationFirst),
       );
     }
 
@@ -51,9 +52,9 @@ class RatioScreen extends ConsumerWidget {
           'K : Ca : Mg',
           [kCaMg['K'] ?? 0, kCaMg['Ca'] ?? 0, kCaMg['Mg'] ?? 0],
         ),
-        _buildSingleRatioCard('Ca : Mg', 'Ca : Mg', caMg),
-        _buildSingleRatioCard('N : S', 'N : S', nS),
-        _buildSingleRatioCard('Ca : (Mg + K)', 'Ca : (Mg+K)', caMgK),
+        _buildSingleRatioCard(context, 'Ca : Mg', 'Ca : Mg', caMg),
+        _buildSingleRatioCard(context, 'N : S', 'N : S', nS),
+        _buildSingleRatioCard(context, 'Ca : (Mg + K)', 'Ca : (Mg+K)', caMgK),
       ],
     );
   }
@@ -78,9 +79,9 @@ class RatioScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSingleRatioCard(String title, String label, double ratio) {
+  Widget _buildSingleRatioCard(BuildContext context, String title, String label, double ratio) {
     final formatted = ratio == double.infinity || ratio <= 0
-        ? 'N/A'
+        ? AppLocalizations.of(context)!.notAvailable
         : '${ratio.toStringAsFixed(1)} : 1';
     return Card(
       margin: const EdgeInsets.only(bottom: 12),

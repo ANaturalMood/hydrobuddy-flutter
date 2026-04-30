@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrobuddy/data/database.dart' as db;
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/water_quality_provider.dart';
 
 class TissueScreen extends ConsumerWidget {
@@ -11,16 +12,16 @@ class TissueScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Excluir análise'),
-        content: Text('Deseja excluir "${tissue.name}"?'),
+        title: Text(AppLocalizations.of(context)!.deleteAnalysis),
+        content: Text(AppLocalizations.of(context)!.confirmDeleteTissue(tissue.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Excluir'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -36,14 +37,14 @@ class TissueScreen extends ConsumerWidget {
     final tissuesAsync = ref.watch(watchTissuesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Análise de Tecido')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.tissueAnalysis)),
       body: tissuesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, _) => Center(child: Text('Erro: $err')),
         data: (tissues) {
           if (tissues.isEmpty) {
-            return const Center(
-              child: Text('Nenhuma análise de tecido cadastrada'),
+            return Center(
+              child: Text(AppLocalizations.of(context)!.noTissueAnalysis),
             );
           }
           return ListView.separated(
@@ -78,7 +79,7 @@ class TissueScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/tissue/new'),
-        label: const Text('Nova análise'),
+        label: Text(AppLocalizations.of(context)!.newAnalysis),
         icon: const Icon(Icons.add),
       ),
     );

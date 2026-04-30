@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'package:hydrobuddy/data/database.dart' as db;
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/formulations_provider.dart';
 
 final _noteControllerProvider = Provider.autoDispose<TextEditingController>((ref) => TextEditingController());
@@ -37,12 +38,12 @@ class _SnapshotTimelineState extends ConsumerState<SnapshotTimeline> {
       data: (formulation) {
         if (formulation == null) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Formulação não encontrada')),
-            body: const Center(child: Text('Esta formulação não existe.')),
+            appBar: AppBar(title: Text(AppLocalizations.of(context)!.formulationNotFound)),
+            body: Center(child: Text(AppLocalizations.of(context)!.thisFormulationDoesNotExist)),
           );
         }
 
-        final title = 'Histórico: ${formulation.name}';
+        final title = AppLocalizations.of(context)!.historyFormulation(formulation.name);
 
         return Scaffold(
           appBar: AppBar(title: Text(title)),
@@ -51,7 +52,7 @@ class _SnapshotTimelineState extends ConsumerState<SnapshotTimeline> {
             error: (e, s) => Center(child: Text('Erro: $e')),
             data: (snapshots) {
               if (snapshots.isEmpty) {
-                return const Center(child: Text('Nenhum snapshot registrado'));
+                return Center(child: Text(AppLocalizations.of(context)!.noSnapshots));
               }
               return _buildTimeline(context, snapshots);
             },
@@ -67,7 +68,7 @@ class _SnapshotTimelineState extends ConsumerState<SnapshotTimeline> {
 
   Widget _buildTimeline(BuildContext context, List<db.FormulationSnapshot> snapshots) {
     if (snapshots.isEmpty) {
-      return const Center(child: Text('Nenhum snapshot registrado'));
+      return Center(child: Text(AppLocalizations.of(context)!.noSnapshots));
     }
 
     String? lastDay;
@@ -140,11 +141,11 @@ class _SnapshotTimelineState extends ConsumerState<SnapshotTimeline> {
         cl: (data['cl'] as num?)?.toDouble() ?? 0.0,
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Valores restaurados no editor de formulação')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.valuesRestored)),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao restaurar: $e')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.errorRestoring('$e'))),
       );
     }
   }
@@ -156,17 +157,17 @@ class _SnapshotTimelineState extends ConsumerState<SnapshotTimeline> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Novo Snapshot'),
+        title: Text(AppLocalizations.of(context)!.newSnapshot),
         content: TextField(
           controller: noteCtrl,
-          decoration: const InputDecoration(labelText: 'Nota', hintText: 'Opcional'),
+          decoration: InputDecoration(labelText: AppLocalizations.of(context)!.note, hintText: AppLocalizations.of(context)!.optional),
           maxLines: 3,
           autofocus: true,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -174,7 +175,7 @@ class _SnapshotTimelineState extends ConsumerState<SnapshotTimeline> {
               Navigator.pop(ctx);
               await _createSnapshot(note);
             },
-            child: const Text('Salvar'),
+            child: Text(AppLocalizations.of(context)!.save),
           ),
         ],
       ),
@@ -209,7 +210,7 @@ class _SnapshotTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = DateTime.parse(snapshot.created_at);
     final timeStr = DateFormat('HH:mm').format(date);
-    final triggerLabel = _triggerLabel(snapshot.trigger_type);
+    final triggerLabel = _triggerLabel(context, snapshot.trigger_type);
 
     final nutrientSummary = _parseNutrientSummary(snapshot.snapshot_data);
 
@@ -285,7 +286,7 @@ class _SnapshotTile extends StatelessWidget {
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           visualDensity: VisualDensity.compact,
                         ),
-                        child: const Text('Restaurar', style: TextStyle(fontSize: 12)),
+                        child: Text(AppLocalizations.of(context)!.restore, style: const TextStyle(fontSize: 12)),
                       ),
                     ),
                   ],
@@ -298,14 +299,14 @@ class _SnapshotTile extends StatelessWidget {
     );
   }
 
-  String _triggerLabel(String type) {
+  String _triggerLabel(BuildContext context, String type) {
     switch (type) {
       case 'manual':
-        return 'manual';
+        return AppLocalizations.of(context)!.manual;
       case 'auto_save':
-        return 'auto save';
+        return AppLocalizations.of(context)!.autoSave;
       case 'before_edit':
-        return 'antes de editar';
+        return AppLocalizations.of(context)!.beforeEdit;
       default:
         return type;
     }
