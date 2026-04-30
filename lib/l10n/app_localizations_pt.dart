@@ -10,4 +10,22 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get appTitle => 'HydroBuddy';
+
+  @override
+  String get calculator => 'Calculadora';
+
+  @override
+  String get substances => 'Substâncias';
+
+  @override
+  String get formulations => 'Formulações';
+
+  @override
+  String get tank => 'Tanque';
+
+  @override
+  String get settings => 'Configurações';
+
+  @override
+  String get about => 'Sobre';
 }

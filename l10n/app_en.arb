@@ -3,5 +3,29 @@
   "appTitle": "HydroBuddy",
   "@appTitle": {
     "description": "Application title"
+  },
+  "calculator": "Calculator",
+  "@calculator": {
+    "description": "Calculator screen title"
+  },
+  "substances": "Substances",
+  "@substances": {
+    "description": "Substances screen title"
+  },
+  "formulations": "Formulations",
+  "@formulations": {
+    "description": "Formulation history screen title"
+  },
+  "tank": "Tank",
+  "@tank": {
+    "description": "Tank preparation screen title"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings screen title"
+  },
+  "about": "About",
+  "@about": {
+    "description": "About screen title"
   }
 }

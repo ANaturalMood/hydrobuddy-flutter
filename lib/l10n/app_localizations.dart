@@ -103,6 +103,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'HydroBuddy'**
   String get appTitle;
+
+  /// Calculator screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Calculator'**
+  String get calculator;
+
+  /// Substances screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Substances'**
+  String get substances;
+
+  /// Formulation history screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Formulations'**
+  String get formulations;
+
+  /// Tank preparation screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Tank'**
+  String get tank;
+
+  /// Settings screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// About screen title
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
 }
 
 class _AppLocalizationsDelegate
