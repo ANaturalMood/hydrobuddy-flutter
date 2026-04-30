@@ -24,7 +24,7 @@ mixin _$SubstanceResult {
   int get substanceId => throw _privateConstructorUsedError;
   double get weight => throw _privateConstructorUsedError;
   double get cost => throw _privateConstructorUsedError;
-  Map<String, double> get elementContribution =>
+  Map<Element, double> get elementContribution =>
       throw _privateConstructorUsedError;
 
   /// Serializes this SubstanceResult to a JSON map.
@@ -48,7 +48,7 @@ abstract class $SubstanceResultCopyWith<$Res> {
     int substanceId,
     double weight,
     double cost,
-    Map<String, double> elementContribution,
+    Map<Element, double> elementContribution,
   });
 }
 
@@ -89,7 +89,7 @@ class _$SubstanceResultCopyWithImpl<$Res, $Val extends SubstanceResult>
             elementContribution: null == elementContribution
                 ? _value.elementContribution
                 : elementContribution // ignore: cast_nullable_to_non_nullable
-                      as Map<String, double>,
+                      as Map<Element, double>,
           )
           as $Val,
     );
@@ -109,7 +109,7 @@ abstract class _$$SubstanceResultImplCopyWith<$Res>
     int substanceId,
     double weight,
     double cost,
-    Map<String, double> elementContribution,
+    Map<Element, double> elementContribution,
   });
 }
 
@@ -149,7 +149,7 @@ class __$$SubstanceResultImplCopyWithImpl<$Res>
         elementContribution: null == elementContribution
             ? _value._elementContribution
             : elementContribution // ignore: cast_nullable_to_non_nullable
-                  as Map<String, double>,
+                  as Map<Element, double>,
       ),
     );
   }
@@ -162,7 +162,7 @@ class _$SubstanceResultImpl implements _SubstanceResult {
     required this.substanceId,
     required this.weight,
     required this.cost,
-    final Map<String, double> elementContribution = const {},
+    final Map<Element, double> elementContribution = const {},
   }) : _elementContribution = elementContribution;
 
   factory _$SubstanceResultImpl.fromJson(Map<String, dynamic> json) =>
@@ -174,10 +174,10 @@ class _$SubstanceResultImpl implements _SubstanceResult {
   final double weight;
   @override
   final double cost;
-  final Map<String, double> _elementContribution;
+  final Map<Element, double> _elementContribution;
   @override
   @JsonKey()
-  Map<String, double> get elementContribution {
+  Map<Element, double> get elementContribution {
     if (_elementContribution is EqualUnmodifiableMapView)
       return _elementContribution;
     // ignore: implicit_dynamic_type
@@ -236,7 +236,7 @@ abstract class _SubstanceResult implements SubstanceResult {
     required final int substanceId,
     required final double weight,
     required final double cost,
-    final Map<String, double> elementContribution,
+    final Map<Element, double> elementContribution,
   }) = _$SubstanceResultImpl;
 
   factory _SubstanceResult.fromJson(Map<String, dynamic> json) =
@@ -249,7 +249,7 @@ abstract class _SubstanceResult implements SubstanceResult {
   @override
   double get cost;
   @override
-  Map<String, double> get elementContribution;
+  Map<Element, double> get elementContribution;
 
   /// Create a copy of SubstanceResult
   /// with the given fields replaced by the non-null parameter values.
@@ -266,9 +266,9 @@ CalculationResult _$CalculationResultFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CalculationResult {
   List<SubstanceResult> get substances => throw _privateConstructorUsedError;
-  Map<String, double> get achievedConcentrations =>
+  Map<Element, double> get achievedConcentrations =>
       throw _privateConstructorUsedError;
-  Map<String, double> get targetConcentrations =>
+  Map<Element, double> get targetConcentrations =>
       throw _privateConstructorUsedError;
   double get totalCost => throw _privateConstructorUsedError;
   double get predictedEc => throw _privateConstructorUsedError;
@@ -293,8 +293,8 @@ abstract class $CalculationResultCopyWith<$Res> {
   @useResult
   $Res call({
     List<SubstanceResult> substances,
-    Map<String, double> achievedConcentrations,
-    Map<String, double> targetConcentrations,
+    Map<Element, double> achievedConcentrations,
+    Map<Element, double> targetConcentrations,
     double totalCost,
     double predictedEc,
     String? error,
@@ -332,11 +332,11 @@ class _$CalculationResultCopyWithImpl<$Res, $Val extends CalculationResult>
             achievedConcentrations: null == achievedConcentrations
                 ? _value.achievedConcentrations
                 : achievedConcentrations // ignore: cast_nullable_to_non_nullable
-                      as Map<String, double>,
+                      as Map<Element, double>,
             targetConcentrations: null == targetConcentrations
                 ? _value.targetConcentrations
                 : targetConcentrations // ignore: cast_nullable_to_non_nullable
-                      as Map<String, double>,
+                      as Map<Element, double>,
             totalCost: null == totalCost
                 ? _value.totalCost
                 : totalCost // ignore: cast_nullable_to_non_nullable
@@ -366,8 +366,8 @@ abstract class _$$CalculationResultImplCopyWith<$Res>
   @useResult
   $Res call({
     List<SubstanceResult> substances,
-    Map<String, double> achievedConcentrations,
-    Map<String, double> targetConcentrations,
+    Map<Element, double> achievedConcentrations,
+    Map<Element, double> targetConcentrations,
     double totalCost,
     double predictedEc,
     String? error,
@@ -404,11 +404,11 @@ class __$$CalculationResultImplCopyWithImpl<$Res>
         achievedConcentrations: null == achievedConcentrations
             ? _value._achievedConcentrations
             : achievedConcentrations // ignore: cast_nullable_to_non_nullable
-                  as Map<String, double>,
+                  as Map<Element, double>,
         targetConcentrations: null == targetConcentrations
             ? _value._targetConcentrations
             : targetConcentrations // ignore: cast_nullable_to_non_nullable
-                  as Map<String, double>,
+                  as Map<Element, double>,
         totalCost: null == totalCost
             ? _value.totalCost
             : totalCost // ignore: cast_nullable_to_non_nullable
@@ -431,8 +431,8 @@ class __$$CalculationResultImplCopyWithImpl<$Res>
 class _$CalculationResultImpl implements _CalculationResult {
   const _$CalculationResultImpl({
     required final List<SubstanceResult> substances,
-    required final Map<String, double> achievedConcentrations,
-    required final Map<String, double> targetConcentrations,
+    required final Map<Element, double> achievedConcentrations,
+    required final Map<Element, double> targetConcentrations,
     required this.totalCost,
     required this.predictedEc,
     this.error,
@@ -451,18 +451,18 @@ class _$CalculationResultImpl implements _CalculationResult {
     return EqualUnmodifiableListView(_substances);
   }
 
-  final Map<String, double> _achievedConcentrations;
+  final Map<Element, double> _achievedConcentrations;
   @override
-  Map<String, double> get achievedConcentrations {
+  Map<Element, double> get achievedConcentrations {
     if (_achievedConcentrations is EqualUnmodifiableMapView)
       return _achievedConcentrations;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_achievedConcentrations);
   }
 
-  final Map<String, double> _targetConcentrations;
+  final Map<Element, double> _targetConcentrations;
   @override
-  Map<String, double> get targetConcentrations {
+  Map<Element, double> get targetConcentrations {
     if (_targetConcentrations is EqualUnmodifiableMapView)
       return _targetConcentrations;
     // ignore: implicit_dynamic_type
@@ -537,8 +537,8 @@ class _$CalculationResultImpl implements _CalculationResult {
 abstract class _CalculationResult implements CalculationResult {
   const factory _CalculationResult({
     required final List<SubstanceResult> substances,
-    required final Map<String, double> achievedConcentrations,
-    required final Map<String, double> targetConcentrations,
+    required final Map<Element, double> achievedConcentrations,
+    required final Map<Element, double> targetConcentrations,
     required final double totalCost,
     required final double predictedEc,
     final String? error,
@@ -550,9 +550,9 @@ abstract class _CalculationResult implements CalculationResult {
   @override
   List<SubstanceResult> get substances;
   @override
-  Map<String, double> get achievedConcentrations;
+  Map<Element, double> get achievedConcentrations;
   @override
-  Map<String, double> get targetConcentrations;
+  Map<Element, double> get targetConcentrations;
   @override
   double get totalCost;
   @override

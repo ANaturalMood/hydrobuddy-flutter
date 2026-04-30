@@ -13,7 +13,8 @@ _$CalculationInputImpl _$$CalculationInputImplFromJson(
     targets: $checkedConvert(
       'targets',
       (v) => (v as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, (e as num).toDouble()),
+        (k, e) =>
+            MapEntry($enumDecode(_$ElementEnumMap, k), (e as num).toDouble()),
       ),
     ),
     substanceIds: $checkedConvert(
@@ -40,7 +41,7 @@ _$CalculationInputImpl _$$CalculationInputImplFromJson(
     ),
     degreeOfFreedom: $checkedConvert(
       'degreeOfFreedom',
-      (v) => (v as num?)?.toInt(),
+      (v) => $enumDecodeNullable(_$ElementEnumMap, v),
     ),
     dilutionFactor: $checkedConvert(
       'dilutionFactor',
@@ -53,15 +54,34 @@ _$CalculationInputImpl _$$CalculationInputImplFromJson(
 Map<String, dynamic> _$$CalculationInputImplToJson(
   _$CalculationInputImpl instance,
 ) => <String, dynamic>{
-  'targets': instance.targets,
+  'targets': instance.targets.map((k, e) => MapEntry(_$ElementEnumMap[k]!, e)),
   'substanceIds': instance.substanceIds,
   'volume': instance.volume,
   'volumeUnit': _$VolumeUnitEnumMap[instance.volumeUnit]!,
   'concUnit': _$ConcUnitEnumMap[instance.concUnit]!,
   'weightUnit': _$WeightUnitEnumMap[instance.weightUnit]!,
   'calcMode': _$CalcModeEnumMap[instance.calcMode]!,
-  'degreeOfFreedom': instance.degreeOfFreedom,
+  'degreeOfFreedom': _$ElementEnumMap[instance.degreeOfFreedom],
   'dilutionFactor': instance.dilutionFactor,
+};
+
+const _$ElementEnumMap = {
+  Element.nNo3: 'nNo3',
+  Element.nNh4: 'nNh4',
+  Element.p: 'p',
+  Element.k: 'k',
+  Element.ca: 'ca',
+  Element.mg: 'mg',
+  Element.s: 's',
+  Element.fe: 'fe',
+  Element.mn: 'mn',
+  Element.zn: 'zn',
+  Element.b: 'b',
+  Element.cu: 'cu',
+  Element.si: 'si',
+  Element.mo: 'mo',
+  Element.na: 'na',
+  Element.cl: 'cl',
 };
 
 const _$VolumeUnitEnumMap = {

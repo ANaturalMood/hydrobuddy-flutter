@@ -76,7 +76,7 @@ void main() {
   group('CalculationInput', () {
     test('defaults are correct', () {
       final input = CalculationInput(
-        targets: {'N-NO3': 200.0},
+        targets: {Element.nNo3: 200.0},
         substanceIds: [1],
         volume: 100,
         dilutionFactor: 1.0,
@@ -96,8 +96,8 @@ void main() {
       );
       final result = CalculationResult(
         substances: [sr],
-        achievedConcentrations: {'N-NO3': 200.0},
-        targetConcentrations: {'N-NO3': 200.0},
+        achievedConcentrations: {Element.nNo3: 200.0},
+        targetConcentrations: {Element.nNo3: 200.0},
         totalCost: 0.05,
         predictedEc: 1.8,
       );
