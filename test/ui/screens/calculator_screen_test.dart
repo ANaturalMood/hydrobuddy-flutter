@@ -7,7 +7,7 @@ import 'package:drift/drift.dart' hide isNull;
 import 'package:hydrobuddy/data/database.dart' as drift;
 import 'package:hydrobuddy/data/substances_dao.dart';
 import 'package:hydrobuddy/domain/models/element.dart';
-import 'package:hydrobuddy/domain/models/calculation_result.dart';
+import 'package:hydrobuddy/domain/models/calculation_input.dart' as calc;
 import 'package:hydrobuddy/ui/providers/calculator_provider.dart';
 import 'package:hydrobuddy/ui/providers/database_provider.dart';
 import 'package:hydrobuddy/ui/providers/substances_provider.dart';
@@ -28,7 +28,7 @@ void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
   group('CalculatorScreen widget tests', () {
-    testWidgets('1 — Renderiza sem crash com container ProviderScope',
+    testWidgets('1 — Renderiza sem crash com header HydroBuddy',
         (WidgetTester tester) async {
       final container = _createContainer();
       addTearDown(container.dispose);
@@ -37,11 +37,11 @@ void main() {
         UncontrolledProviderScope(
           container: container,
           child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const CalculatorScreen(),
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -49,37 +49,172 @@ void main() {
       expect(find.text('HydroBuddy'), findsOneWidget);
     });
 
-    testWidgets('2 — Exibe grid de nutrientes quando alvos sao definidos',
+    testWidgets('2 — Exibe toggle de modo (Input Desired / From Weights)',
         (WidgetTester tester) async {
       final container = _createContainer();
       addTearDown(container.dispose);
-
-      container.read(targetNutrientsProvider.notifier).set({
-        Element.nNo3: 200,
-        Element.k: 250,
-        Element.ca: 180,
-      });
 
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
           child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const CalculatorScreen(),
+          ),
         ),
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('N-NO3'), findsAtLeastNWidgets(1));
-      expect(find.text('K'), findsAtLeastNWidgets(1));
-      expect(find.text('Ca'), findsAtLeastNWidgets(1));
-      expect(find.text('Target Nutrients'), findsOneWidget);
+      expect(find.text('Input Desired'), findsOneWidget);
+      expect(find.text('From Weights'), findsOneWidget);
     });
 
-    testWidgets('3 — Exibe resultados quando calculationResult tem dados',
+    testWidgets('3 — Exibe seção System Parameters com campos de volume e tipo',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const CalculatorScreen(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('System Parameters'), findsOneWidget);
+      expect(find.text('VOLUME (L)'), findsOneWidget);
+      expect(find.text('Direct'), findsOneWidget);
+      expect(find.text('A+B'), findsOneWidget);
+      expect(find.text('CONCENTRATION FACTOR'), findsOneWidget);
+    });
+
+    testWidgets('4 — Exibe grid de nutrientes com 16 elementos',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const CalculatorScreen(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Target Concentrations (ppm)'), findsOneWidget);
+      expect(find.text('N-NO3'), findsAtLeastNWidgets(1));
+      expect(find.text('Mg'), findsAtLeastNWidgets(1));
+      expect(find.text('Fe'), findsAtLeastNWidgets(1));
+    });
+
+    testWidgets('5 — Exibe seção Salt Selection com Select All',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const CalculatorScreen(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Salt Selection'), findsOneWidget);
+      expect(find.text('Select All'), findsOneWidget);
+      expect(find.text('Add Custom Salt'), findsOneWidget);
+    });
+
+    testWidgets('6 — Exibe botão flutuante Calculate',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const CalculatorScreen(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Calculate'), findsOneWidget);
+    });
+
+    testWidgets('7 — Exibe formulário de loader de formulation',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const CalculatorScreen(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('LOAD EXISTING FORMULATION'), findsOneWidget);
+      expect(find.text('Select a recipe...'), findsOneWidget);
+    });
+
+    testWidgets('8 — Mode toggle muda estado do provider',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const CalculatorScreen(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(container.read(calculationModeProvider),
+          calc.CalcMode.directAddition);
+
+      await tester.tap(find.text('From Weights'));
+      await tester.pumpAndSettle();
+
+      expect(container.read(calculationModeProvider),
+          calc.CalcMode.prepareStock);
+    });
+
+    testWidgets('9 — Exibe tabela de sais com substâncias do banco',
         (WidgetTester tester) async {
       final db = drift.AppDatabase.forTesting(NativeDatabase.memory());
       final container = _createContainer(db: db);
@@ -89,41 +224,31 @@ void main() {
       });
 
       final dao = SubstancesDao(db);
-      final id1 = await dao.insert(drift.SubstancesCompanion.insert(
-        name: 'KNO3',
-        n_no3: const Value(13.9),
-        k: const Value(38.6),
-        cost: const Value(5.0),
+      await dao.insert(drift.SubstancesCompanion.insert(
+        name: 'Potassium Nitrate',
+        formula: const Value('KNO3'),
+        purity: const Value(0.98),
       ));
 
-      container.read(targetNutrientsProvider.notifier).set({
-        Element.nNo3: 200,
-        Element.k: 250,
-      });
-      container.read(selectedSubstanceIdsProvider.notifier).set([id1]);
-
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
           child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const CalculatorScreen(),
+          ),
         ),
       );
       await tester.pumpAndSettle();
 
-      await tester.pump(const Duration(milliseconds: 400));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Elements — StringGrid1'), findsOneWidget);
-      expect(find.text('EC / Cost'), findsOneWidget);
-      expect(find.textContaining('EC'), findsAtLeastNWidgets(1));
+      expect(find.text('Potassium Nitrate'), findsOneWidget);
+      expect(find.text('KNO3'), findsOneWidget);
+      expect(find.text('98%'), findsOneWidget);
     });
 
-    testWidgets('4 — Exibe estado vazio quando targets estao vazios',
+    testWidgets('10 — Accordion de Salt Selection vem aberto por padrão',
         (WidgetTester tester) async {
       final container = _createContainer();
       addTearDown(container.dispose);
@@ -132,210 +257,18 @@ void main() {
         UncontrolledProviderScope(
           container: container,
           child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const CalculatorScreen(),
+          ),
         ),
       );
       await tester.pumpAndSettle();
 
-      expect(
-        find.text(
-            'Fill in target nutrients and select substances'),
-        findsOneWidget,
-      );
-    });
-
-    testWidgets('5 — Exibe mensagem de erro quando result.error nao eh null',
-        (WidgetTester tester) async {
-      final container = _createContainer();
-      addTearDown(container.dispose);
-
-      container.read(targetNutrientsProvider.notifier).set({
-        Element.nNo3: 200,
-      });
-      container.read(selectedSubstanceIdsProvider.notifier).set([999]);
-
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      await tester.pump(const Duration(milliseconds: 400));
-      await tester.pumpAndSettle();
-
-      expect(
-        find.text(
-            'Nenhuma substância encontrada para os IDs fornecidos'),
-        findsOneWidget,
-      );
-    });
-
-    testWidgets('6 — Exibe secao Volume e botoes de unidade',
-        (WidgetTester tester) async {
-      final container = _createContainer();
-      addTearDown(container.dispose);
-
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Volume'), findsAtLeastNWidgets(1));
-      expect(find.text('L'), findsOneWidget);
-      expect(find.text('gal'), findsOneWidget);
-    });
-
-    testWidgets('7 — Exibe secoes de radio (Calc Mode, Solution Mode, EC Model)',
-        (WidgetTester tester) async {
-      final container = _createContainer();
-      addTearDown(container.dispose);
-
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Calc Mode'), findsOneWidget);
-      expect(find.text('Solution Mode'), findsOneWidget);
-      expect(find.text('EC Model'), findsOneWidget);
-      expect(find.text('Input Desired Concentrations'), findsOneWidget);
-      expect(find.text('Direct addition'), findsOneWidget);
-    });
-
-    testWidgets('8 — Exibe secao de substancias com botao Select',
-        (WidgetTester tester) async {
-      final container = _createContainer();
-      addTearDown(container.dispose);
-
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Substances'), findsOneWidget);
-      expect(find.text('Select Substances'), findsOneWidget);
-      expect(find.text('No substances selected'), findsOneWidget);
-    });
-
-    testWidgets('9 — Exibe secao DOF com dropdown',
-        (WidgetTester tester) async {
-      final container = _createContainer();
-      addTearDown(container.dispose);
-
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Free element (DOF)'), findsOneWidget);
-    });
-
-    testWidgets('10 — Exibe secao Instrument Precision',
-        (WidgetTester tester) async {
-      final container = _createContainer();
-      addTearDown(container.dispose);
-
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Instrument Precision'), findsOneWidget);
-    });
-
-    testWidgets('11 — Exibe botao Carry Out Calculation',
-        (WidgetTester tester) async {
-      final container = _createContainer();
-      addTearDown(container.dispose);
-
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Carry Out Calculation'), findsOneWidget);
-    });
-
-    testWidgets('12 — Exibe Si source section',
-        (WidgetTester tester) async {
-      final container = _createContainer();
-      addTearDown(container.dispose);
-
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'),
-              home: const CalculatorScreen(),
-            ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Si source'), findsOneWidget);
-      expect(find.text('Si'), findsAtLeastNWidgets(1));
-      expect(find.text('SiO\u2082'), findsOneWidget);
+      expect(find.text('Salt Selection'), findsOneWidget);
+      expect(find.text('Select All'), findsOneWidget);
+      expect(find.text('Add Custom Salt'), findsOneWidget);
     });
   });
 }

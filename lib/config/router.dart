@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrobuddy/ui/screens/calculator_screen.dart';
+import 'package:hydrobuddy/ui/screens/results_screen.dart';
 import 'package:hydrobuddy/ui/screens/substances_screen.dart';
 import 'package:hydrobuddy/ui/screens/substance_editor_screen.dart';
 import 'package:hydrobuddy/ui/screens/formulation_history_screen.dart';
@@ -37,6 +38,14 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/calculator',
                 builder: (context, state) => const CalculatorScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/results',
+                builder: (context, state) => const ResultsScreen(),
               ),
             ],
           ),
@@ -79,20 +88,6 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/tank',
-                builder: (context, state) => const TankHistoryScreen(),
-                routes: [
-                  GoRoute(
-                    path: 'prepare',
-                    builder: (context, state) => const PrepareTankScreen(),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
                 path: '/settings',
                 builder: (context, state) => const SettingsScreen(),
                 routes: [
@@ -113,6 +108,16 @@ final routerProvider = Provider<GoRouter>((ref) {
                 ],
               ),
             ],
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/tank',
+        builder: (context, state) => const TankHistoryScreen(),
+        routes: [
+          GoRoute(
+            path: 'prepare',
+            builder: (context, state) => const PrepareTankScreen(),
           ),
         ],
       ),
@@ -202,27 +207,27 @@ class ScaffoldWithNavBar extends StatelessWidget {
           NavigationDestination(
             icon: Icon(Icons.calculate_outlined),
             selectedIcon: Icon(Icons.calculate),
-            label: 'Calculadora',
+            label: 'Calculate',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.analytics_outlined),
+            selectedIcon: Icon(Icons.analytics),
+            label: 'Results',
           ),
           NavigationDestination(
             icon: Icon(Icons.science_outlined),
             selectedIcon: Icon(Icons.science),
-            label: 'Substâncias',
+            label: 'Salts',
           ),
           NavigationDestination(
-            icon: Icon(Icons.assignment_outlined),
-            selectedIcon: Icon(Icons.assignment),
-            label: 'Formulações',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.water_drop_outlined),
-            selectedIcon: Icon(Icons.water_drop),
-            label: 'Tanques',
+            icon: Icon(Icons.menu_book_outlined),
+            selectedIcon: Icon(Icons.menu_book),
+            label: 'Recipes',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),
             selectedIcon: Icon(Icons.settings),
-            label: 'Ajustes',
+            label: 'Settings',
           ),
         ],
       ),

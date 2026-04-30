@@ -1,138 +1,86 @@
 import 'package:flutter/material.dart' hide Element;
 import 'package:hydrobuddy/domain/models/element.dart';
-import 'package:hydrobuddy/domain/models/calculation_result.dart';
-import 'package:hydrobuddy/l10n/app_localizations.dart';
 
 class NutrientInputGrid extends StatelessWidget {
   final Map<Element, double> targets;
   final ValueChanged<Map<Element, double>> onChanged;
-  final CalculationResult? result;
 
   const NutrientInputGrid({
     super.key,
     required this.targets,
     required this.onChanged,
-    this.result,
   });
+
+  static const _elements = [
+    Element.nNo3,
+    Element.nNh4,
+    Element.p,
+    Element.k,
+    Element.mg,
+    Element.ca,
+    Element.s,
+    Element.fe,
+    Element.mn,
+    Element.zn,
+    Element.b,
+    Element.cu,
+    Element.si,
+    Element.mo,
+    Element.na,
+    Element.cl,
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final achieved = result?.achievedConcentrations ?? const {};
-    final grossErrors = result?.grossErrors ?? const {};
-    final instrumentalErrors = result?.instrumentalErrors ?? const {};
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          AppLocalizations.of(context)!.targetNutrients,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium
-              ?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DataTable(
-            columnSpacing: 10,
-            headingTextStyle: Theme.of(context)
-                .textTheme
-                .labelSmall
-                ?.copyWith(fontWeight: FontWeight.bold),
-            columns: [
-              DataColumn(label: Text(AppLocalizations.of(context)!.element)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.target), numeric: true),
-              if (achieved.isNotEmpty || grossErrors.isNotEmpty)
-                DataColumn(label: Text(AppLocalizations.of(context)!.result), numeric: true),
-              if (grossErrors.isNotEmpty)
-                DataColumn(label: Text(AppLocalizations.of(context)!.gePercent), numeric: true),
-              if (instrumentalErrors.isNotEmpty)
-                DataColumn(label: Text(AppLocalizations.of(context)!.iePercent), numeric: true),
-            ],
-            rows: Element.all.map((e) {
-              final target = targets[e] ?? 0.0;
-              final ach = achieved[e];
-              final ge = grossErrors[e];
-              final ie = instrumentalErrors[e];
-
-              final cells = <DataCell>[
-                DataCell(Text(
-                  e.symbol,
-                  style: Theme.of(context).textTheme.bodySmall,
-                )),
-                DataCell(_targetCell(context, e, target)),
-              ];
-
-              if (achieved.isNotEmpty || grossErrors.isNotEmpty) {
-                cells.add(DataCell(Text(
-                  ach != null ? ach.toStringAsFixed(1) : '—',
-                  style: Theme.of(context).textTheme.bodySmall,
-                )));
-              }
-              if (grossErrors.isNotEmpty) {
-                cells.add(DataCell(Text(
-                  ge != null && ge > 0 ? '${ge.toStringAsFixed(1)}%' : '—',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: ge != null && ge > 1.0
-                            ? Theme.of(context).colorScheme.error
-                            : null,
-                      ),
-                )));
-              }
-              if (instrumentalErrors.isNotEmpty) {
-                cells.add(DataCell(Text(
-                  ie != null && ie > 0 ? '${ie.toStringAsFixed(1)}%' : '—',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: ie != null && ie > 20.0
-                            ? Theme.of(context).colorScheme.error
-                            : null,
-                      ),
-                )));
-              }
-
-              return DataRow(cells: cells);
-            }).toList(),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final crossAxisCount = constraints.maxWidth >= 600 ? 8 : 4;
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            childAspectRatio: 1.3,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _targetCell(BuildContext context, Element element, double value) {
-    return SizedBox(
-      width: 80,
-      child: _NutrientField(
-        value: value,
-        onChanged: (newValue) {
-          final newTargets = Map<Element, double>.from(targets);
-          if (newValue == 0.0) {
-            newTargets.remove(element);
-          } else {
-            newTargets[element] = newValue;
-          }
-          onChanged(newTargets);
-        },
-      ),
+          itemCount: _elements.length,
+          itemBuilder: (context, index) {
+            final e = _elements[index];
+            final value = targets[e] ?? 0.0;
+            return _NutrientCell(
+              element: e,
+              value: value,
+              onChanged: (v) {
+                final newTargets = Map<Element, double>.from(targets);
+                newTargets[e] = v;
+                onChanged(newTargets);
+              },
+            );
+          },
+        );
+      },
     );
   }
 }
 
-class _NutrientField extends StatefulWidget {
+class _NutrientCell extends StatefulWidget {
+  final Element element;
   final double value;
   final ValueChanged<double> onChanged;
 
-  const _NutrientField({
+  const _NutrientCell({
+    required this.element,
     required this.value,
     required this.onChanged,
   });
 
   @override
-  State<_NutrientField> createState() => _NutrientFieldState();
+  State<_NutrientCell> createState() => _NutrientCellState();
 }
 
-class _NutrientFieldState extends State<_NutrientField> {
-  late final TextEditingController _controller;
+class _NutrientCellState extends State<_NutrientCell> {
+  late TextEditingController _controller;
   bool _internal = false;
 
   @override
@@ -144,7 +92,7 @@ class _NutrientFieldState extends State<_NutrientField> {
   String _fmt(double v) => v == 0 ? '' : v.toStringAsFixed(1);
 
   @override
-  void didUpdateWidget(_NutrientField old) {
+  void didUpdateWidget(_NutrientCell old) {
     super.didUpdateWidget(old);
     if (!_internal && old.value != widget.value) {
       _controller.text = _fmt(widget.value);
@@ -159,20 +107,48 @@ class _NutrientFieldState extends State<_NutrientField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      decoration: const InputDecoration(
-        isDense: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-        border: OutlineInputBorder(),
-      ),
-      style: Theme.of(context).textTheme.bodySmall,
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      onChanged: (text) {
-        _internal = true;
-        widget.onChanged(double.tryParse(text) ?? 0.0);
-        _internal = false;
-      },
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          widget.element.symbol,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+            letterSpacing: 0.5,
+          ),
+        ),
+        const SizedBox(height: 2),
+        SizedBox(
+          height: 32,
+          child: TextField(
+            controller: _controller,
+            style: const TextStyle(fontSize: 12),
+            decoration: InputDecoration(
+              isDense: true,
+              filled: true,
+              fillColor: theme.colorScheme.surfaceContainerLow,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6),
+                borderSide:
+                    BorderSide(color: theme.colorScheme.outlineVariant),
+              ),
+            ),
+            keyboardType:
+                const TextInputType.numberWithOptions(decimal: true),
+            onChanged: (text) {
+              _internal = true;
+              widget.onChanged(double.tryParse(text) ?? 0.0);
+              _internal = false;
+            },
+          ),
+        ),
+      ],
     );
   }
 }
