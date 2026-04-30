@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hydrobuddy/domain/models/element.dart';
 import 'package:hydrobuddy/domain/models/substance.dart';
 import 'package:hydrobuddy/domain/engine/nutrient_calculator.dart';
+import 'package:hydrobuddy/domain/engine/units.dart';
 
 void main() {
   group('NutrientCalculator', () {
@@ -77,6 +78,148 @@ void main() {
         weights: weights, substances: [cheap],
       );
       expect(cost, greaterThan(0));
+    });
+  });
+
+  group('grossErrors', () {
+    test('exact match gives 0% error', () {
+      final achieved = {Element.k: 200.0};
+      final targets = {Element.k: 200.0};
+      final errors = NutrientCalculator.grossErrors(
+        achieved: achieved, targets: targets,
+      );
+      expect(errors[Element.k], closeTo(0.0, 0.01));
+    });
+
+    test('10% off gives 10% error', () {
+      final achieved = {Element.k: 220.0};
+      final targets = {Element.k: 200.0};
+      final errors = NutrientCalculator.grossErrors(
+        achieved: achieved, targets: targets,
+      );
+      expect(errors[Element.k], closeTo(10.0, 0.01));
+    });
+
+    test('target zero gives gross error zero', () {
+      final achieved = {Element.zn: 5.0};
+      final targets = {Element.zn: 0.0};
+      final errors = NutrientCalculator.grossErrors(
+        achieved: achieved, targets: targets,
+      );
+      expect(errors[Element.zn], closeTo(0.0, 0.01));
+    });
+
+    test('multiple elements', () {
+      final achieved = {Element.k: 210.0, Element.nNo3: 189.0};
+      final targets = {Element.k: 200.0, Element.nNo3: 210.0};
+      final errors = NutrientCalculator.grossErrors(
+        achieved: achieved, targets: targets,
+      );
+      expect(errors[Element.k], closeTo(5.0, 0.1));
+      expect(errors[Element.nNo3], closeTo(10.0, 0.1));
+    });
+  });
+
+  group('instrumentalErrors', () {
+    test('single substance with known ppm gives correct error %', () {
+      final sub = Substance(id: 1, name: 'K Salt', k: 50.0);
+      final weights = {0: 1.0};
+      final achieved = {Element.k: UnitConverter.ppmFromWeight(1.0, 50.0, 1.0)};
+      final errors = NutrientCalculator.instrumentalErrors(
+        weights: weights,
+        substances: [sub],
+        achieved: achieved,
+        volumeLiters: 1.0,
+        weightError: 0.01,
+      );
+      // weightError 0.01g × (50/100) × 1000 / 1 = 5 ppm error
+      // achieved = 1 × (50/100) × 1000 / 1 = 500 ppm
+      // error % = 5 / 500 * 100 = 1.0%
+      expect(errors[Element.k], closeTo(1.0, 0.01));
+    });
+
+    test('element not in achieved gets zero error', () {
+      final sub = Substance(id: 1, name: 'K Salt', k: 50.0);
+      final weights = {0: 1.0};
+      final achieved = <Element, double>{};
+      final errors = NutrientCalculator.instrumentalErrors(
+        weights: weights,
+        substances: [sub],
+        achieved: achieved,
+        volumeLiters: 1.0,
+        weightError: 0.01,
+      );
+      expect(errors[Element.k], closeTo(0.0, 0.01));
+    });
+
+    test('edge case: zero weight salt contributes zero error', () {
+      final sub = Substance(id: 1, name: 'K Salt', k: 50.0);
+      final weights = {0: 0.0};
+      final achieved = {Element.k: 500.0};
+      final errors = NutrientCalculator.instrumentalErrors(
+        weights: weights,
+        substances: [sub],
+        achieved: achieved,
+        volumeLiters: 1.0,
+        weightError: 0.01,
+      );
+      expect(errors[Element.k], closeTo(0.0, 0.01));
+    });
+
+    test('higher weightError increases error proportionally', () {
+      final sub = Substance(id: 1, name: 'K Salt', k: 50.0);
+      final weights = {0: 1.0};
+      final achieved = {Element.k: UnitConverter.ppmFromWeight(1.0, 50.0, 1.0)};
+      final errors01 = NutrientCalculator.instrumentalErrors(
+        weights: weights,
+        substances: [sub],
+        achieved: achieved,
+        volumeLiters: 1.0,
+        weightError: 0.01,
+      );
+      final errors1 = NutrientCalculator.instrumentalErrors(
+        weights: weights,
+        substances: [sub],
+        achieved: achieved,
+        volumeLiters: 1.0,
+        weightError: 0.1,
+      );
+      expect(errors1[Element.k], closeTo(errors01[Element.k]! * 10.0, 0.01));
+    });
+  });
+
+  group('K2O/P2O5 conversions', () {
+    test('k2oToK', () {
+      expect(UnitConverter.k2oToK(100.0), closeTo(83.01, 0.01));
+    });
+
+    test('kToK2o roundtrip', () {
+      final k = UnitConverter.k2oToK(100.0);
+      expect(UnitConverter.kToK2o(k), closeTo(100.0, 0.01));
+    });
+
+    test('p2o5ToP', () {
+      expect(UnitConverter.p2o5ToP(100.0), closeTo(43.64, 0.01));
+    });
+
+    test('pToP2o5 roundtrip', () {
+      final p = UnitConverter.p2o5ToP(100.0);
+      expect(UnitConverter.pToP2o5(p), closeTo(100.0, 0.01));
+    });
+  });
+
+  group('Si/SiO2 conversions', () {
+    test('siToSio2', () {
+      expect(UnitConverter.siToSio2(46.84), closeTo(100.0, 0.01));
+    });
+
+    test('sio2ToSi', () {
+      expect(UnitConverter.sio2ToSi(100.0), closeTo(46.84, 0.01));
+    });
+
+    test('sio2ToSi roundtrip', () {
+      final si = UnitConverter.sio2ToSi(100.0);
+      expect(UnitConverter.siToSio2(si), closeTo(100.0, 0.01));
     });
   });
 }

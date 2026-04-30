@@ -6,7 +6,7 @@ part of 'calculator_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$calculationResultHash() => r'5b713b0ae8c64f9c390e81873d1739edb1666b64';
+String _$calculationResultHash() => r'c70c44498fc49fa15d206f83fe98be368babf2eb';
 
 /// See also [calculationResult].
 @ProviderFor(calculationResult)
@@ -169,5 +169,101 @@ final degreeOfFreedomProvider =
     );
 
 typedef _$DegreeOfFreedom = AutoDisposeNotifier<Element?>;
+String _$waterQualityIdHash() => r'183f29b03b27e80d557ac6af811e486d2930798a';
+
+/// See also [WaterQualityId].
+@ProviderFor(WaterQualityId)
+final waterQualityIdProvider =
+    AutoDisposeNotifierProvider<WaterQualityId, int?>.internal(
+      WaterQualityId.new,
+      name: r'waterQualityIdProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$waterQualityIdHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$WaterQualityId = AutoDisposeNotifier<int?>;
+String _$weightErrorHash() => r'd0fdbdf19ae919395d1ee51dc14c20354b372927';
+
+/// See also [WeightError].
+@ProviderFor(WeightError)
+final weightErrorProvider =
+    AutoDisposeNotifierProvider<WeightError, double>.internal(
+      WeightError.new,
+      name: r'weightErrorProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$weightErrorHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$WeightError = AutoDisposeNotifier<double>;
+String _$volumeErrorHash() => r'b10261cf0806704343fe31bd367148051468cbd5';
+
+/// See also [VolumeError].
+@ProviderFor(VolumeError)
+final volumeErrorProvider =
+    AutoDisposeNotifierProvider<VolumeError, double>.internal(
+      VolumeError.new,
+      name: r'volumeErrorProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$volumeErrorHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$VolumeError = AutoDisposeNotifier<double>;
+String _$solutionModeHash() => r'30574b331cb25203703f42869a6798e4dcb927bc';
+
+/// See also [SolutionMode].
+@ProviderFor(SolutionMode)
+final solutionModeProvider =
+    AutoDisposeNotifierProvider<SolutionMode, calc.SolutionMode>.internal(
+      SolutionMode.new,
+      name: r'solutionModeProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$solutionModeHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$SolutionMode = AutoDisposeNotifier<calc.SolutionMode>;
+String _$ecModelHash() => r'2608c5bb691cabb94297bb0af3dc66601d33636b';
+
+/// See also [EcModel].
+@ProviderFor(EcModel)
+final ecModelProvider =
+    AutoDisposeNotifierProvider<EcModel, calc.EcModel>.internal(
+      EcModel.new,
+      name: r'ecModelProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$ecModelHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$EcModel = AutoDisposeNotifier<calc.EcModel>;
+String _$siSourceHash() => r'0fed05b5deb65e77153f02c49e70c3aff7bd570d';
+
+/// See also [SiSource].
+@ProviderFor(SiSource)
+final siSourceProvider =
+    AutoDisposeNotifierProvider<SiSource, calc.SiSource>.internal(
+      SiSource.new,
+      name: r'siSourceProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$siSourceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$SiSource = AutoDisposeNotifier<calc.SiSource>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

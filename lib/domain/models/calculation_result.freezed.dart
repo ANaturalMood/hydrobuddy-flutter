@@ -296,6 +296,10 @@ mixin _$CalculationResult {
   double get totalCost => throw _privateConstructorUsedError;
   double get predictedEc => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
+  Map<Element, double> get grossErrors => throw _privateConstructorUsedError;
+  Map<Element, double> get instrumentalErrors =>
+      throw _privateConstructorUsedError;
+  List<String> get warnings => throw _privateConstructorUsedError;
 
   /// Serializes this CalculationResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -321,6 +325,9 @@ abstract class $CalculationResultCopyWith<$Res> {
     double totalCost,
     double predictedEc,
     String? error,
+    Map<Element, double> grossErrors,
+    Map<Element, double> instrumentalErrors,
+    List<String> warnings,
   });
 }
 
@@ -345,6 +352,9 @@ class _$CalculationResultCopyWithImpl<$Res, $Val extends CalculationResult>
     Object? totalCost = null,
     Object? predictedEc = null,
     Object? error = freezed,
+    Object? grossErrors = null,
+    Object? instrumentalErrors = null,
+    Object? warnings = null,
   }) {
     return _then(
       _value.copyWith(
@@ -372,6 +382,18 @@ class _$CalculationResultCopyWithImpl<$Res, $Val extends CalculationResult>
                 ? _value.error
                 : error // ignore: cast_nullable_to_non_nullable
                       as String?,
+            grossErrors: null == grossErrors
+                ? _value.grossErrors
+                : grossErrors // ignore: cast_nullable_to_non_nullable
+                      as Map<Element, double>,
+            instrumentalErrors: null == instrumentalErrors
+                ? _value.instrumentalErrors
+                : instrumentalErrors // ignore: cast_nullable_to_non_nullable
+                      as Map<Element, double>,
+            warnings: null == warnings
+                ? _value.warnings
+                : warnings // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
           )
           as $Val,
     );
@@ -394,6 +416,9 @@ abstract class _$$CalculationResultImplCopyWith<$Res>
     double totalCost,
     double predictedEc,
     String? error,
+    Map<Element, double> grossErrors,
+    Map<Element, double> instrumentalErrors,
+    List<String> warnings,
   });
 }
 
@@ -417,6 +442,9 @@ class __$$CalculationResultImplCopyWithImpl<$Res>
     Object? totalCost = null,
     Object? predictedEc = null,
     Object? error = freezed,
+    Object? grossErrors = null,
+    Object? instrumentalErrors = null,
+    Object? warnings = null,
   }) {
     return _then(
       _$CalculationResultImpl(
@@ -444,6 +472,18 @@ class __$$CalculationResultImplCopyWithImpl<$Res>
             ? _value.error
             : error // ignore: cast_nullable_to_non_nullable
                   as String?,
+        grossErrors: null == grossErrors
+            ? _value._grossErrors
+            : grossErrors // ignore: cast_nullable_to_non_nullable
+                  as Map<Element, double>,
+        instrumentalErrors: null == instrumentalErrors
+            ? _value._instrumentalErrors
+            : instrumentalErrors // ignore: cast_nullable_to_non_nullable
+                  as Map<Element, double>,
+        warnings: null == warnings
+            ? _value._warnings
+            : warnings // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
       ),
     );
   }
@@ -459,9 +499,15 @@ class _$CalculationResultImpl implements _CalculationResult {
     required this.totalCost,
     required this.predictedEc,
     this.error,
+    final Map<Element, double> grossErrors = const {},
+    final Map<Element, double> instrumentalErrors = const {},
+    final List<String> warnings = const [],
   }) : _substances = substances,
        _achievedConcentrations = achievedConcentrations,
-       _targetConcentrations = targetConcentrations;
+       _targetConcentrations = targetConcentrations,
+       _grossErrors = grossErrors,
+       _instrumentalErrors = instrumentalErrors,
+       _warnings = warnings;
 
   factory _$CalculationResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$CalculationResultImplFromJson(json);
@@ -498,10 +544,37 @@ class _$CalculationResultImpl implements _CalculationResult {
   final double predictedEc;
   @override
   final String? error;
+  final Map<Element, double> _grossErrors;
+  @override
+  @JsonKey()
+  Map<Element, double> get grossErrors {
+    if (_grossErrors is EqualUnmodifiableMapView) return _grossErrors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_grossErrors);
+  }
+
+  final Map<Element, double> _instrumentalErrors;
+  @override
+  @JsonKey()
+  Map<Element, double> get instrumentalErrors {
+    if (_instrumentalErrors is EqualUnmodifiableMapView)
+      return _instrumentalErrors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_instrumentalErrors);
+  }
+
+  final List<String> _warnings;
+  @override
+  @JsonKey()
+  List<String> get warnings {
+    if (_warnings is EqualUnmodifiableListView) return _warnings;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_warnings);
+  }
 
   @override
   String toString() {
-    return 'CalculationResult(substances: $substances, achievedConcentrations: $achievedConcentrations, targetConcentrations: $targetConcentrations, totalCost: $totalCost, predictedEc: $predictedEc, error: $error)';
+    return 'CalculationResult(substances: $substances, achievedConcentrations: $achievedConcentrations, targetConcentrations: $targetConcentrations, totalCost: $totalCost, predictedEc: $predictedEc, error: $error, grossErrors: $grossErrors, instrumentalErrors: $instrumentalErrors, warnings: $warnings)';
   }
 
   @override
@@ -525,7 +598,16 @@ class _$CalculationResultImpl implements _CalculationResult {
                 other.totalCost == totalCost) &&
             (identical(other.predictedEc, predictedEc) ||
                 other.predictedEc == predictedEc) &&
-            (identical(other.error, error) || other.error == error));
+            (identical(other.error, error) || other.error == error) &&
+            const DeepCollectionEquality().equals(
+              other._grossErrors,
+              _grossErrors,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._instrumentalErrors,
+              _instrumentalErrors,
+            ) &&
+            const DeepCollectionEquality().equals(other._warnings, _warnings));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -538,6 +620,9 @@ class _$CalculationResultImpl implements _CalculationResult {
     totalCost,
     predictedEc,
     error,
+    const DeepCollectionEquality().hash(_grossErrors),
+    const DeepCollectionEquality().hash(_instrumentalErrors),
+    const DeepCollectionEquality().hash(_warnings),
   );
 
   /// Create a copy of CalculationResult
@@ -565,6 +650,9 @@ abstract class _CalculationResult implements CalculationResult {
     required final double totalCost,
     required final double predictedEc,
     final String? error,
+    final Map<Element, double> grossErrors,
+    final Map<Element, double> instrumentalErrors,
+    final List<String> warnings,
   }) = _$CalculationResultImpl;
 
   factory _CalculationResult.fromJson(Map<String, dynamic> json) =
@@ -582,6 +670,12 @@ abstract class _CalculationResult implements CalculationResult {
   double get predictedEc;
   @override
   String? get error;
+  @override
+  Map<Element, double> get grossErrors;
+  @override
+  Map<Element, double> get instrumentalErrors;
+  @override
+  List<String> get warnings;
 
   /// Create a copy of CalculationResult
   /// with the given fields replaced by the non-null parameter values.

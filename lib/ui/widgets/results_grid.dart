@@ -2,13 +2,6 @@ import 'package:flutter/material.dart' hide Element;
 import 'package:hydrobuddy/domain/models/element.dart';
 import 'package:hydrobuddy/domain/models/calculation_result.dart';
 
-/// Exibe os resultados do cálculo: tabela de elementos, tabela de substâncias
-/// e métricas (EC, custo, ratio NPK).
-///
-/// Estados:
-/// - [result] nulo ou sem targets → mensagem de estado vazio
-/// - [result.error] não nulo → banner de erro vermelho
-/// - [result] com dados → DataTables + métricas
 class ResultsGrid extends StatelessWidget {
   final CalculationResult? result;
   final Map<int, String> substanceNames;
@@ -32,16 +25,21 @@ class ResultsGrid extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _sectionLabel(context, 'Elementos'),
-        _elementTable(context),
+        _sectionLabel(context, 'Elements — StringGrid1'),
+        _stringGrid1(context),
         const SizedBox(height: 16),
         if (result!.substances.isNotEmpty) ...[
-          _sectionLabel(context, 'Substâncias'),
-          _substanceTable(context),
+          _sectionLabel(context, 'Substances — StringGrid2'),
+          _stringGrid2(context),
           const SizedBox(height: 16),
         ],
-        _sectionLabel(context, 'Métricas'),
-        _metricsPanel(context),
+        _sectionLabel(context, 'EC / Custo'),
+        _ecMetricsPanel(context),
+        if (result!.warnings.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          _sectionLabel(context, 'Warnings'),
+          _warningsPanel(context),
+        ],
       ],
     );
   }
@@ -91,102 +89,154 @@ class ResultsGrid extends StatelessWidget {
     );
   }
 
-  Widget _elementTable(BuildContext context) {
+  Widget _stringGrid1(BuildContext context) {
     final targets = result!.targetConcentrations;
     final achieved = result!.achievedConcentrations;
+    final grossErrors = result!.grossErrors;
+    final instrumentalErrors = result!.instrumentalErrors;
 
-    // Constrói lista ordenada de elementos que aparecem em targets ou achieved
     final allElements = <Element>{
       ...targets.keys,
       ...achieved.keys,
     }.toList()
-      ..sort((Element a, Element b) => a.symbol.compareTo(b.symbol));
+      ..sort((a, b) => a.symbol.compareTo(b.symbol));
 
-    return DataTable(
-      columnSpacing: 16,
-      headingTextStyle: Theme.of(context)
-          .textTheme
-          .labelSmall
-          ?.copyWith(fontWeight: FontWeight.bold),
-      columns: const [
-        DataColumn(label: Text('Elemento')),
-        DataColumn(label: Text('Alvo'), numeric: true),
-        DataColumn(label: Text('Real'), numeric: true),
-        DataColumn(label: Text('Erro%'), numeric: true),
-      ],
-      rows: allElements.map((e) {
-        final target = targets[e] ?? 0.0;
-        final ach = achieved[e] ?? 0.0;
-        final err = target > 0 ? ((ach - target) / target * 100) : null;
-        return DataRow(cells: [
-          DataCell(Text(e.symbol, style: _cellStyle(context))),
-          DataCell(Text(target.toStringAsFixed(1), style: _cellStyle(context))),
-          DataCell(Text(ach.toStringAsFixed(1), style: _cellStyle(context))),
-          DataCell(Text(
-            err != null ? '${err.toStringAsFixed(1)}%' : '—',
-            style: _cellStyle(context).copyWith(
-              color: err != null && err.abs() > 1
-                  ? Theme.of(context).colorScheme.error
-                  : null,
-            ),
-          )),
-        ]);
-      }).toList(),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columnSpacing: 12,
+        headingTextStyle: Theme.of(context)
+            .textTheme
+            .labelSmall
+            ?.copyWith(fontWeight: FontWeight.bold),
+        columns: const [
+          DataColumn(label: Text('Element')),
+          DataColumn(label: Text('Target'), numeric: true),
+          DataColumn(label: Text('Result'), numeric: true),
+          DataColumn(label: Text('GE%'), numeric: true),
+          DataColumn(label: Text('IE%'), numeric: true),
+        ],
+        rows: allElements.map((e) {
+          final target = targets[e] ?? 0.0;
+          final ach = achieved[e] ?? 0.0;
+          final ge = grossErrors[e];
+          final ie = instrumentalErrors[e];
+
+          return DataRow(cells: [
+            DataCell(Text(e.symbol, style: _cellStyle(context))),
+            DataCell(Text(target > 0 ? target.toStringAsFixed(1) : '—',
+                style: _cellStyle(context))),
+            DataCell(Text(ach.toStringAsFixed(1), style: _cellStyle(context))),
+            DataCell(Text(
+              ge != null && ge > 0 ? '${ge.toStringAsFixed(1)}%' : '—',
+              style: _cellStyle(context).copyWith(
+                color: ge != null && ge > 1.0
+                    ? Theme.of(context).colorScheme.error
+                    : null,
+              ),
+            )),
+            DataCell(Text(
+              ie != null && ie > 0 ? '${ie.toStringAsFixed(1)}%' : '—',
+              style: _cellStyle(context).copyWith(
+                color: ie != null && ie > 20.0
+                    ? Theme.of(context).colorScheme.error
+                    : null,
+              ),
+            )),
+          ]);
+        }).toList(),
+      ),
     );
   }
 
-  Widget _substanceTable(BuildContext context) {
+  Widget _stringGrid2(BuildContext context) {
     final substances = result!.substances;
 
-    return DataTable(
-      columnSpacing: 16,
-      headingTextStyle: Theme.of(context)
-          .textTheme
-          .labelSmall
-          ?.copyWith(fontWeight: FontWeight.bold),
-      columns: const [
-        DataColumn(label: Text('Substância')),
-        DataColumn(label: Text('Peso (g)'), numeric: true),
-        DataColumn(label: Text('Custo (R\$)'), numeric: true),
-      ],
-      rows: substances.map((s) {
-        final name = substanceNames[s.substanceId] ?? '#${s.substanceId}';
-        return DataRow(cells: [
-          DataCell(Text(name, style: _cellStyle(context))),
-          DataCell(Text(s.weight.toStringAsFixed(2),
-              style: _cellStyle(context))),
-          DataCell(Text(s.cost.toStringAsFixed(2),
-              style: _cellStyle(context))),
-        ]);
-      }).toList(),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columnSpacing: 12,
+        headingTextStyle: Theme.of(context)
+            .textTheme
+            .labelSmall
+            ?.copyWith(fontWeight: FontWeight.bold),
+        columns: const [
+          DataColumn(label: Text('Name')),
+          DataColumn(label: Text('Formula')),
+          DataColumn(label: Text('Amount (g)'), numeric: true),
+          DataColumn(label: Text('Cost'), numeric: true),
+        ],
+        rows: substances.map((s) {
+          final name = substanceNames[s.substanceId] ?? '#${s.substanceId}';
+          final concTag = s.concType != null && s.concType!.isNotEmpty
+              ? ' (${s.concType})'
+              : '';
+          return DataRow(cells: [
+            DataCell(Text('$name$concTag', style: _cellStyle(context))),
+            DataCell(Text('', style: _cellStyle(context))),
+            DataCell(Text(s.weight.toStringAsFixed(2),
+                style: _cellStyle(context))),
+            DataCell(Text(s.cost.toStringAsFixed(4),
+                style: _cellStyle(context))),
+          ]);
+        }).toList(),
+      ),
     );
   }
 
-  Widget _metricsPanel(BuildContext context) {
-    final achieved = result!.achievedConcentrations;
-    final nTotal =
-        (achieved[Element.nNo3] ?? 0.0) + (achieved[Element.nNh4] ?? 0.0);
-    final p = achieved[Element.p] ?? 0.0;
-    final k = achieved[Element.k] ?? 0.0;
-    final npk =
-        '${nTotal.toStringAsFixed(0)}-${p.toStringAsFixed(0)}-${k.toStringAsFixed(0)}';
-
+  Widget _ecMetricsPanel(BuildContext context) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _metricRow(context, 'EC previsto',
+            _metricRow(context, 'EC',
                 '${result!.predictedEc.toStringAsFixed(2)} mS/cm'),
             const SizedBox(height: 4),
             _metricRow(context, 'Custo total',
-                'R\$ ${result!.totalCost.toStringAsFixed(4)}/L'),
-            if (nTotal > 0 || p > 0 || k > 0) ...[
-              const SizedBox(height: 4),
-              _metricRow(context, 'NPK (N-P₂O₅-K₂O)', npk),
-            ],
+                'R\$ ${result!.totalCost.toStringAsFixed(4)}'),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _warningsPanel(BuildContext context) {
+    return Card(
+      color: Theme.of(context).colorScheme.errorContainer.withAlpha(80),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: result!.warnings
+              .map((w) => Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.warning_amber_rounded,
+                            size: 16,
+                            color:
+                                Theme.of(context).colorScheme.onErrorContainer),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            w,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onErrorContainer,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ))
+              .toList(),
         ),
       ),
     );

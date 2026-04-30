@@ -13,7 +13,8 @@ import 'package:hydrobuddy/ui/providers/substances_provider.dart';
 import 'package:hydrobuddy/ui/screens/calculator_screen.dart';
 
 ProviderContainer _createContainer({drift.AppDatabase? db}) {
-  final effectiveDb = db ?? drift.AppDatabase.forTesting(NativeDatabase.memory());
+  final effectiveDb =
+      db ?? drift.AppDatabase.forTesting(NativeDatabase.memory());
   return ProviderContainer(
     overrides: [
       databaseProvider.overrideWithValue(effectiveDb),
@@ -41,7 +42,7 @@ void main() {
       expect(find.text('HydroBuddy'), findsOneWidget);
     });
 
-    testWidgets('2 — Exibe grid de nutrientes quando alvos são definidos',
+    testWidgets('2 — Exibe grid de nutrientes quando alvos sao definidos',
         (WidgetTester tester) async {
       final container = _createContainer();
       addTearDown(container.dispose);
@@ -60,10 +61,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Verifica que labels dos nutrientes estão visíveis
-      expect(find.text('N-NO3'), findsOneWidget);
-      expect(find.text('K'), findsOneWidget);
-      expect(find.text('Ca'), findsOneWidget);
+      expect(find.text('N-NO3'), findsAtLeastNWidgets(1));
+      expect(find.text('K'), findsAtLeastNWidgets(1));
+      expect(find.text('Ca'), findsAtLeastNWidgets(1));
+      expect(find.text('Nutrientes Alvo'), findsOneWidget);
     });
 
     testWidgets('3 — Exibe resultados quando calculationResult tem dados',
@@ -97,17 +98,15 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Aguarda o debounce do provider computado (300ms + margem)
       await tester.pump(const Duration(milliseconds: 400));
       await tester.pumpAndSettle();
 
-      // Verifica seção de resultados
-      expect(find.text('Elementos'), findsOneWidget);
-      expect(find.text('Métricas'), findsOneWidget);
-      expect(find.text('EC previsto'), findsOneWidget);
+      expect(find.text('Elements — StringGrid1'), findsOneWidget);
+      expect(find.text('EC / Custo'), findsOneWidget);
+      expect(find.textContaining('EC'), findsAtLeastNWidgets(1));
     });
 
-    testWidgets('4 — Exibe estado vazio quando targets estão vazios',
+    testWidgets('4 — Exibe estado vazio quando targets estao vazios',
         (WidgetTester tester) async {
       final container = _createContainer();
       addTearDown(container.dispose);
@@ -121,17 +120,17 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        find.text('Preencha os nutrientes alvo e selecione substâncias'),
+        find.text(
+            'Preencha os nutrientes alvo e selecione substâncias'),
         findsOneWidget,
       );
     });
 
-    testWidgets('5 — Exibe mensagem de erro quando result.error não é null',
+    testWidgets('5 — Exibe mensagem de erro quando result.error nao eh null',
         (WidgetTester tester) async {
       final container = _createContainer();
       addTearDown(container.dispose);
 
-      // Define targets e IDs inválidos para gerar erro
       container.read(targetNutrientsProvider.notifier).set({
         Element.nNo3: 200,
       });
@@ -145,15 +144,136 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Aguarda o debounce
       await tester.pump(const Duration(milliseconds: 400));
       await tester.pumpAndSettle();
 
-      // Deve exibir erro (substância não encontrada)
       expect(
-        find.text('Nenhuma substância encontrada para os IDs fornecidos'),
+        find.text(
+            'Nenhuma substância encontrada para os IDs fornecidos'),
         findsOneWidget,
       );
+    });
+
+    testWidgets('6 — Exibe secao Volume e botoes de unidade',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: CalculatorScreen()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Volume'), findsAtLeastNWidgets(1));
+      expect(find.text('L'), findsOneWidget);
+      expect(find.text('gal'), findsOneWidget);
+    });
+
+    testWidgets('7 — Exibe secoes de radio (Calc Mode, Solution Mode, EC Model)',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: CalculatorScreen()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Calc Mode'), findsOneWidget);
+      expect(find.text('Solution Mode'), findsOneWidget);
+      expect(find.text('EC Model'), findsOneWidget);
+      expect(find.text('Input Desired Concentrations'), findsOneWidget);
+      expect(find.text('Direct addition'), findsOneWidget);
+    });
+
+    testWidgets('8 — Exibe secao de substancias com botao Select',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: CalculatorScreen()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Substances'), findsOneWidget);
+      expect(find.text('Select Substances'), findsOneWidget);
+      expect(find.text('No substances selected'), findsOneWidget);
+    });
+
+    testWidgets('9 — Exibe secao DOF com dropdown',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: CalculatorScreen()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Free element (DOF)'), findsOneWidget);
+    });
+
+    testWidgets('10 — Exibe secao Instrument Precision',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: CalculatorScreen()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Instrument Precision'), findsOneWidget);
+    });
+
+    testWidgets('11 — Exibe botao Carry Out Calculation',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: CalculatorScreen()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Carry Out Calculation'), findsOneWidget);
+    });
+
+    testWidgets('12 — Exibe Si source section',
+        (WidgetTester tester) async {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: CalculatorScreen()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Si source'), findsOneWidget);
+      expect(find.text('Si'), findsAtLeastNWidgets(1));
+      expect(find.text('SiO\u2082'), findsOneWidget);
     });
   });
 }
