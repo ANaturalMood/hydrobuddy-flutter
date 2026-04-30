@@ -21,14 +21,14 @@ CalculationInput _$CalculationInputFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CalculationInput {
-  Map<String, double> get targets => throw _privateConstructorUsedError;
+  Map<Element, double> get targets => throw _privateConstructorUsedError;
   List<int> get substanceIds => throw _privateConstructorUsedError;
   double get volume => throw _privateConstructorUsedError;
   VolumeUnit get volumeUnit => throw _privateConstructorUsedError;
   ConcUnit get concUnit => throw _privateConstructorUsedError;
   WeightUnit get weightUnit => throw _privateConstructorUsedError;
   CalcMode get calcMode => throw _privateConstructorUsedError;
-  int? get degreeOfFreedom => throw _privateConstructorUsedError;
+  Element? get degreeOfFreedom => throw _privateConstructorUsedError;
   double get dilutionFactor => throw _privateConstructorUsedError;
 
   /// Serializes this CalculationInput to a JSON map.
@@ -49,14 +49,14 @@ abstract class $CalculationInputCopyWith<$Res> {
   ) = _$CalculationInputCopyWithImpl<$Res, CalculationInput>;
   @useResult
   $Res call({
-    Map<String, double> targets,
+    Map<Element, double> targets,
     List<int> substanceIds,
     double volume,
     VolumeUnit volumeUnit,
     ConcUnit concUnit,
     WeightUnit weightUnit,
     CalcMode calcMode,
-    int? degreeOfFreedom,
+    Element? degreeOfFreedom,
     double dilutionFactor,
   });
 }
@@ -91,7 +91,7 @@ class _$CalculationInputCopyWithImpl<$Res, $Val extends CalculationInput>
             targets: null == targets
                 ? _value.targets
                 : targets // ignore: cast_nullable_to_non_nullable
-                      as Map<String, double>,
+                      as Map<Element, double>,
             substanceIds: null == substanceIds
                 ? _value.substanceIds
                 : substanceIds // ignore: cast_nullable_to_non_nullable
@@ -119,7 +119,7 @@ class _$CalculationInputCopyWithImpl<$Res, $Val extends CalculationInput>
             degreeOfFreedom: freezed == degreeOfFreedom
                 ? _value.degreeOfFreedom
                 : degreeOfFreedom // ignore: cast_nullable_to_non_nullable
-                      as int?,
+                      as Element?,
             dilutionFactor: null == dilutionFactor
                 ? _value.dilutionFactor
                 : dilutionFactor // ignore: cast_nullable_to_non_nullable
@@ -140,14 +140,14 @@ abstract class _$$CalculationInputImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    Map<String, double> targets,
+    Map<Element, double> targets,
     List<int> substanceIds,
     double volume,
     VolumeUnit volumeUnit,
     ConcUnit concUnit,
     WeightUnit weightUnit,
     CalcMode calcMode,
-    int? degreeOfFreedom,
+    Element? degreeOfFreedom,
     double dilutionFactor,
   });
 }
@@ -181,7 +181,7 @@ class __$$CalculationInputImplCopyWithImpl<$Res>
         targets: null == targets
             ? _value._targets
             : targets // ignore: cast_nullable_to_non_nullable
-                  as Map<String, double>,
+                  as Map<Element, double>,
         substanceIds: null == substanceIds
             ? _value._substanceIds
             : substanceIds // ignore: cast_nullable_to_non_nullable
@@ -209,7 +209,7 @@ class __$$CalculationInputImplCopyWithImpl<$Res>
         degreeOfFreedom: freezed == degreeOfFreedom
             ? _value.degreeOfFreedom
             : degreeOfFreedom // ignore: cast_nullable_to_non_nullable
-                  as int?,
+                  as Element?,
         dilutionFactor: null == dilutionFactor
             ? _value.dilutionFactor
             : dilutionFactor // ignore: cast_nullable_to_non_nullable
@@ -223,7 +223,7 @@ class __$$CalculationInputImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CalculationInputImpl implements _CalculationInput {
   const _$CalculationInputImpl({
-    required final Map<String, double> targets,
+    required final Map<Element, double> targets,
     required final List<int> substanceIds,
     required this.volume,
     this.volumeUnit = VolumeUnit.liter,
@@ -238,9 +238,9 @@ class _$CalculationInputImpl implements _CalculationInput {
   factory _$CalculationInputImpl.fromJson(Map<String, dynamic> json) =>
       _$$CalculationInputImplFromJson(json);
 
-  final Map<String, double> _targets;
+  final Map<Element, double> _targets;
   @override
-  Map<String, double> get targets {
+  Map<Element, double> get targets {
     if (_targets is EqualUnmodifiableMapView) return _targets;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_targets);
@@ -269,7 +269,7 @@ class _$CalculationInputImpl implements _CalculationInput {
   @JsonKey()
   final CalcMode calcMode;
   @override
-  final int? degreeOfFreedom;
+  final Element? degreeOfFreedom;
   @override
   final double dilutionFactor;
 
@@ -337,14 +337,14 @@ class _$CalculationInputImpl implements _CalculationInput {
 
 abstract class _CalculationInput implements CalculationInput {
   const factory _CalculationInput({
-    required final Map<String, double> targets,
+    required final Map<Element, double> targets,
     required final List<int> substanceIds,
     required final double volume,
     final VolumeUnit volumeUnit,
     final ConcUnit concUnit,
     final WeightUnit weightUnit,
     final CalcMode calcMode,
-    final int? degreeOfFreedom,
+    final Element? degreeOfFreedom,
     required final double dilutionFactor,
   }) = _$CalculationInputImpl;
 
@@ -352,7 +352,7 @@ abstract class _CalculationInput implements CalculationInput {
       _$CalculationInputImpl.fromJson;
 
   @override
-  Map<String, double> get targets;
+  Map<Element, double> get targets;
   @override
   List<int> get substanceIds;
   @override
@@ -366,7 +366,7 @@ abstract class _CalculationInput implements CalculationInput {
   @override
   CalcMode get calcMode;
   @override
-  int? get degreeOfFreedom;
+  Element? get degreeOfFreedom;
   @override
   double get dilutionFactor;
 

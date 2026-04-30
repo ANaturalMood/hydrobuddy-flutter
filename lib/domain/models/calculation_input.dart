@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'element.dart';
 
 part 'calculation_input.freezed.dart';
 part 'calculation_input.g.dart';
@@ -14,14 +15,14 @@ enum CalcMode { directAddition, prepareStock }
 @freezed
 class CalculationInput with _$CalculationInput {
   const factory CalculationInput({
-    required Map<String, double> targets,
+    required Map<Element, double> targets,
     required List<int> substanceIds,
     required double volume,
     @Default(VolumeUnit.liter) VolumeUnit volumeUnit,
     @Default(ConcUnit.ppm) ConcUnit concUnit,
     @Default(WeightUnit.gram) WeightUnit weightUnit,
     @Default(CalcMode.directAddition) CalcMode calcMode,
-    int? degreeOfFreedom,
+    Element? degreeOfFreedom,
     required double dilutionFactor,
   }) = _CalculationInput;
 
