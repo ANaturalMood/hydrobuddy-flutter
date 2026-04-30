@@ -1,0 +1,31 @@
+{
+  "@@locale": "pt",
+  "appTitle": "HydroBuddy",
+  "@appTitle": {
+    "description": "Título do aplicativo"
+  },
+  "calculator": "Calculadora",
+  "@calculator": {
+    "description": "Título da tela da calculadora"
+  },
+  "substances": "Substâncias",
+  "@substances": {
+    "description": "Título da tela de substâncias"
+  },
+  "formulations": "Formulações",
+  "@formulations": {
+    "description": "Título da tela de histórico de formulações"
+  },
+  "tank": "Tanque",
+  "@tank": {
+    "description": "Título da tela de preparo de tanque"
+  },
+  "settings": "Configurações",
+  "@settings": {
+    "description": "Título da tela de configurações"
+  },
+  "about": "Sobre",
+  "@about": {
+    "description": "Título da tela sobre"
+  }
+}
