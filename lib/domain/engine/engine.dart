@@ -4,3 +4,4 @@ library;
 export 'units.dart';
 export 'chemical_data.dart';
 export 'least_squares.dart';
+export 'nutrient_calculator.dart';
