@@ -11,6 +11,7 @@ class SubstanceResult with _$SubstanceResult {
     required double weight,
     required double cost,
     @Default({}) Map<Element, double> elementContribution,
+    String? concType,
   }) = _SubstanceResult;
 
   factory SubstanceResult.fromJson(Map<String, dynamic> json) =>

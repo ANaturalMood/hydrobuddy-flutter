@@ -24,6 +24,7 @@ _$SubstanceResultImpl _$$SubstanceResultImplFromJson(
           ) ??
           const {},
     ),
+    concType: $checkedConvert('concType', (v) => v as String?),
   );
   return val;
 });
@@ -37,6 +38,7 @@ Map<String, dynamic> _$$SubstanceResultImplToJson(
   'elementContribution': instance.elementContribution.map(
     (k, e) => MapEntry(_$ElementEnumMap[k]!, e),
   ),
+  'concType': instance.concType,
 };
 
 const _$ElementEnumMap = {

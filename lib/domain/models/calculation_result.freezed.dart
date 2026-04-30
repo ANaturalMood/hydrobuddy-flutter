@@ -26,6 +26,7 @@ mixin _$SubstanceResult {
   double get cost => throw _privateConstructorUsedError;
   Map<Element, double> get elementContribution =>
       throw _privateConstructorUsedError;
+  String? get concType => throw _privateConstructorUsedError;
 
   /// Serializes this SubstanceResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,6 +50,7 @@ abstract class $SubstanceResultCopyWith<$Res> {
     double weight,
     double cost,
     Map<Element, double> elementContribution,
+    String? concType,
   });
 }
 
@@ -71,6 +73,7 @@ class _$SubstanceResultCopyWithImpl<$Res, $Val extends SubstanceResult>
     Object? weight = null,
     Object? cost = null,
     Object? elementContribution = null,
+    Object? concType = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -90,6 +93,10 @@ class _$SubstanceResultCopyWithImpl<$Res, $Val extends SubstanceResult>
                 ? _value.elementContribution
                 : elementContribution // ignore: cast_nullable_to_non_nullable
                       as Map<Element, double>,
+            concType: freezed == concType
+                ? _value.concType
+                : concType // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -110,6 +117,7 @@ abstract class _$$SubstanceResultImplCopyWith<$Res>
     double weight,
     double cost,
     Map<Element, double> elementContribution,
+    String? concType,
   });
 }
 
@@ -131,6 +139,7 @@ class __$$SubstanceResultImplCopyWithImpl<$Res>
     Object? weight = null,
     Object? cost = null,
     Object? elementContribution = null,
+    Object? concType = freezed,
   }) {
     return _then(
       _$SubstanceResultImpl(
@@ -150,6 +159,10 @@ class __$$SubstanceResultImplCopyWithImpl<$Res>
             ? _value._elementContribution
             : elementContribution // ignore: cast_nullable_to_non_nullable
                   as Map<Element, double>,
+        concType: freezed == concType
+            ? _value.concType
+            : concType // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -163,6 +176,7 @@ class _$SubstanceResultImpl implements _SubstanceResult {
     required this.weight,
     required this.cost,
     final Map<Element, double> elementContribution = const {},
+    this.concType,
   }) : _elementContribution = elementContribution;
 
   factory _$SubstanceResultImpl.fromJson(Map<String, dynamic> json) =>
@@ -185,8 +199,11 @@ class _$SubstanceResultImpl implements _SubstanceResult {
   }
 
   @override
+  final String? concType;
+
+  @override
   String toString() {
-    return 'SubstanceResult(substanceId: $substanceId, weight: $weight, cost: $cost, elementContribution: $elementContribution)';
+    return 'SubstanceResult(substanceId: $substanceId, weight: $weight, cost: $cost, elementContribution: $elementContribution, concType: $concType)';
   }
 
   @override
@@ -201,7 +218,9 @@ class _$SubstanceResultImpl implements _SubstanceResult {
             const DeepCollectionEquality().equals(
               other._elementContribution,
               _elementContribution,
-            ));
+            ) &&
+            (identical(other.concType, concType) ||
+                other.concType == concType));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -212,6 +231,7 @@ class _$SubstanceResultImpl implements _SubstanceResult {
     weight,
     cost,
     const DeepCollectionEquality().hash(_elementContribution),
+    concType,
   );
 
   /// Create a copy of SubstanceResult
@@ -237,6 +257,7 @@ abstract class _SubstanceResult implements SubstanceResult {
     required final double weight,
     required final double cost,
     final Map<Element, double> elementContribution,
+    final String? concType,
   }) = _$SubstanceResultImpl;
 
   factory _SubstanceResult.fromJson(Map<String, dynamic> json) =
@@ -250,6 +271,8 @@ abstract class _SubstanceResult implements SubstanceResult {
   double get cost;
   @override
   Map<Element, double> get elementContribution;
+  @override
+  String? get concType;
 
   /// Create a copy of SubstanceResult
   /// with the given fields replaced by the non-null parameter values.

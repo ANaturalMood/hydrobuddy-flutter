@@ -178,6 +178,7 @@ Future<CalculationResult> calculationResult(CalculationResultRef ref) async {
       weight: e.value,
       cost: e.value / 1000.0 * sub.cost,
       elementContribution: contribution,
+      concType: sub.concType,
     );
   }).toList();
 
