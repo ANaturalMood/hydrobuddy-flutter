@@ -11,6 +11,7 @@ class SubstanceResult with _$SubstanceResult {
     required double weight,
     required double cost,
     @Default({}) Map<Element, double> elementContribution,
+    String? concType,
   }) = _SubstanceResult;
 
   factory SubstanceResult.fromJson(Map<String, dynamic> json) =>
@@ -26,6 +27,9 @@ class CalculationResult with _$CalculationResult {
     required double totalCost,
     required double predictedEc,
     String? error,
+    @Default({}) Map<Element, double> grossErrors,
+    @Default({}) Map<Element, double> instrumentalErrors,
+    @Default([]) List<String> warnings,
   }) = _CalculationResult;
 
   factory CalculationResult.fromJson(Map<String, dynamic> json) =>

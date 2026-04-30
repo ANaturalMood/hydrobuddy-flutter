@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:hydrobuddy/domain/models/formulation.dart';
 import 'package:hydrobuddy/ui/providers/tank_provider.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/formulations_provider.dart';
 
 class PrepareTankScreen extends ConsumerStatefulWidget {
@@ -28,7 +29,7 @@ class _PrepareTankScreenState extends ConsumerState<PrepareTankScreen> {
     final formulationsAsync = ref.watch(watchFormulationsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Preparar Tanque')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.prepareTank)),
       body: formulationsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, _) => Center(child: Text('Erro: $err')),
@@ -45,22 +46,22 @@ class _PrepareTankScreenState extends ConsumerState<PrepareTankScreen> {
         children: [
           TextFormField(
             initialValue: _name,
-            decoration: const InputDecoration(
-              labelText: 'Nome',
-              hintText: 'ex: Tomate Semana 3',
+            decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.name,
+              hintText: AppLocalizations.of(context)!.tankNameHint,
             ),
             validator: (v) =>
-                (v == null || v.trim().isEmpty) ? 'Informe o nome' : null,
+                (v == null || v.trim().isEmpty) ? AppLocalizations.of(context)!.nameRequired : null,
             onChanged: (v) => _name = v.trim(),
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<int>(
             value: _selectedFormulationId,
-            decoration: const InputDecoration(labelText: 'Formulação'),
+            decoration: InputDecoration(labelText: AppLocalizations.of(context)!.formulations),
             items: [
-              const DropdownMenuItem<int>(
+              DropdownMenuItem<int>(
                 value: null,
-                child: Text('Selecione...'),
+                child: Text(AppLocalizations.of(context)!.selectEllipsis),
               ),
               ...formulations.map(
                 (f) => DropdownMenuItem<int>(
@@ -69,22 +70,22 @@ class _PrepareTankScreenState extends ConsumerState<PrepareTankScreen> {
                 ),
               ),
             ],
-            validator: (v) => v == null ? 'Selecione uma formulação' : null,
+            validator: (v) => v == null ? AppLocalizations.of(context)!.selectFormulation : null,
             onChanged: (v) =>
                 setState(() => _selectedFormulationId = v),
           ),
           const SizedBox(height: 16),
           TextFormField(
             initialValue: _volume.toString(),
-            decoration: const InputDecoration(
-              labelText: 'Volume',
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.volume,
               suffixText: 'L',
             ),
             keyboardType: TextInputType.number,
             validator: (v) {
-              if (v == null || v.isEmpty) return 'Informe o volume';
+              if (v == null || v.isEmpty) return AppLocalizations.of(context)!.volumeRequired;
               final parsed = double.tryParse(v);
-              if (parsed == null || parsed <= 0) return 'Volume inválido';
+              if (parsed == null || parsed <= 0) return AppLocalizations.of(context)!.invalidVolume;
               return null;
             },
             onChanged: (v) =>
@@ -93,15 +94,15 @@ class _PrepareTankScreenState extends ConsumerState<PrepareTankScreen> {
           const SizedBox(height: 16),
           _RecipeSummary(),
           const SizedBox(height: 16),
-          const Text('Medições (opcional)',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          Text(AppLocalizations.of(context)!.measurementsOptional,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
           Row(
             children: [
               Expanded(
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'EC real',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.actualEc,
                     suffixText: 'mS/cm',
                   ),
                   keyboardType: TextInputType.number,
@@ -112,7 +113,7 @@ class _PrepareTankScreenState extends ConsumerState<PrepareTankScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: TextFormField(
-                  decoration: const InputDecoration(labelText: 'pH real'),
+                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.actualPh),
                   keyboardType: TextInputType.number,
                   onChanged: (v) =>
                       _phReal = double.tryParse(v),
@@ -122,9 +123,9 @@ class _PrepareTankScreenState extends ConsumerState<PrepareTankScreen> {
           ),
           const SizedBox(height: 12),
           TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Nota',
-              hintText: 'Observações...',
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.note,
+              hintText: AppLocalizations.of(context)!.observations,
             ),
             maxLines: 2,
             onChanged: (v) => _notes = v.isNotEmpty ? v : null,
@@ -133,7 +134,7 @@ class _PrepareTankScreenState extends ConsumerState<PrepareTankScreen> {
           FilledButton.icon(
             onPressed: _submit,
             icon: const Icon(Icons.check),
-            label: const Text('Registrar Preparo'),
+            label: Text(AppLocalizations.of(context)!.registerPreparation),
           ),
         ],
       ),
@@ -168,19 +169,19 @@ class _RecipeSummary extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Resumo da Receita',
+            Text(AppLocalizations.of(context)!.recipeSummary,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: cs.primary,
                 )),
             const SizedBox(height: 8),
-            Text('KNO3: --g    MgSO4: --g    Ca(NO3)2: --g',
+            Text(AppLocalizations.of(context)!.placeholderRecipe,
                 style: TextStyle(fontSize: 13, color: cs.onSurfaceVariant)),
-            Text('KH2PO4: --g    Micros: --g',
+            Text(AppLocalizations.of(context)!.placeholderMicros,
                 style: TextStyle(fontSize: 13, color: cs.onSurfaceVariant)),
             const Divider(height: 20),
-            Text('EC previsto: -- mS/cm    Custo: --/L',
+            Text(AppLocalizations.of(context)!.placeholderEcCost,
                 style: TextStyle(fontSize: 13, color: cs.onSurfaceVariant)),
           ],
         ),

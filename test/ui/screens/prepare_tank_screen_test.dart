@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:hydrobuddy/domain/models/formulation.dart';
 import 'package:hydrobuddy/ui/providers/formulations_provider.dart';
 import 'package:hydrobuddy/ui/providers/tank_provider.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/screens/prepare_tank_screen.dart';
 
 final _testFormulation = Formulation(
@@ -20,8 +22,11 @@ Widget _wrap(List<Override> overrides) {
   final container = ProviderContainer(overrides: overrides);
   return UncontrolledProviderScope(
     container: container,
-    child: const MaterialApp(
-      home: PrepareTankScreen(),
+    child: MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('pt'),
+      home: const PrepareTankScreen(),
     ),
   );
 }
@@ -36,7 +41,7 @@ void main() {
 
       expect(find.text('Preparar Tanque'), findsOneWidget);
       expect(find.text('Nome'), findsOneWidget);
-      expect(find.text('Formulação'), findsOneWidget);
+      expect(find.text('Formulações'), findsOneWidget);
       expect(find.text('Volume'), findsOneWidget);
       expect(find.text('Resumo da Receita'), findsOneWidget);
     });

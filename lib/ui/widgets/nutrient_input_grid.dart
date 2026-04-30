@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart' hide Element;
 import 'package:hydrobuddy/domain/models/element.dart';
 
-/// Grid de 16 inputs numéricos de nutrientes (2 colunas × 8 linhas).
-/// Recebe [targets] e notifica [onChanged] quando o usuário edita um valor.
 class NutrientInputGrid extends StatelessWidget {
   final Map<Element, double> targets;
   final ValueChanged<Map<Element, double>> onChanged;
@@ -13,31 +11,52 @@ class NutrientInputGrid extends StatelessWidget {
     required this.onChanged,
   });
 
+  static const _elements = [
+    Element.nNo3,
+    Element.nNh4,
+    Element.p,
+    Element.k,
+    Element.mg,
+    Element.ca,
+    Element.s,
+    Element.fe,
+    Element.mn,
+    Element.zn,
+    Element.b,
+    Element.cu,
+    Element.si,
+    Element.mo,
+    Element.na,
+    Element.cl,
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3.5,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 6,
-      ),
-      itemCount: Element.all.length,
-      itemBuilder: (context, index) {
-        final element = Element.all[index];
-        return _NutrientField(
-          label: element.symbol,
-          value: targets[element] ?? 0.0,
-          onChanged: (newValue) {
-            final newTargets = Map<Element, double>.from(targets);
-            if (newValue == 0.0) {
-              newTargets.remove(element);
-            } else {
-              newTargets[element] = newValue;
-            }
-            onChanged(newTargets);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final crossAxisCount = constraints.maxWidth >= 600 ? 8 : 4;
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            childAspectRatio: 1.3,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+          ),
+          itemCount: _elements.length,
+          itemBuilder: (context, index) {
+            final e = _elements[index];
+            final value = targets[e] ?? 0.0;
+            return _NutrientCell(
+              element: e,
+              value: value,
+              onChanged: (v) {
+                final newTargets = Map<Element, double>.from(targets);
+                newTargets[e] = v;
+                onChanged(newTargets);
+              },
+            );
           },
         );
       },
@@ -45,24 +64,24 @@ class NutrientInputGrid extends StatelessWidget {
   }
 }
 
-class _NutrientField extends StatefulWidget {
-  final String label;
+class _NutrientCell extends StatefulWidget {
+  final Element element;
   final double value;
   final ValueChanged<double> onChanged;
 
-  const _NutrientField({
-    required this.label,
+  const _NutrientCell({
+    required this.element,
     required this.value,
     required this.onChanged,
   });
 
   @override
-  State<_NutrientField> createState() => _NutrientFieldState();
+  State<_NutrientCell> createState() => _NutrientCellState();
 }
 
-class _NutrientFieldState extends State<_NutrientField> {
-  late final TextEditingController _controller;
-  bool _internal = false;
+class _NutrientCellState extends State<_NutrientCell> {
+  late TextEditingController _controller;
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -70,12 +89,12 @@ class _NutrientFieldState extends State<_NutrientField> {
     _controller = TextEditingController(text: _fmt(widget.value));
   }
 
-  String _fmt(double v) => v == 0 ? '' : v.toStringAsFixed(1);
+  String _fmt(double v) => v == 0 ? '' : v.toString();
 
   @override
-  void didUpdateWidget(_NutrientField old) {
+  void didUpdateWidget(_NutrientCell old) {
     super.didUpdateWidget(old);
-    if (!_internal && old.value != widget.value) {
+    if (!_focusNode.hasFocus && old.value != widget.value) {
       _controller.text = _fmt(widget.value);
     }
   }
@@ -83,34 +102,49 @@ class _NutrientFieldState extends State<_NutrientField> {
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(
-          width: 56,
-          child: Text(
-            widget.label,
-            style: Theme.of(context).textTheme.labelMedium,
+        Text(
+          widget.element.symbol,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+            letterSpacing: 0.5,
           ),
         ),
-        Expanded(
+        const SizedBox(height: 2),
+        SizedBox(
+          height: 32,
           child: TextField(
             controller: _controller,
+            focusNode: _focusNode,
+            style: const TextStyle(fontSize: 12),
             decoration: InputDecoration(
               isDense: true,
+              filled: true,
+              fillColor: theme.colorScheme.surfaceContainerLow,
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6),
+                borderSide:
+                    BorderSide(color: theme.colorScheme.outlineVariant),
+              ),
             ),
             keyboardType:
                 const TextInputType.numberWithOptions(decimal: true),
             onChanged: (text) {
-              _internal = true;
               widget.onChanged(double.tryParse(text) ?? 0.0);
-              _internal = false;
             },
           ),
         ),

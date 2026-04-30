@@ -27,5 +27,979 @@
   "about": "Sobre",
   "@about": {
     "description": "Título da tela sobre"
+  },
+  "instrumentPrecision": "Precisão dos Instrumentos",
+  "@instrumentPrecision": {
+    "description": "Título da tela de precisão dos instrumentos"
+  },
+"degreeOfFreedom": "Grau de Liberdade (DOF)",
+"@degreeOfFreedom": {
+    "description": "Título da tela de grau de liberdade"
+  },
+  "waterQuality": "Qualidade da Água",
+  "@waterQuality": {
+    "description": "Título da tela de qualidade da água"
+  },
+  "tissueAnalysis": "Análise de Tecido",
+  "@tissueAnalysis": {
+    "description": "Título da tela de análise de tecido"
+  },
+  "aboutHydroBuddy": "Sobre o HydroBuddy",
+  "@aboutHydroBuddy": {
+    "description": "Tile de configurações: Sobre o HydroBuddy"
+  },
+  "language": "Idioma",
+  "@language": {
+    "description": "Tile de configurações: Idioma"
+  },
+  "comingSoon": "Em breve",
+  "@comingSoon": {
+    "description": "Mensagem para funcionalidades não disponíveis"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Tile de configurações: Tema"
+  },
+  "carryOutCalculation": "Executar Cálculo",
+  "@carryOutCalculation": {
+    "description": "Botão para executar cálculo"
+  },
+  "plus5Weights": "+5% Pesos",
+  "@plus5Weights": {
+    "description": "Dica: aumentar pesos em 5%"
+  },
+  "minus5Weights": "-5% Pesos",
+  "@minus5Weights": {
+    "description": "Dica: diminuir pesos em 5%"
+  },
+  "save": "Salvar",
+  "@save": {
+    "description": "Ação genérica de salvar"
+  },
+  "load": "Carregar",
+  "@load": {
+    "description": "Ação genérica de carregar"
+  },
+  "delete": "Excluir",
+  "@delete": {
+    "description": "Ação genérica de excluir"
+  },
+  "csv": "CSV",
+  "@csv": {
+    "description": "Botão de exportar CSV"
+  },
+  "stock": "Estoque",
+  "@stock": {
+    "description": "Botão de análise de estoque"
+  },
+  "perSub": "Por Subst.",
+  "@perSub": {
+    "description": "Botão de análise por substância"
+  },
+  "mix": "Mix",
+  "@mix": {
+    "description": "Botão de análise de mix"
+  },
+  "ratios": "Razões",
+  "@ratios": {
+    "description": "Botão de razões nutricionais"
+  },
+  "reset": "Redefinir",
+  "@reset": {
+    "description": "Redefinir alvos"
+  },
+  "copyTargets": "Copiar->Alvos",
+  "@copyTargets": {
+    "description": "Copiar resultados para alvos"
+  },
+  "copyDb": "Copiar->BD",
+  "@copyDb": {
+    "description": "Copiar resultados para banco de dados"
+  },
+  "volume": "Volume",
+  "@volume": {
+    "description": "Rótulo da seção de volume"
+  },
+  "units": "Unidades",
+  "@units": {
+    "description": "Rótulo da seção de unidades"
+  },
+  "mass": "Massa:",
+  "@mass": {
+    "description": "Rótulo de massa"
+  },
+  "conc": "Conc:",
+  "@conc": {
+    "description": "Rótulo de concentração"
+  },
+  "calcMode": "Modo de Cálculo",
+  "@calcMode": {
+    "description": "Rótulo da seção de modo de cálculo"
+  },
+  "inputDesiredConcentrations": "Inserir Concentrações Desejadas",
+  "@inputDesiredConcentrations": {
+    "description": "Opção de rádio para modo de cálculo"
+  },
+  "concentrationsFromWeights": "Concentrações a partir dos Pesos",
+  "@concentrationsFromWeights": {
+    "description": "Opção de rádio para modo de cálculo"
+  },
+  "solutionMode": "Modo de Solução",
+  "@solutionMode": {
+    "description": "Rótulo da seção de modo de solução"
+  },
+  "directAddition": "Adição direta",
+  "@directAddition": {
+    "description": "Opção de rádio para modo de solução"
+  },
+  "concentratedAB": "Concentrado A+B",
+  "@concentratedAB": {
+    "description": "Opção de rádio para modo de solução concentrado"
+  },
+  "ecModel": "Modelo de EC",
+  "@ecModel": {
+    "description": "Rótulo da seção de modelo de condutividade elétrica"
+  },
+  "lmcV2": "LMCv2",
+  "@lmcV2": {
+    "description": "Opção de modelo de CE"
+  },
+  "empirical": "Empírico",
+  "@empirical": {
+    "description": "Opção de modelo de CE"
+  },
+  "loadWaterProfile": "Carregar perfil de água",
+  "@loadWaterProfile": {
+    "description": "Rótulo do menu suspenso de qualidade da água"
+  },
+  "none": "Nenhum",
+  "@none": {
+    "description": "Opção de nenhuma seleção"
+  },
+  "applyToCalculation": "Aplicar ao cálculo",
+  "@applyToCalculation": {
+    "description": "Rótulo da caixa de seleção"
+  },
+  "noSubstancesSelected": "Nenhuma substância selecionada",
+  "@noSubstancesSelected": {
+    "description": "Mensagem de estado vazio"
+  },
+  "nSelected": "{count} selecionadas",
+  "@nSelected": {
+    "description": "Contagem de substâncias selecionadas",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selectSubstances": "Selecionar Substâncias",
+  "@selectSubstances": {
+    "description": "Botão para abrir seleção de substâncias"
+  },
+  "freeElementDof": "Elemento livre (DOF)",
+  "@freeElementDof": {
+    "description": "Rótulo da seção de elemento de grau de liberdade"
+  },
+  "volErr": "Erro Vol (±L)",
+  "@volErr": {
+    "description": "Rótulo do campo de erro de volume"
+  },
+  "wtErr": "Erro Bal (±g)",
+  "@wtErr": {
+    "description": "Rótulo do campo de erro de peso"
+  },
+  "siSource": "Fonte de Si",
+  "@siSource": {
+    "description": "Rótulo da seção de fonte de silício"
+  },
+  "dofDescription": "O Grau de Liberdade (Degree of Freedom — DOF) permite que um nutriente varie livremente durante o cálculo de mínimos quadrados. Quando um elemento é escolhido como DOF, sua concentração final não é restrita ao valor alvo, sendo determinada pelas proporções das substâncias selecionadas.\n\nNa maioria dos casos, o Potássio (K) é a melhor escolha, pois nutrientes à base de K são abundantes e baratos.",
+  "@dofDescription": {
+    "description": "Texto explicativo na tela de grau de liberdade"
+  },
+  "noneFullyRestricted": "Nenhum (sistema totalmente restrito)",
+  "@noneFullyRestricted": {
+    "description": "Opção de rádio para nenhum DOF"
+  },
+  "recommended": "Recomendado",
+  "@recommended": {
+    "description": "Indicação de escolha recomendada"
+  },
+  "versionNumber": "1.0.0+1",
+  "@versionNumber": {
+    "description": "Número da versão do aplicativo"
+  },
+  "aboutDescription": "Calculadora de soluções nutritivas hidropônicas",
+  "@aboutDescription": {
+    "description": "Descrição do aplicativo na tela sobre"
+  },
+  "credits": "Créditos",
+  "@credits": {
+    "description": "Título da seção de créditos"
+  },
+  "aboutHistory": "HydroBuddy é uma reimplementação em Dart/Flutter do HydroBuddy original, desenvolvido por Daniel Fernandez em Pascal/Lazarus.\n\nO HydroBuddy original é uma ferramenta de código aberto para cálculo de soluções nutritivas hidropônicas, amplamente utilizada por pesquisadores e produtores ao redor do mundo.",
+  "@aboutHistory": {
+    "description": "Contexto histórico sobre o aplicativo"
+  },
+  "license": "Licença",
+  "@license": {
+    "description": "Título da seção de licença"
+  },
+  "gplLicense": "Este projeto é distribuído sob a licença GPL v3.",
+  "@gplLicense": {
+    "description": "Informação de licença"
+  },
+  "instrumentPrecisionDescription": "Esses valores são usados para propagação de erro nos cálculos de incerteza das soluções preparadas.",
+  "@instrumentPrecisionDescription": {
+    "description": "Descrição na tela de precisão dos instrumentos"
+  },
+  "volumeError": "Erro do Volume (mL)",
+  "@volumeError": {
+    "description": "Rótulo do campo de erro de volume"
+  },
+  "volumetricGlasswareUncertainty": "Incerteza da vidraria volumétrica",
+  "@volumetricGlasswareUncertainty": {
+    "description": "Texto de ajuda para erro de volume"
+  },
+  "weightError": "Erro da Balança (g)",
+  "@weightError": {
+    "description": "Rótulo do campo de erro de peso"
+  },
+  "analyticalBalanceUncertainty": "Incerteza da balança analítica",
+  "@analyticalBalanceUncertainty": {
+    "description": "Texto de ajuda para erro de peso"
+  },
+  "nutritionalRatios": "Ratios Nutricionais",
+  "@nutritionalRatios": {
+    "description": "Título da tela de razões"
+  },
+  "executeCalculationFirst": "Execute o cálculo primeiro",
+  "@executeCalculationFirst": {
+    "description": "Mensagem quando nenhum cálculo foi executado"
+  },
+  "notAvailable": "N/D",
+  "@notAvailable": {
+    "description": "Abreviação de não disponível"
+  },
+  "perSubstanceAnalysis": "Análise por Substância",
+  "@perSubstanceAnalysis": {
+    "description": "Título da tela de análise por substância"
+  },
+  "substanceIdNoContribution": "Substância ID {id} — sem contribuição",
+  "@substanceIdNoContribution": {
+    "description": "Mensagem quando substância não tem contribuição",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "weightCostFormat": "Peso: {weight} g | Custo: R$ {cost}",
+  "@weightCostFormat": {
+    "description": "Formato de exibição de peso e custo",
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "element": "Elemento",
+  "@element": {
+    "description": "Cabeçalho da coluna: elemento"
+  },
+  "ppmContributed": "ppm contribuído",
+  "@ppmContributed": {
+    "description": "Cabeçalho da coluna: ppm contribuído"
+  },
+  "percentOfTarget": "% do alvo",
+  "@percentOfTarget": {
+    "description": "Cabeçalho da coluna: percentual do alvo"
+  },
+  "stockAnalysis": "Análise de Estoque (A+B)",
+  "@stockAnalysis": {
+    "description": "Título da tela de análise de estoque"
+  },
+  "factors": "Fatores",
+  "@factors": {
+    "description": "Título do cartão de fatores"
+  },
+  "dilutionFactorLabel": "Fator de diluição: {factor}x",
+  "@dilutionFactorLabel": {
+    "description": "Exibição do fator de diluição",
+    "placeholders": {
+      "factor": {
+        "type": "String"
+      }
+    }
+  },
+  "stockVolumeLabel": "Volume de estoque: {volume} L",
+  "@stockVolumeLabel": {
+    "description": "Exibição do volume de estoque",
+    "placeholders": {
+      "volume": {
+        "type": "String"
+      }
+    }
+  },
+  "substance": "Substância",
+  "@substance": {
+    "description": "Cabeçalho da coluna: substância"
+  },
+  "stockA": "Estoque A (g)",
+  "@stockA": {
+    "description": "Cabeçalho da coluna: peso do estoque A"
+  },
+  "stockB": "Estoque B (g)",
+  "@stockB": {
+    "description": "Cabeçalho da coluna: peso do estoque B"
+  },
+  "totalWeight": "Peso Total (g)",
+  "@totalWeight": {
+    "description": "Cabeçalho da coluna: peso total"
+  },
+  "mixComposition": "Composição do Mix",
+  "@mixComposition": {
+    "description": "Título da tela de análise de mix"
+  },
+  "summary": "Resumo",
+  "@summary": {
+    "description": "Título do cartão de resumo"
+  },
+  "totalDryWeight": "Peso seco total: {weight} g",
+  "@totalDryWeight": {
+    "description": "Exibição do peso seco total",
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "totalSolids": "Sólidos totais (ppm): {total}",
+  "@totalSolids": {
+    "description": "Exibição de sólidos totais",
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "npkLabel": "Rótulo NPK",
+  "@npkLabel": {
+    "description": "Título do cartão de rótulo NPK"
+  },
+  "npkDetailed": "NPK Detalhado",
+  "@npkDetailed": {
+    "description": "Título do cartão de NPK detalhado"
+  },
+  "otherElements": "Outros Elementos",
+  "@otherElements": {
+    "description": "Título do cartão de outros elementos"
+  },
+  "weightPercent": "% peso",
+  "@weightPercent": {
+    "description": "Cabeçalho da coluna: percentual de peso"
+  },
+  "compareFertilizers": "Comparar Fertilizantes",
+  "@compareFertilizers": {
+    "description": "Título da tela de comparação"
+  },
+  "fillAllFieldsValid": "Preencha todos os campos com valores válidos",
+  "@fillAllFieldsValid": {
+    "description": "Mensagem de erro de validação"
+  },
+  "checkNpkValues": "Verifique os valores NPK de ambos os fertilizantes",
+  "@checkNpkValues": {
+    "description": "Erro de validação para NPK"
+  },
+  "fertilizer1": "Fertilizante 1",
+  "@fertilizer1": {
+    "description": "Rótulo do fertilizante 1"
+  },
+  "fertilizer2": "Fertilizante 2",
+  "@fertilizer2": {
+    "description": "Rótulo do fertilizante 2"
+  },
+  "name": "Nome",
+  "@name": {
+    "description": "Rótulo do campo de nome"
+  },
+  "massG": "Massa (g)",
+  "@massG": {
+    "description": "Rótulo do campo de massa"
+  },
+  "volumeL": "Volume (L)",
+  "@volumeL": {
+    "description": "Rótulo do campo de volume"
+  },
+  "compare": "Comparar",
+  "@compare": {
+    "description": "Botão comparar"
+  },
+  "resultPpm": "Resultado (ppm)",
+  "@resultPpm": {
+    "description": "Título da seção de resultado"
+  },
+  "difference": "Diferença",
+  "@difference": {
+    "description": "Cabeçalho da coluna de diferença"
+  },
+  "commercialFertilizer": "Fertilizante Comercial",
+  "@commercialFertilizer": {
+    "description": "Título da tela de fertilizante comercial"
+  },
+  "invalidNpkFormat": "Formato NPK inválido. Use ex: 10-10-10",
+  "@invalidNpkFormat": {
+    "description": "Erro de formato NPK"
+  },
+  "invalidNpkValues": "Valores NPK inválidos. Use números.",
+  "@invalidNpkValues": {
+    "description": "Erro de valores NPK"
+  },
+  "volumeMustBePositive": "Volume deve ser maior que zero",
+  "@volumeMustBePositive": {
+    "description": "Erro de validação de volume"
+  },
+  "calculate": "Calcular",
+  "@calculate": {
+    "description": "Botão calcular"
+  },
+  "phAdjustment": "Ajuste de pH",
+  "@phAdjustment": {
+    "description": "Título da tela de ajuste de pH"
+  },
+  "currentPh": "pH atual",
+  "@currentPh": {
+    "description": "Rótulo do campo de pH atual"
+  },
+  "targetPh": "pH alvo",
+  "@targetPh": {
+    "description": "Rótulo do campo de pH alvo"
+  },
+  "acid": "Ácido",
+  "@acid": {
+    "description": "Rótulo de seleção de ácido"
+  },
+  "volumeAndTargetPhMustBePositive": "Volume e pH alvo devem ser maiores que zero",
+  "@volumeAndTargetPhMustBePositive": {
+    "description": "Erro de validação"
+  },
+  "currentPhMustBeGreaterThanTarget": "pH atual deve ser maior que o pH alvo",
+  "@currentPhMustBeGreaterThanTarget": {
+    "description": "Erro de validação"
+  },
+  "loading": "Carregando...",
+  "@loading": {
+    "description": "Mensagem genérica de carregamento"
+  },
+  "editAnalysis": "Editar Análise",
+  "@editAnalysis": {
+    "description": "Título de editar análise de tecido"
+  },
+  "newAnalysis": "Nova Análise",
+  "@newAnalysis": {
+    "description": "Título de nova análise de tecido"
+  },
+"nameRequired": "Nome obrigatorio",
+"@nameRequired": {
+    "description": "Validação: nome obrigatório"
+  },
+  "compositionPercent": "Composição (%)",
+  "@compositionPercent": {
+    "description": "Rótulo da seção"
+  },
+  "noTissueAnalysis": "Nenhuma análise de tecido cadastrada",
+  "@noTissueAnalysis": {
+    "description": "Mensagem de estado vazio"
+  },
+  "deleteAnalysis": "Excluir Análise",
+  "@deleteAnalysis": {
+    "description": "Título do diálogo de confirmação de exclusão"
+  },
+  "confirmDeleteTissue": "Deseja excluir \"{name}\"?",
+  "@confirmDeleteTissue": {
+    "description": "Mensagem de confirmação de exclusão",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Botão cancelar"
+  },
+"newProfile": "Novo Perfil",
+"@newProfile": {
+    "description": "Título de novo perfil de água"
+  },
+  "editProfile": "Editar Perfil",
+  "@editProfile": {
+    "description": "Título de editar perfil de água"
+  },
+  "deleteProfile": "Excluir Perfil",
+  "@deleteProfile": {
+    "description": "Título do diálogo de excluir perfil"
+  },
+  "confirmDeleteProfile": "Deseja excluir \"{name}\"?",
+  "@confirmDeleteProfile": {
+    "description": "Confirmação de exclusão",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "searchProfile": "Buscar perfil...",
+  "@searchProfile": {
+    "description": "Dica de busca de perfis"
+  },
+  "noWaterProfile": "Nenhum perfil de água cadastrado",
+  "@noWaterProfile": {
+    "description": "Mensagem de estado vazio"
+  },
+  "defaultLabel": "Padrão",
+  "@defaultLabel": {
+    "description": "Rótulo padrão no chip"
+  },
+  "noAdditionalParameters": "Sem parâmetros adicionais",
+  "@noAdditionalParameters": {
+    "description": "Subtítulo vazio"
+  },
+  "compositionPpm": "Composição (ppm)",
+  "@compositionPpm": {
+    "description": "Rótulo da seção"
+  },
+  "preparedTanks": "Tanques Preparados",
+  "@preparedTanks": {
+    "description": "Título da tela de histórico de tanques"
+  },
+  "noTanksPrepared": "Nenhum tanque preparado",
+  "@noTanksPrepared": {
+    "description": "Mensagem de estado vazio"
+  },
+  "tapPlusToCreate": "Toque no + para criar um novo",
+  "@tapPlusToCreate": {
+    "description": "Dica para criar tanque"
+  },
+  "deleteTank": "Excluir Tanque",
+  "@deleteTank": {
+    "description": "Título do diálogo de excluir tanque"
+  },
+  "confirmDeleteTank": "Excluir \"{name}\"?",
+  "@confirmDeleteTank": {
+    "description": "Confirmação de exclusão de tanque",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "remainingVolume": "{date} | Restante: {remaining}L",
+  "@remainingVolume": {
+    "description": "Subtítulo de volume restante",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "active": "ativo",
+  "@active": {
+    "description": "Status ativo do tanque"
+  },
+  "consumed": "consumido",
+  "@consumed": {
+    "description": "Status consumido do tanque"
+  },
+  "registerIrrigation": "Registrar Rega",
+  "@registerIrrigation": {
+    "description": "Botão/título do diálogo de registrar rega"
+  },
+  "finalize": "Finalizar",
+  "@finalize": {
+    "description": "Botão finalizar tanque"
+  },
+  "register": "Registrar",
+  "@register": {
+    "description": "Botão confirmar registro"
+  },
+  "finalizeTank": "Finalizar Tanque",
+  "@finalizeTank": {
+    "description": "Título do diálogo de finalizar tanque"
+  },
+  "confirmFinalizeTank": "Marcar o tanque como consumido?",
+  "@confirmFinalizeTank": {
+    "description": "Confirmar finalização de tanque"
+  },
+  "noIrrigationRegistered": "Nenhuma rega registrada",
+  "@noIrrigationRegistered": {
+    "description": "Lista vazia de regas"
+  },
+"editSubstance": "Editar Substancia",
+"@editSubstance": {
+    "description": "Título de editar substância"
+  },
+  "newSubstance": "Nova Substancia",
+  "@newSubstance": {
+    "description": "Título de nova substância"
+  },
+  "formula": "Fórmula",
+  "@formula": {
+    "description": "Rótulo do campo de fórmula"
+  },
+  "source": "Origem",
+  "@source": {
+    "description": "Rótulo do campo de origem"
+  },
+  "purity": "Pureza (0.0 a 1.0)",
+  "@purity": {
+    "description": "Rótulo do campo de pureza"
+  },
+  "invalidNumber": "Numero invalido",
+  "@invalidNumber": {
+    "description": "Erro de validação"
+  },
+  "valueBetween": "Valor entre 0.0 e 1.0",
+  "@valueBetween": {
+    "description": "Erro de validação"
+  },
+  "costPerKg": "Custo (R$/kg)",
+  "@costPerKg": {
+    "description": "Rótulo do campo de custo"
+  },
+  "liquid": "Liquido",
+  "@liquid": {
+    "description": "Rótulo do alternador de líquido"
+  },
+  "density": "Densidade (g/mL)",
+  "@density": {
+    "description": "Rótulo do campo de densidade"
+  },
+  "onlyForLiquids": "Apenas para liquidos",
+  "@onlyForLiquids": {
+    "description": "Dica de densidade quando não é líquido"
+  },
+  "concentrationType": "Tipo de Concentracao",
+  "@concentrationType": {
+    "description": "Rótulo do menu suspenso"
+  },
+  "elementalComposition": "Composicao Elementar (%)",
+  "@elementalComposition": {
+    "description": "Rótulo da seção"
+  },
+  "searchSubstance": "Buscar substancia...",
+  "@searchSubstance": {
+    "description": "Dica de busca"
+  },
+  "addSubstance": "Adicionar substancia",
+  "@addSubstance": {
+    "description": "Rótulo do FAB"
+  },
+  "prepareTank": "Preparar Tanque",
+  "@prepareTank": {
+    "description": "Título da tela de preparar tanque"
+  },
+  "tankNameHint": "ex: Tomate Semana 3",
+  "@tankNameHint": {
+    "description": "Dica para nome do tanque"
+  },
+  "selectEllipsis": "Selecione...",
+  "@selectEllipsis": {
+    "description": "Placeholder do menu suspenso"
+  },
+  "selectFormulation": "Selecione uma formulação",
+  "@selectFormulation": {
+    "description": "Erro de validação"
+  },
+  "volumeRequired": "Informe o volume",
+  "@volumeRequired": {
+    "description": "Erro de validação de volume"
+  },
+  "invalidVolume": "Volume inválido",
+  "@invalidVolume": {
+    "description": "Erro de validação de volume"
+  },
+  "measurementsOptional": "Medições (opcional)",
+  "@measurementsOptional": {
+    "description": "Rótulo da seção"
+  },
+  "actualEc": "EC real",
+  "@actualEc": {
+    "description": "Rótulo do campo de CE"
+  },
+  "actualPh": "pH real",
+  "@actualPh": {
+    "description": "Rótulo do campo de pH"
+  },
+  "note": "Nota",
+  "@note": {
+    "description": "Rótulo do campo de nota"
+  },
+  "observations": "Observações...",
+  "@observations": {
+    "description": "Dica do campo de nota"
+  },
+  "registerPreparation": "Registrar Preparo",
+  "@registerPreparation": {
+    "description": "Botão de envio"
+  },
+  "recipeSummary": "Resumo da Receita",
+  "@recipeSummary": {
+    "description": "Título do cartão"
+  },
+  "placeholderRecipe": "KNO3: --g    MgSO4: --g    Ca(NO3)2: --g",
+  "@placeholderRecipe": {
+    "description": "Texto de receita place holder"
+  },
+  "placeholderMicros": "KH2PO4: --g    Micros: --g",
+  "@placeholderMicros": {
+    "description": "Texto de micros place holder"
+  },
+  "placeholderEcCost": "EC previsto: -- mS/cm    Custo: --/L",
+  "@placeholderEcCost": {
+    "description": "Texto de CE e custo place holder"
+  },
+  "noFormulations": "Nenhuma formulação cadastrada",
+  "@noFormulations": {
+    "description": "Mensagem de estado vazio"
+  },
+  "newFormulation": "Nova Formulação",
+  "@newFormulation": {
+    "description": "Título do diálogo de nova formulação"
+  },
+  "unit": "Unidade",
+  "@unit": {
+    "description": "Rótulo do campo de unidade"
+  },
+  "create": "Criar",
+  "@create": {
+    "description": "Botão criar"
+  },
+  "deleteFormulation": "Excluir Formulação",
+  "@deleteFormulation": {
+    "description": "Título do diálogo de excluir formulação"
+  },
+  "confirmDeleteFormulation": "Deseja excluir \"{name}\"?",
+  "@confirmDeleteFormulation": {
+    "description": "Confirmação de exclusão",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "targetNutrients": "Nutrientes Alvo",
+  "@targetNutrients": {
+    "description": "Rótulo da seção de nutrientes alvo"
+  },
+  "target": "Alvo",
+  "@target": {
+    "description": "Cabeçalho da coluna: valor alvo"
+  },
+  "result": "Resultado",
+  "@result": {
+    "description": "Cabeçalho da coluna: valor resultante"
+  },
+  "gePercent": "GE%",
+  "@gePercent": {
+    "description": "Cabeçalho da coluna: percentual de erro bruto"
+  },
+  "iePercent": "IE%",
+  "@iePercent": {
+    "description": "Cabeçalho da coluna: percentual de erro instrumental"
+  },
+  "fillTargetAndSelectSubstances": "Preencha os nutrientes alvo e selecione substâncias",
+  "@fillTargetAndSelectSubstances": {
+    "description": "Mensagem de estado vazio nos resultados"
+  },
+  "elementsStringGrid1": "Elementos — StringGrid1",
+  "@elementsStringGrid1": {
+    "description": "Rótulo da seção de resultados"
+  },
+  "substancesStringGrid2": "Substâncias — StringGrid2",
+  "@substancesStringGrid2": {
+    "description": "Rótulo da seção de resultados"
+  },
+  "ecCost": "EC / Custo",
+  "@ecCost": {
+    "description": "Rótulo da seção de resultados"
+  },
+  "warnings": "Avisos",
+  "@warnings": {
+    "description": "Rótulo da seção de avisos"
+  },
+  "amountG": "Quantidade (g)",
+  "@amountG": {
+    "description": "Cabeçalho da coluna: quantidade em gramas"
+  },
+  "cost": "Custo",
+  "@cost": {
+    "description": "Cabeçalho da coluna: custo"
+  },
+"ec": "EC",
+"@ec": {
+    "description": "Rótulo de CE"
+  },
+  "totalCost": "Custo Total",
+  "@totalCost": {
+    "description": "Rótulo de custo total"
+  },
+  "substanceSelection": "Seleção de Substâncias",
+  "@substanceSelection": {
+    "description": "Título da planilha"
+  },
+  "errorLoadingSubstances": "Erro ao carregar substâncias: {error}",
+  "@errorLoadingSubstances": {
+    "description": "Mensagem de erro",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "apply": "Aplicar",
+  "@apply": {
+    "description": "Botão aplicar"
+  },
+  "available": "Disponíveis",
+  "@available": {
+    "description": "Título do painel de substâncias disponíveis"
+  },
+  "used": "Usadas",
+  "@used": {
+    "description": "Título do painel de substâncias usadas"
+  },
+  "empty": "Vazio",
+  "@empty": {
+    "description": "Estado vazio da lista"
+  },
+  "addArrow": "Adicionar >>",
+  "@addArrow": {
+    "description": "Botão adicionar"
+  },
+  "removeArrow": "<< Remover",
+  "@removeArrow": {
+    "description": "Botão remover"
+  },
+  "setAmount": "Definir Quantidade",
+  "@setAmount": {
+    "description": "Botão/título do diálogo de definir quantidade"
+  },
+  "resetAmounts": "Redefinir Quantidades",
+  "@resetAmounts": {
+    "description": "Botão redefinir quantidades"
+  },
+  "addNew": "Adicionar Nova",
+  "@addNew": {
+    "description": "Botão adicionar nova"
+  },
+  "edit": "Editar",
+  "@edit": {
+    "description": "Botão editar"
+  },
+  "deleteFromDb": "Excluir do BD",
+  "@deleteFromDb": {
+    "description": "Botão excluir do banco de dados"
+  },
+  "saveList": "Salvar Lista",
+  "@saveList": {
+    "description": "Botão salvar lista"
+  },
+  "loadList": "Carregar Lista",
+  "@loadList": {
+    "description": "Botão carregar lista"
+  },
+  "removeAll": "Remover Todas",
+  "@removeAll": {
+    "description": "Botão remover todas"
+  },
+  "weightG": "Peso (g)",
+  "@weightG": {
+    "description": "Rótulo do campo de peso"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Botão OK"
+  },
+  "confirmExclusion": "Confirmar Exclusão",
+  "@confirmExclusion": {
+    "description": "Título do diálogo de confirmação de exclusão"
+  },
+  "confirmRemoveSubstance": "Remover \"{name}\"?",
+  "@confirmRemoveSubstance": {
+    "description": "Confirmação de exclusão",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+"noSubstancesRegistered": "Nenhuma substancia cadastrada",
+"@noSubstancesRegistered": {
+    "description": "Estado vazio"
+  },
+  "formulationNotFound": "Formulação não encontrada",
+  "@formulationNotFound": {
+    "description": "Erro: formulação não encontrada"
+  },
+  "thisFormulationDoesNotExist": "Esta formulação não existe.",
+  "@thisFormulationDoesNotExist": {
+    "description": "Mensagem de erro"
+  },
+  "historyFormulation": "Histórico: {name}",
+  "@historyFormulation": {
+    "description": "Título da tela de histórico",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "noSnapshots": "Nenhum snapshot registrado",
+  "@noSnapshots": {
+    "description": "Estado vazio"
+  },
+  "newSnapshot": "Novo Snapshot",
+  "@newSnapshot": {
+    "description": "Título do diálogo de novo snapshot"
+  },
+  "optional": "Opcional",
+  "@optional": {
+    "description": "Dica de campo opcional"
+  },
+  "valuesRestored": "Valores restaurados no editor de formulação",
+  "@valuesRestored": {
+    "description": "Mensagem do snackbar"
+  },
+  "errorRestoring": "Erro ao restaurar: {error}",
+  "@errorRestoring": {
+    "description": "Mensagem de erro",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "restore": "Restaurar",
+  "@restore": {
+    "description": "Botão restaurar"
+  },
+  "manual": "manual",
+  "@manual": {
+    "description": "Tipo de gatilho de snapshot manual"
+  },
+  "autoSave": "auto save",
+  "@autoSave": {
+    "description": "Tipo de gatilho auto save"
+  },
+  "beforeEdit": "antes de editar",
+  "@beforeEdit": {
+    "description": "Tipo de gatilho antes de editar"
   }
 }

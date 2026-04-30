@@ -1,5 +1,6 @@
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import 'package:hydrobuddy/data/database.dart' hide Substance;
 import 'package:hydrobuddy/domain/models/substance.dart';
 import 'package:hydrobuddy/ui/providers/database_provider.dart';
 import 'package:hydrobuddy/ui/providers/substances_provider.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/screens/substances_screen.dart';
 import 'package:hydrobuddy/ui/screens/substance_editor_screen.dart';
 
@@ -58,7 +60,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: SubstancesScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const SubstancesScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -76,7 +82,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: SubstancesScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const SubstancesScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -95,7 +105,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: SubstancesScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const SubstancesScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -113,7 +127,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: SubstancesScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const SubstancesScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -128,7 +146,12 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+                    routerConfig: router,
+                    localizationsDelegates: AppLocalizations.localizationsDelegates,
+                    supportedLocales: AppLocalizations.supportedLocales,
+                    locale: const Locale('pt'),
+                  ),
       ));
       await tester.pumpAndSettle();
 
@@ -149,7 +172,12 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+                    routerConfig: router,
+                    localizationsDelegates: AppLocalizations.localizationsDelegates,
+                    supportedLocales: AppLocalizations.supportedLocales,
+                    locale: const Locale('pt'),
+                  ),
       ));
       await tester.pumpAndSettle();
 
@@ -168,7 +196,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: SubstanceEditorScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const SubstanceEditorScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -190,7 +222,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: SubstanceEditorScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const SubstanceEditorScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -213,7 +249,11 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: SubstanceEditorScreen()),
+        child: MaterialApp(
+                        localizationsDelegates: AppLocalizations.localizationsDelegates,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        locale: const Locale('pt'),
+                        home: const SubstanceEditorScreen()),
       ));
       await tester.pumpAndSettle();
 
@@ -241,7 +281,12 @@ void main() {
 
       await tester.pumpWidget(UncontrolledProviderScope(
         container: container,
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+                    routerConfig: router,
+                    localizationsDelegates: AppLocalizations.localizationsDelegates,
+                    supportedLocales: AppLocalizations.supportedLocales,
+                    locale: const Locale('pt'),
+                  ),
       ));
       await tester.pumpAndSettle();
 

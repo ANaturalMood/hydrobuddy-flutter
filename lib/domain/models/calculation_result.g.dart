@@ -24,6 +24,7 @@ _$SubstanceResultImpl _$$SubstanceResultImplFromJson(
           ) ??
           const {},
     ),
+    concType: $checkedConvert('concType', (v) => v as String?),
   );
   return val;
 });
@@ -37,6 +38,7 @@ Map<String, dynamic> _$$SubstanceResultImplToJson(
   'elementContribution': instance.elementContribution.map(
     (k, e) => MapEntry(_$ElementEnumMap[k]!, e),
   ),
+  'concType': instance.concType,
 };
 
 const _$ElementEnumMap = {
@@ -85,6 +87,33 @@ _$CalculationResultImpl _$$CalculationResultImplFromJson(
     totalCost: $checkedConvert('totalCost', (v) => (v as num).toDouble()),
     predictedEc: $checkedConvert('predictedEc', (v) => (v as num).toDouble()),
     error: $checkedConvert('error', (v) => v as String?),
+    grossErrors: $checkedConvert(
+      'grossErrors',
+      (v) =>
+          (v as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+              $enumDecode(_$ElementEnumMap, k),
+              (e as num).toDouble(),
+            ),
+          ) ??
+          const {},
+    ),
+    instrumentalErrors: $checkedConvert(
+      'instrumentalErrors',
+      (v) =>
+          (v as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+              $enumDecode(_$ElementEnumMap, k),
+              (e as num).toDouble(),
+            ),
+          ) ??
+          const {},
+    ),
+    warnings: $checkedConvert(
+      'warnings',
+      (v) =>
+          (v as List<dynamic>?)?.map((e) => e as String).toList() ?? const [],
+    ),
   );
   return val;
 });
@@ -102,4 +131,11 @@ Map<String, dynamic> _$$CalculationResultImplToJson(
   'totalCost': instance.totalCost,
   'predictedEc': instance.predictedEc,
   'error': instance.error,
+  'grossErrors': instance.grossErrors.map(
+    (k, e) => MapEntry(_$ElementEnumMap[k]!, e),
+  ),
+  'instrumentalErrors': instance.instrumentalErrors.map(
+    (k, e) => MapEntry(_$ElementEnumMap[k]!, e),
+  ),
+  'warnings': instance.warnings,
 };

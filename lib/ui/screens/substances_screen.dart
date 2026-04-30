@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrobuddy/ui/providers/substances_provider.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/widgets/substance_list.dart';
 
 /// Tela de listagem de substancias com busca e FAB para adicionar.
@@ -38,7 +39,7 @@ class _SubstancesScreenState extends ConsumerState<SubstancesScreen> {
         : ref.watch(searchSubstancesProvider(_query));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Substancias')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.substances)),
       body: Column(
         children: [
           Padding(
@@ -47,7 +48,7 @@ class _SubstancesScreenState extends ConsumerState<SubstancesScreen> {
               controller: _searchController,
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Buscar substancia...',
+                hintText: AppLocalizations.of(context)!.searchSubstance,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _query.isNotEmpty
                     ? IconButton(
@@ -77,7 +78,7 @@ class _SubstancesScreenState extends ConsumerState<SubstancesScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/substances/new'),
-        label: const Text('Adicionar substancia'),
+        label: Text(AppLocalizations.of(context)!.addSubstance),
         icon: const Icon(Icons.add),
       ),
     );

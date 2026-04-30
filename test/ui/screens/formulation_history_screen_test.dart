@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hydrobuddy/data/database.dart' as drift_db;
 import 'package:hydrobuddy/data/formulations_dao.dart';
 import 'package:hydrobuddy/ui/providers/database_provider.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/formulations_provider.dart';
 import 'package:hydrobuddy/ui/screens/formulation_history_screen.dart';
 import 'package:hydrobuddy/ui/widgets/snapshot_timeline.dart';
@@ -19,6 +21,9 @@ Widget _wrap(Widget child, {drift_db.AppDatabase? db}) {
   return ProviderScope(
     overrides: [databaseProvider.overrideWithValue(database)],
     child: MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('pt'),
       home: child,
     ),
   );

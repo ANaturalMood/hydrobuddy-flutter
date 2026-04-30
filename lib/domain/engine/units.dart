@@ -15,4 +15,12 @@ class UnitConverter {
 
   static double gramToOunce(double grams) => grams * 0.035274;
   static double ounceToGram(double ounces) => ounces / 0.035274;
+
+  static double k2oToK(double k2o) => k2o * 0.8301;
+  static double p2o5ToP(double p2o5) => p2o5 * 0.4364;
+  static double kToK2o(double k) => k / 0.8301;
+  static double pToP2o5(double p) => p / 0.4364;
+
+  static double siToSio2(double si) => si / 0.4684;
+  static double sio2ToSi(double sio2) => sio2 * 0.4684;
 }

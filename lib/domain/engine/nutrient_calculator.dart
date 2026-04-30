@@ -80,4 +80,51 @@ class NutrientCalculator {
     }
     return total;
   }
+
+  static Map<Element, double> grossErrors({
+    required Map<Element, double> achieved,
+    required Map<Element, double> targets,
+  }) {
+    final errors = <Element, double>{};
+    for (final entry in targets.entries) {
+      final target = entry.value;
+      if (target.abs() < 0.0001) {
+        errors[entry.key] = 0.0;
+      } else {
+        final actual = achieved[entry.key] ?? 0.0;
+        errors[entry.key] = (actual - target).abs() / target * 100.0;
+      }
+    }
+    return errors;
+  }
+
+  static Map<Element, double> instrumentalErrors({
+    required Map<int, double> weights,
+    required List<Substance> substances,
+    required Map<Element, double> achieved,
+    double volumeLiters = 1.0,
+    double weightError = 0.01,
+  }) {
+    final errors = <Element, double>{};
+    for (final element in Element.all) {
+      double totalPpmError = 0.0;
+      for (int i = 0; i < substances.length; i++) {
+        final w = weights[i] ?? 0.0;
+        if (w > 0) {
+          totalPpmError += UnitConverter.ppmFromWeight(
+            weightError,
+            substances[i].getN(element),
+            volumeLiters,
+          );
+        }
+      }
+      final achievedPpm = achieved[element] ?? 0.0;
+      if (achievedPpm.abs() > 0.0001) {
+        errors[element] = totalPpmError / achievedPpm * 100.0;
+      } else {
+        errors[element] = 0.0;
+      }
+    }
+    return errors;
+  }
 }

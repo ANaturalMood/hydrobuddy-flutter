@@ -2,8 +2,10 @@ import 'package:flutter/material.dart' hide Element;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrobuddy/domain/models/element.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/domain/models/substance.dart';
 import 'package:hydrobuddy/ui/providers/substances_provider.dart';
+import 'package:hydrobuddy/domain/engine/units.dart';
 
 const _concTypes = ['w/w', 'w/v', 'v/v', 'Outro'];
 
@@ -34,6 +36,7 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
   bool _isLiquid = false;
   String _concType = 'w/w';
 
+  bool _showOxide = false;
   bool _loaded = false;
   bool _loading = false;
 
@@ -104,6 +107,13 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
 
+    double pVal = _parseDouble(_elementCtrls[Element.p]!);
+    double kVal = _parseDouble(_elementCtrls[Element.k]!);
+    if (_showOxide) {
+      pVal = UnitConverter.p2o5ToP(pVal);
+      kVal = UnitConverter.k2oToK(kVal);
+    }
+
     final substance = Substance(
       id: widget.substanceId ?? -1,
       name: _nameCtrl.text.trim(),
@@ -120,8 +130,8 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
       concType: _concType == 'Outro' ? null : _concType,
       nNo3: _parseDouble(_elementCtrls[Element.nNo3]!),
       nNh4: _parseDouble(_elementCtrls[Element.nNh4]!),
-      p: _parseDouble(_elementCtrls[Element.p]!),
-      k: _parseDouble(_elementCtrls[Element.k]!),
+      p: pVal,
+      k: kVal,
       ca: _parseDouble(_elementCtrls[Element.ca]!),
       mg: _parseDouble(_elementCtrls[Element.mg]!),
       s: _parseDouble(_elementCtrls[Element.s]!),
@@ -154,7 +164,7 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
 
     if (_loading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Carregando...')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.loading)),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
@@ -162,7 +172,7 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.isEditing ? 'Editar Substancia' : 'Nova Substancia',
+          widget.isEditing ? AppLocalizations.of(context)!.editSubstance : AppLocalizations.of(context)!.newSubstance,
         ),
       ),
       body: Form(
@@ -173,56 +183,56 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
             children: [
             TextFormField(
               controller: _nameCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Nome',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.name,
                 border: OutlineInputBorder(),
               ),
               validator: (v) =>
-                  (v == null || v.trim().isEmpty) ? 'Nome obrigatorio' : null,
+                    (v == null || v.trim().isEmpty) ? AppLocalizations.of(context)!.nameRequired : null,
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _formulaCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Formula',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.formula,
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _sourceCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Origem',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.source,
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _purityCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Pureza (0.0 a 1.0)',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.purity,
                 border: OutlineInputBorder(),
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               validator: (v) {
                 final n = double.tryParse(v ?? '');
-                if (n == null) return 'Numero invalido';
-                if (n < 0.0 || n > 1.0) return 'Valor entre 0.0 e 1.0';
+                if (n == null) return AppLocalizations.of(context)!.invalidNumber;
+                if (n < 0.0 || n > 1.0) return AppLocalizations.of(context)!.valueBetween;
                 return null;
               },
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _costCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Custo (R\$/kg)',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.costPerKg,
                 border: OutlineInputBorder(),
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
             ),
             const SizedBox(height: 12),
             SwitchListTile(
-              title: const Text('Liquido'),
+              title: Text(AppLocalizations.of(context)!.liquid),
               value: _isLiquid,
               onChanged: (v) => setState(() => _isLiquid = v),
               contentPadding: EdgeInsets.zero,
@@ -231,10 +241,10 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
             TextFormField(
               controller: _densityCtrl,
               decoration: InputDecoration(
-                labelText: 'Densidade (g/mL)',
+                labelText: AppLocalizations.of(context)!.density,
                 border: const OutlineInputBorder(),
                 enabled: _isLiquid,
-                hintText: _isLiquid ? null : 'Apenas para liquidos',
+                hintText: _isLiquid ? null : AppLocalizations.of(context)!.onlyForLiquids,
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               enabled: _isLiquid,
@@ -242,8 +252,8 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               value: _concType,
-              decoration: const InputDecoration(
-                labelText: 'Tipo de Concentracao',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.concentrationType,
                 border: OutlineInputBorder(),
               ),
               items: _concTypes
@@ -252,15 +262,44 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
               onChanged: (v) => setState(() => _concType = v ?? 'w/w'),
             ),
             const SizedBox(height: 20),
-            Text('Composicao Elementar (%)',
+            Text(AppLocalizations.of(context)!.elementalComposition,
                 style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 8),
+            ToggleButtons(
+              isSelected: [!_showOxide, _showOxide],
+              onPressed: (index) {
+                setState(() {
+                  if (index == 0 && _showOxide) {
+                    _showOxide = false;
+                    _elementCtrls[Element.k]!.text = UnitConverter.k2oToK(
+                      _parseDouble(_elementCtrls[Element.k]!),
+                    ).toStringAsFixed(2);
+                    _elementCtrls[Element.p]!.text = UnitConverter.p2o5ToP(
+                      _parseDouble(_elementCtrls[Element.p]!),
+                    ).toStringAsFixed(2);
+                  } else if (index == 1 && !_showOxide) {
+                    _showOxide = true;
+                    _elementCtrls[Element.k]!.text = UnitConverter.kToK2o(
+                      _parseDouble(_elementCtrls[Element.k]!),
+                    ).toStringAsFixed(2);
+                    _elementCtrls[Element.p]!.text = UnitConverter.pToP2o5(
+                      _parseDouble(_elementCtrls[Element.p]!),
+                    ).toStringAsFixed(2);
+                  }
+                });
+              },
+              children: const [
+                Text('Elemental'),
+                Text('Oxide'),
+              ],
+            ),
             const SizedBox(height: 8),
             _buildElementGrid(),
             const SizedBox(height: 24),
             FilledButton.icon(
               onPressed: _save,
               icon: const Icon(Icons.save),
-              label: const Text('Salvar'),
+                label: Text(AppLocalizations.of(context)!.save),
             ),
             const SizedBox(height: 16),
             ],
@@ -282,19 +321,32 @@ class _SubstanceEditorScreenState extends ConsumerState<SubstanceEditorScreen> {
         mainAxisSpacing: 8,
       ),
       itemCount: elements.length,
-      itemBuilder: (context, index) {
-        final e = elements[index];
-        return TextFormField(
-          controller: _elementCtrls[e]!,
-          decoration: InputDecoration(
-            labelText: e.symbol,
-            border: const OutlineInputBorder(),
-            isDense: true,
-          ),
-          keyboardType:
-              const TextInputType.numberWithOptions(decimal: true),
-        );
-      },
+    itemBuilder: (context, index) {
+      final e = elements[index];
+      final label = _showOxide
+          ? (e == Element.k
+              ? 'K\u2082O'
+              : e == Element.p
+                  ? 'P\u2082O\u2085'
+                  : e.symbol)
+          : e.symbol;
+      return TextFormField(
+        controller: _elementCtrls[e]!,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+          isDense: true,
+        ),
+        keyboardType:
+            const TextInputType.numberWithOptions(decimal: true),
+        validator: (v) {
+          final n = double.tryParse(v ?? '');
+          if (n == null) return 'Invalid number';
+          if (n < 0 || n > 100) return 'Value must be 0-100';
+          return null;
+        },
+      );
+    },
     );
   }
 }

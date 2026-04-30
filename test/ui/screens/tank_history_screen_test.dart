@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:hydrobuddy/domain/models/tank.dart';
 import 'package:hydrobuddy/ui/providers/tank_provider.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/screens/tank_history_screen.dart';
 
 TankBatch _testTank({int id = 1, String name = 'Tomate Semana 3', double remaining = 94}) {
@@ -31,8 +33,11 @@ Widget _wrap(List<Override> overrides) {
   final container = ProviderContainer(overrides: overrides);
   return UncontrolledProviderScope(
     container: container,
-    child: const MaterialApp(
-      home: TankHistoryScreen(),
+    child: MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('pt'),
+      home: const TankHistoryScreen(),
     ),
   );
 }

@@ -12,6 +12,12 @@ enum WeightUnit { gram, ounce }
 
 enum CalcMode { directAddition, prepareStock }
 
+enum SolutionMode { directAddition, prepareStock }
+
+enum EcModel { lmcv2, empirical }
+
+enum SiSource { si, sio2 }
+
 @freezed
 class CalculationInput with _$CalculationInput {
   const factory CalculationInput({

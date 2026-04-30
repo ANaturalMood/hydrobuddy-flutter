@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:hydrobuddy/domain/models/tank.dart';
+import 'package:hydrobuddy/l10n/app_localizations.dart';
 import 'package:hydrobuddy/ui/providers/tank_provider.dart';
 
 class TankHistoryScreen extends ConsumerWidget {
@@ -13,7 +14,7 @@ class TankHistoryScreen extends ConsumerWidget {
     final tanksAsync = ref.watch(watchTankBatchesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Tanques Preparados')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.preparedTanks)),
       floatingActionButton: FloatingActionButton(
         heroTag: 'tank_fab',
         onPressed: () => context.push('/tank/prepare'),
@@ -24,17 +25,17 @@ class TankHistoryScreen extends ConsumerWidget {
         error: (err, _) => Center(child: Text('Erro: $err')),
         data: (tanks) {
           if (tanks.isEmpty) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.water_drop_outlined, size: 64, color: Colors.grey),
-                  SizedBox(height: 16),
-                  Text('Nenhum tanque preparado',
-                      style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 4),
-                  Text('Toque no + para criar um novo',
-                      style: TextStyle(fontSize: 13, color: Colors.grey)),
+                  const Icon(Icons.water_drop_outlined, size: 64, color: Colors.grey),
+                  const SizedBox(height: 16),
+                  Text(AppLocalizations.of(context)!.noTanksPrepared,
+                      style: const TextStyle(fontSize: 16)),
+                  const SizedBox(height: 4),
+                  Text(AppLocalizations.of(context)!.tapPlusToCreate,
+                      style: const TextStyle(fontSize: 13, color: Colors.grey)),
                 ],
               ),
             );
@@ -87,16 +88,16 @@ class _TankTileState extends ConsumerState<_TankTile> {
         return await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: const Text('Excluir Tanque'),
-            content: Text('Excluir "${tank.name}"?'),
+            title: Text(AppLocalizations.of(context)!.deleteTank),
+            content: Text(AppLocalizations.of(context)!.confirmDeleteTank(tank.name)),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: const Text('Cancelar'),
-              ),
-              FilledButton(
-                onPressed: () => Navigator.pop(ctx, true),
-                child: const Text('Excluir'),
+              child: Text(AppLocalizations.of(context)!.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text(AppLocalizations.of(context)!.delete),
               ),
             ],
           ),
@@ -113,10 +114,10 @@ class _TankTileState extends ConsumerState<_TankTile> {
               setState(() => _isExpanded = expanded),
           title: Text(tank.name,
               style: const TextStyle(fontWeight: FontWeight.w600)),
-          subtitle: Text('$date | Restante: ${remaining.toStringAsFixed(0)}L',
+          subtitle: Text(AppLocalizations.of(context)!.remainingVolume(date, remaining.toStringAsFixed(0)),
               style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant)),
           trailing: Chip(
-            label: Text(isActive ? 'ativo' : 'consumido',
+            label: Text(isActive ? AppLocalizations.of(context)!.active : AppLocalizations.of(context)!.consumed,
                 style: const TextStyle(fontSize: 10)),
             backgroundColor:
                 isActive ? cs.primaryContainer : cs.surfaceContainerHighest,
@@ -133,14 +134,14 @@ class _TankTileState extends ConsumerState<_TankTile> {
                 children: [
                   OutlinedButton.icon(
                     icon: const Icon(Icons.add, size: 18),
-                    label: const Text('Registrar Rega'),
+                    label: Text(AppLocalizations.of(context)!.registerIrrigation),
                     onPressed: () => _showIrrigationDialog(context),
                   ),
                   const SizedBox(width: 8),
                   if (isActive)
                     OutlinedButton.icon(
                       icon: const Icon(Icons.check, size: 18),
-                      label: const Text('Finalizar'),
+                      label: Text(AppLocalizations.of(context)!.finalize),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: cs.tertiary,
                       ),
@@ -160,11 +161,11 @@ class _TankTileState extends ConsumerState<_TankTile> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Registrar Rega'),
+        title: Text(AppLocalizations.of(context)!.registerIrrigation),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
-            labelText: 'Volume',
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.volume,
             suffixText: 'L',
           ),
           keyboardType: TextInputType.number,
@@ -173,7 +174,7 @@ class _TankTileState extends ConsumerState<_TankTile> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           FilledButton(
             onPressed: () {
@@ -182,7 +183,7 @@ class _TankTileState extends ConsumerState<_TankTile> {
               Navigator.pop(ctx);
               _recordIrrigation(volume);
             },
-            child: const Text('Registrar'),
+            child: Text(AppLocalizations.of(context)!.register),
           ),
         ],
       ),
@@ -207,16 +208,16 @@ class _TankTileState extends ConsumerState<_TankTile> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Finalizar Tanque'),
-        content: const Text('Marcar o tanque como consumido?'),
+        title: Text(AppLocalizations.of(context)!.finalizeTank),
+        content: Text(AppLocalizations.of(context)!.confirmFinalizeTank),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Finalizar'),
+            child: Text(AppLocalizations.of(context)!.finalize),
           ),
         ],
       ),
@@ -251,10 +252,10 @@ class _UsageEventsList extends ConsumerWidget {
       error: (_, __) => const SizedBox.shrink(),
       data: (events) {
         if (events.isEmpty) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-            child: Text('Nenhuma rega registrada',
-                style: TextStyle(fontSize: 12, color: Colors.grey)),
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+            child: Text(AppLocalizations.of(context)!.noIrrigationRegistered,
+                style: const TextStyle(fontSize: 12, color: Colors.grey)),
           );
         }
         return Padding(

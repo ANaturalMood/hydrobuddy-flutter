@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:hydrobuddy/ui/providers/database_provider.dart';
+import 'package:hydrobuddy/ui/providers/water_quality_provider.dart';
 import 'package:hydrobuddy/data/database.dart' as drift;
 import 'package:hydrobuddy/data/substances_dao.dart';
 import 'package:hydrobuddy/domain/models/element.dart';
@@ -87,6 +88,54 @@ class DegreeOfFreedom extends _$DegreeOfFreedom {
   void set(Element? value) => state = value;
 }
 
+@riverpod
+class WaterQualityId extends _$WaterQualityId {
+  @override
+  int? build() => null;
+
+  void set(int? value) => state = value;
+}
+
+@riverpod
+class WeightError extends _$WeightError {
+  @override
+  double build() => 0.01;
+
+  void set(double value) => state = value;
+}
+
+@riverpod
+class VolumeError extends _$VolumeError {
+  @override
+  double build() => 0.1;
+
+  void set(double value) => state = value;
+}
+
+@riverpod
+class SolutionMode extends _$SolutionMode {
+  @override
+  calc.SolutionMode build() => calc.SolutionMode.directAddition;
+
+  void set(calc.SolutionMode value) => state = value;
+}
+
+@riverpod
+class EcModel extends _$EcModel {
+  @override
+  calc.EcModel build() => calc.EcModel.lmcv2;
+
+  void set(calc.EcModel value) => state = value;
+}
+
+@riverpod
+class SiSource extends _$SiSource {
+  @override
+  calc.SiSource build() => calc.SiSource.si;
+
+  void set(calc.SiSource value) => state = value;
+}
+
 // ========== Provider computado COM DEBOUNCE ==========
 
 @riverpod
@@ -100,14 +149,22 @@ Future<CalculationResult> calculationResult(CalculationResultRef ref) async {
   final calcMode = ref.watch(calculationModeProvider);
   final dilutionFactor = ref.watch(dilutionFactorProvider);
   final dof = ref.watch(degreeOfFreedomProvider);
+  final waterQualityId = ref.watch(waterQualityIdProvider);
+  final weightError = ref.watch(weightErrorProvider);
+
+  final warnings = <String>[];
 
   if (targets.isEmpty || substanceIds.isEmpty) {
-    return const CalculationResult(
+    if (substanceIds.isEmpty) {
+      warnings.add('Select at least one substance');
+    }
+    return CalculationResult(
       substances: [],
       achievedConcentrations: {},
-      targetConcentrations: {},
+      targetConcentrations: targets,
       totalCost: 0,
       predictedEc: 0,
+      warnings: warnings,
     );
   }
 
@@ -130,20 +187,41 @@ Future<CalculationResult> calculationResult(CalculationResultRef ref) async {
       totalCost: 0,
       predictedEc: 0,
       error: 'Nenhuma substância encontrada para os IDs fornecidos',
+      warnings: warnings,
     );
   }
 
   // Mapeia Drift Substance → domain Substance
   final substances = driftSubstances.map(_mapDriftToDomain).toList();
 
-  // Calcula pesos via mínimos quadrados
+  // Ajusta targets com qualidade da água
+  Map<Element, double> waterQuality = {};
+  if (waterQualityId != null) {
+    final waterResult = await ref.read(waterQualityByIdProvider(waterQualityId).future);
+    if (waterResult != null) {
+      waterQuality = _waterQualityToMap(waterResult);
+    }
+  }
+
+  final adjustedTargets = <Element, double>{};
+  for (final entry in targets.entries) {
+    final wqValue = waterQuality[entry.key] ?? 0.0;
+    final adjusted = entry.value - wqValue;
+    if (adjusted < 0) {
+      warnings.add('Water already contains more ${entry.key.displayName} than target');
+    }
+    adjustedTargets[entry.key] = adjusted < 0 ? 0.0 : adjusted;
+  }
+
+  // Calcula pesos via mínimos quadrados usando targets ajustados
   final weights = NutrientCalculator.calculateWeights(
-    targets: targets,
+    targets: adjustedTargets,
     substances: substances,
     volumeLiters: volume,
   );
 
   if (weights == null) {
+    warnings.add('Unable to find a good fit, add more salts or relax constraints');
     return CalculationResult(
       substances: [],
       achievedConcentrations: {},
@@ -151,6 +229,7 @@ Future<CalculationResult> calculationResult(CalculationResultRef ref) async {
       totalCost: 0,
       predictedEc: 0,
       error: 'Sistema insolúvel — verifique as substâncias selecionadas',
+      warnings: warnings,
     );
   }
 
@@ -159,11 +238,37 @@ Future<CalculationResult> calculationResult(CalculationResultRef ref) async {
     substances: substances,
     volumeLiters: volume,
   );
-  final ec = NutrientCalculator.predictEc(achievedPpm: achieved);
+
+  // Reconcilia achieved com water quality para exibir resultados reais
+  final reconciledAchieved = <Element, double>{};
+  for (final entry in achieved.entries) {
+    reconciledAchieved[entry.key] = entry.value + (waterQuality[entry.key] ?? 0.0);
+  }
+
+  final ec = NutrientCalculator.predictEc(achievedPpm: reconciledAchieved);
   final totalCost = NutrientCalculator.calculateCost(
     weights: weights,
     substances: substances,
   );
+
+  final grossErrors = NutrientCalculator.grossErrors(
+    achieved: reconciledAchieved,
+    targets: targets,
+  );
+
+  final instrumentalErrors = NutrientCalculator.instrumentalErrors(
+    weights: weights,
+    substances: substances,
+    achieved: reconciledAchieved,
+    volumeLiters: volume,
+    weightError: weightError,
+  );
+
+  for (final entry in instrumentalErrors.entries) {
+    if (entry.value > 20.0) {
+      warnings.add('Instrumental error too high on ${entry.key.displayName}');
+    }
+  }
 
   // Monta per-substance contributions
   final substanceResults = weights.entries.map((e) {
@@ -178,15 +283,19 @@ Future<CalculationResult> calculationResult(CalculationResultRef ref) async {
       weight: e.value,
       cost: e.value / 1000.0 * sub.cost,
       elementContribution: contribution,
+      concType: sub.concType,
     );
   }).toList();
 
   return CalculationResult(
     substances: substanceResults,
-    achievedConcentrations: achieved,
+    achievedConcentrations: reconciledAchieved,
     targetConcentrations: targets,
     totalCost: totalCost,
     predictedEc: ec,
+    grossErrors: grossErrors,
+    instrumentalErrors: instrumentalErrors,
+    warnings: warnings,
   );
 }
 
@@ -220,4 +329,25 @@ domain.Substance _mapDriftToDomain(drift.Substance d) {
     na: d.na,
     cl: d.cl,
   );
+}
+
+Map<Element, double> _waterQualityToMap(drift.WaterQualityData wq) {
+  return {
+    Element.nNo3: wq.n_no3,
+    Element.nNh4: wq.n_nh4,
+    Element.p: wq.p,
+    Element.k: wq.k,
+    Element.ca: wq.ca,
+    Element.mg: wq.mg,
+    Element.s: wq.s,
+    Element.fe: wq.fe,
+    Element.mn: wq.mn,
+    Element.zn: wq.zn,
+    Element.b: wq.b,
+    Element.cu: wq.cu,
+    Element.si: wq.si,
+    Element.mo: wq.mo,
+    Element.na: wq.na,
+    Element.cl: wq.cl,
+  };
 }
