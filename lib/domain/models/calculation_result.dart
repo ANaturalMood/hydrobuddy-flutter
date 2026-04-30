@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'element.dart';
 
 part 'calculation_result.freezed.dart';
 part 'calculation_result.g.dart';
@@ -9,7 +10,7 @@ class SubstanceResult with _$SubstanceResult {
     required int substanceId,
     required double weight,
     required double cost,
-    @Default({}) Map<String, double> elementContribution,
+    @Default({}) Map<Element, double> elementContribution,
   }) = _SubstanceResult;
 
   factory SubstanceResult.fromJson(Map<String, dynamic> json) =>
@@ -20,8 +21,8 @@ class SubstanceResult with _$SubstanceResult {
 class CalculationResult with _$CalculationResult {
   const factory CalculationResult({
     required List<SubstanceResult> substances,
-    required Map<String, double> achievedConcentrations,
-    required Map<String, double> targetConcentrations,
+    required Map<Element, double> achievedConcentrations,
+    required Map<Element, double> targetConcentrations,
     required double totalCost,
     required double predictedEc,
     String? error,

@@ -17,7 +17,10 @@ _$SubstanceResultImpl _$$SubstanceResultImplFromJson(
       'elementContribution',
       (v) =>
           (v as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, (e as num).toDouble()),
+            (k, e) => MapEntry(
+              $enumDecode(_$ElementEnumMap, k),
+              (e as num).toDouble(),
+            ),
           ) ??
           const {},
     ),
@@ -31,7 +34,28 @@ Map<String, dynamic> _$$SubstanceResultImplToJson(
   'substanceId': instance.substanceId,
   'weight': instance.weight,
   'cost': instance.cost,
-  'elementContribution': instance.elementContribution,
+  'elementContribution': instance.elementContribution.map(
+    (k, e) => MapEntry(_$ElementEnumMap[k]!, e),
+  ),
+};
+
+const _$ElementEnumMap = {
+  Element.nNo3: 'nNo3',
+  Element.nNh4: 'nNh4',
+  Element.p: 'p',
+  Element.k: 'k',
+  Element.ca: 'ca',
+  Element.mg: 'mg',
+  Element.s: 's',
+  Element.fe: 'fe',
+  Element.mn: 'mn',
+  Element.zn: 'zn',
+  Element.b: 'b',
+  Element.cu: 'cu',
+  Element.si: 'si',
+  Element.mo: 'mo',
+  Element.na: 'na',
+  Element.cl: 'cl',
 };
 
 _$CalculationResultImpl _$$CalculationResultImplFromJson(
@@ -47,13 +71,15 @@ _$CalculationResultImpl _$$CalculationResultImplFromJson(
     achievedConcentrations: $checkedConvert(
       'achievedConcentrations',
       (v) => (v as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, (e as num).toDouble()),
+        (k, e) =>
+            MapEntry($enumDecode(_$ElementEnumMap, k), (e as num).toDouble()),
       ),
     ),
     targetConcentrations: $checkedConvert(
       'targetConcentrations',
       (v) => (v as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, (e as num).toDouble()),
+        (k, e) =>
+            MapEntry($enumDecode(_$ElementEnumMap, k), (e as num).toDouble()),
       ),
     ),
     totalCost: $checkedConvert('totalCost', (v) => (v as num).toDouble()),
@@ -67,8 +93,12 @@ Map<String, dynamic> _$$CalculationResultImplToJson(
   _$CalculationResultImpl instance,
 ) => <String, dynamic>{
   'substances': instance.substances,
-  'achievedConcentrations': instance.achievedConcentrations,
-  'targetConcentrations': instance.targetConcentrations,
+  'achievedConcentrations': instance.achievedConcentrations.map(
+    (k, e) => MapEntry(_$ElementEnumMap[k]!, e),
+  ),
+  'targetConcentrations': instance.targetConcentrations.map(
+    (k, e) => MapEntry(_$ElementEnumMap[k]!, e),
+  ),
   'totalCost': instance.totalCost,
   'predictedEc': instance.predictedEc,
   'error': instance.error,
